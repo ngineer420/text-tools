@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How TextKit Pro's Tools Work Under the Hood — textkitpro.com</title>
+<meta name="description" content="How this site's word/char/sentence/paragraph counting, keyword density calculation, and LCS-based diff algorithm actually work — no external dependencies, everything runs in your browser.">
+<link rel="canonical" href="https://textkitpro.com/articles/how-this-tool-works.html">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+  </div>
+</header>
+<main class="container-narrow">
+  <h1>How TextKit Pro's Tools Work Under the Hood</h1>
+
+  <p>TextKit Pro looks simple — four tabs, some textareas, a few buttons — but each tool is built on a small piece of real logic worth understanding, especially if you're relying on the numbers it reports. Everything described here runs as plain, dependency-free JavaScript directly in your browser; nothing is sent to a server, and every function below is intentionally kept pure (no DOM access) so it can be sanity-checked outside a browser too. Here's exactly how each tool works, and where its edge cases are.</p>
+
+  <h2>Counting words, characters, sentences, and paragraphs</h2>
+  <p>Word counting works by trimming the input and matching every run of non-whitespace characters with the regular expression <code>/\S+/g</code>, then counting the matches. This is deliberately simple: it treats &ldquo;don't,&rdquo; hyphenated compounds like &ldquo;well-known,&rdquo; and abbreviations as single words, matching how most word processors count by default. Character counts are just as direct — total length for the &ldquo;with spaces&rdquo; figure, and the same string with every whitespace character stripped via <code>/\s/g</code> for the &ldquo;without spaces&rdquo; figure.</p>
+  <p>Sentence counting splits the text on runs of <code>.</code>, <code>!</code>, or <code>?</code>, trims each resulting piece, and discards empty fragments — so three consecutive periods or a trailing exclamation mark don't produce phantom empty &ldquo;sentences.&rdquo; This method has a known limitation worth flagging: splitting on punctuation alone can't distinguish a sentence-ending period from one inside an abbreviation (&ldquo;Dr. Smith&rdquo;) or a decimal number (&ldquo;3.14&rdquo;), so abbreviation- or number-dense text reports a slightly inflated count. A fully accurate sentence boundary detector needs an abbreviation dictionary and numeric-context rules — real natural-language processing — so this tool trades a little edge-case accuracy for a fast implementation that's correct for the overwhelming majority of ordinary writing.</p>
+  <p>Paragraph counting splits on blank lines — one or more newlines with only whitespace between them, matched with <code>/\n\s*\n+/</code> — which matches how paragraphs are conventionally separated in plain text and markdown. Reading time then falls out of the word count directly: word count divided by 200 words per minute, rounded up to the nearest whole minute, with a floor of 1 minute so a short snippet never reports &ldquo;0 min.&rdquo; For more on where that 200 wpm baseline comes from, see our <a href="/articles/reading-time-and-readability.html">reading time and readability guide</a>.</p>
+
+  <h2>How keyword density is calculated</h2>
+  <p>The keyword density table works in a few clear steps. First, the input text is lowercased and every run of letters, digits, or apostrophes is extracted with <code>/[a-z0-9']+/g</code> — this strips out punctuation and whitespace as delimiters while keeping contractions like &ldquo;it's&rdquo; intact as single tokens. Next, single-character tokens are dropped, and every remaining word is checked against a built-in stopword list of roughly 150 common English function words — &ldquo;the,&rdquo; &ldquo;and,&rdquo; &ldquo;of,&rdquo; &ldquo;is,&rdquo; and so on — so the density table surfaces meaningful, topic-carrying words instead of being dominated by grammatical glue words that appear in every English sentence regardless of subject.</p>
+  <p>From there it's a straightforward frequency count: each word's percentage is its count divided by the total number of non-stopword tokens, multiplied by 100, and rounded to one decimal place. Results are sorted by count descending, with ties broken alphabetically, and the top ten are displayed. This is exactly the kind of on-page keyword density check SEO writers use to spot unintentional overuse of a term — and because it runs entirely client-side, you can paste in drafts you'd never want to upload to a third-party SEO tool.</p>
+
+  <h2>How the case converter splits words</h2>
+  <p>Converting between casing styles requires first breaking the input into individual words, which is trickier than it sounds once the input might already be in camelCase or PascalCase. The tool handles this with a two-step process: first, it inserts a space at every lowercase-to-uppercase transition (so <code>userAccountId</code> becomes <code>user Account Id</code> before further splitting), then it splits on any run of characters that isn't a letter, digit, or apostrophe. That combination correctly recovers word boundaries whether the input is already <code>snake_case</code>, <code>kebab-case</code>, space-separated prose, or camelCase — a single splitting function feeds all nine output styles (UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case, and aLtErNaTiNg CaSe). For where each of those styles is actually used, see our <a href="/articles/text-case-styles-explained.html">text case styles explainer</a>.</p>
+
+  <h2>The diff checker's LCS algorithm</h2>
+  <p>The diff checker is the most algorithmically interesting tool on this page, and it runs entirely without any external diff library. It compares two texts line by line using the classic longest common subsequence (LCS) approach: both inputs are split into arrays of lines, and a dynamic-programming table is built where each cell <code>dp[i][j]</code> holds the length of the longest sequence of lines common to both texts starting from line <code>i</code> in the original and line <code>j</code> in the changed version. The table is filled from the bottom-right corner backward — if the lines at positions <code>i</code> and <code>j</code> match, the cell inherits <code>dp[i+1][j+1] + 1</code>; if they don't, it takes whichever neighboring cell (right or down) represents the longer common subsequence.</p>
+  <p>Once the table is built, a second pass walks forward through it to reconstruct the diff: matching lines are marked unchanged and both pointers advance together; where lines differ, the algorithm follows whichever direction the table says holds the longer remaining common subsequence, marking a line removed (from the original) or added (from the changed version). This produces a minimal-edit diff — the smallest set of added/removed lines that explains the difference, which is what makes a diff readable instead of noisy.</p>
+  <p>This method has a known, deliberate trade-off: it's a line-based diff, not a word- or character-based one, and its time and memory cost scale with the product of the two texts' line counts (O(n×m)). For textarea-sized input — a paragraph to a few thousand lines — that's fast and unnoticeable, but it would slow down badly on a full novel-length manuscript or a multi-megabyte log file, a reasonable trade-off for a tool aimed at comparing drafts, code snippets, and config files rather than enormous documents.</p>
+
+  <h2>Why everything runs client-side</h2>
+  <p>Every function described above runs entirely in JavaScript inside your browser tab. Nothing you type into any of the four tools is ever sent to a server or stored anywhere outside your own machine — there's no backend at all, just static files. That's a deliberate choice: it means you can paste sensitive drafts, unpublished manuscripts, or proprietary code into the diff checker or word counter without a privacy trade-off, and the tools work identically offline once the page has loaded.</p>
+  <p>Curious how the underlying numbers apply to your own writing? Head back to the <a href="/">tools</a> and try them on a real draft, or read our companion guides on <a href="/articles/word-count-guide.html">word count standards</a> and <a href="/articles/reading-time-and-readability.html">reading time and readability</a>.</p>
+
+  <h2>Keep reading</h2>
+  <ul>
+    <li><a href="/articles/word-count-guide.html">Word count standards: how long should your writing be?</a></li>
+    <li><a href="/articles/text-case-styles-explained.html">Text case styles explained: camelCase, snake_case, and more</a></li>
+    <li><a href="/articles/reading-time-and-readability.html">Reading time and readability: how fast do people actually read?</a></li>
+    <li><a href="/">Try the tools</a></li>
+  </ul>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>© <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -9,6 +9,8 @@ A free, ad-supported bundle of text utilities, four tools in one page:
 
 Everything runs client-side — no backend, no build step, nothing uploaded. Deployed as static files on GitHub Pages.
 
+The `articles/` directory adds four original written guides (word count standards, text case styles, reading time & readability, and how the tools work) linked from the homepage's "Learn more" section — part of an AdSense content-depth round to give the site substantive text content beyond the tools themselves.
+
 ## Local development
 
 No build tooling required. Serve the folder with any static file server, e.g.:
@@ -23,6 +25,7 @@ Then open `http://localhost:8000`.
 
 ```
 index.html             Main app (all four tools, tabbed)
+articles/                Original written content (content-depth round)
 privacy.html            Privacy policy (required for ad networks)
 terms.html               Terms of use
 404.html                 Custom 404 page

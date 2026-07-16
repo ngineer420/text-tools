@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TextKit Pro — Free Word Counter, Case Converter, Lorem Ipsum &amp; Diff Checker</title>
+<meta name="description" content="Four free text tools in one page: a live word counter with keyword density, a case converter (camelCase, snake_case, and more), a Lorem Ipsum generator, and a line-by-line text diff checker. Runs entirely in your browser.">
+<link rel="canonical" href="https://textkitpro.com/">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="TextKit Pro — Free Word Counter, Case Converter, Lorem Ipsum &amp; Diff Checker">
+<meta property="og:description" content="Word counter, case converter, Lorem Ipsum generator, and text diff checker — four free tools in one page, no sign-up, nothing uploaded.">
+<meta property="og:url" content="https://textkitpro.com/">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TextKit Pro — Free Word Counter, Case Converter, Lorem Ipsum &amp; Diff Checker">
+<meta name="twitter:description" content="Word counter, case converter, Lorem Ipsum generator, and text diff checker — four free tools in one page, no sign-up, nothing uploaded.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "TextKit Pro",
+  "url": "https://textkitpro.com/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free browser-based text toolkit: word counter with keyword density, case converter, Lorem Ipsum generator, and line-based text diff checker."
+}
+</script>
+
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <h1>Free Text Tools for Writers &amp; Developers</h1>
+    <p>Count words, convert case, generate placeholder text, and diff two versions — instantly, free, no sign-up.</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>4 tools, 1 page</p>
+  </div>
+
+  <div role="tablist" class="tabbar" aria-label="Text tool">
+    <button role="tab" id="tab-wordcount" aria-controls="panel-wordcount" aria-selected="true" class="tab-btn" type="button">Word Counter</button>
+    <button role="tab" id="tab-case" aria-controls="panel-case" aria-selected="false" class="tab-btn" type="button" tabindex="-1">Case Converter</button>
+    <button role="tab" id="tab-lorem" aria-controls="panel-lorem" aria-selected="false" class="tab-btn" type="button" tabindex="-1">Lorem Ipsum</button>
+    <button role="tab" id="tab-diff" aria-controls="panel-diff" aria-selected="false" class="tab-btn" type="button" tabindex="-1">Diff Checker</button>
+  </div>
+
+  <!-- ===================== WORD COUNTER ===================== -->
+  <section role="tabpanel" id="panel-wordcount" aria-labelledby="tab-wordcount" class="tab-panel active">
+    <div class="panel">
+      <h2>Your text</h2>
+      <div class="field">
+        <label for="wc-input" class="visually-hidden">Text to analyze</label>
+        <textarea id="wc-input" rows="10" placeholder="Type or paste your text here..."></textarea>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top: 16px;">
+      <h2>Stats</h2>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="wc-words">0</div>
+          <div class="stat-label">Words</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="wc-chars-spaces">0</div>
+          <div class="stat-label">Characters</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="wc-chars-nospaces">0</div>
+          <div class="stat-label">Chars (no spaces)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="wc-sentences">0</div>
+          <div class="stat-label">Sentences</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="wc-paragraphs">0</div>
+          <div class="stat-label">Paragraphs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="wc-readtime">—</div>
+          <div class="stat-label">Reading time</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top: 16px;">
+      <h2>Keyword density (top 10)</h2>
+      <p class="density-empty" id="wc-density-empty">Type some text above to see the most frequent words.</p>
+      <table class="density-table">
+        <thead>
+          <tr><th>Word</th><th>Count</th><th>%</th></tr>
+        </thead>
+        <tbody id="wc-density-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================== CASE CONVERTER ===================== -->
+  <section role="tabpanel" id="panel-case" aria-labelledby="tab-case" class="tab-panel" hidden>
+    <div class="tool-grid tool-grid--split">
+      <div class="panel">
+        <h2>Input</h2>
+        <div class="field">
+          <label for="case-input" class="visually-hidden">Text to convert</label>
+          <textarea id="case-input" rows="10" placeholder="Type or paste your text here...">The Quick Brown Fox Jumps Over The Lazy Dog</textarea>
+        </div>
+        <div class="case-btn-grid">
+          <button type="button" class="case-btn" data-case="upper">UPPERCASE</button>
+          <button type="button" class="case-btn" data-case="lower">lowercase</button>
+          <button type="button" class="case-btn" data-case="title">Title Case</button>
+          <button type="button" class="case-btn" data-case="sentence">Sentence case</button>
+          <button type="button" class="case-btn" data-case="camel">camelCase</button>
+          <button type="button" class="case-btn" data-case="pascal">PascalCase</button>
+          <button type="button" class="case-btn" data-case="snake">snake_case</button>
+          <button type="button" class="case-btn" data-case="kebab">kebab-case</button>
+          <button type="button" class="case-btn" data-case="alternating">aLtErNaTiNg CaSe</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Result</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="case-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="case-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="case-output" class="visually-hidden">Converted text</label>
+          <textarea id="case-output" rows="10" readonly placeholder="Pick a conversion to see the result here."></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== LOREM IPSUM ===================== -->
+  <section role="tabpanel" id="panel-lorem" aria-labelledby="tab-lorem" class="tab-panel" hidden>
+    <div class="panel">
+      <h2>Generate</h2>
+      <div class="tool-grid tool-grid--split" style="align-items:end;">
+        <div class="field" style="margin-bottom:0;">
+          <label for="lorem-count">Count</label>
+          <input type="number" id="lorem-count" min="1" max="100" value="3">
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="lorem-unit">Unit</label>
+          <select id="lorem-unit">
+            <option value="paragraphs">Paragraphs</option>
+            <option value="sentences">Sentences</option>
+            <option value="words">Words</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button type="button" id="lorem-generate" class="primary">Generate</button>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <div class="output-toolbar">
+        <h2 style="margin:0;">Output</h2>
+        <div class="btn-row" style="margin-top:0;">
+          <div class="copy-flash-wrap">
+            <button type="button" id="lorem-copy" class="icon-btn">Copy</button>
+            <span class="copy-flash" id="lorem-copy-flash">Copied!</span>
+          </div>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label for="lorem-output" class="visually-hidden">Generated Lorem Ipsum</label>
+        <textarea id="lorem-output" rows="12" readonly></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DIFF CHECKER ===================== -->
+  <section role="tabpanel" id="panel-diff" aria-labelledby="tab-diff" class="tab-panel" hidden>
+    <div class="panel">
+      <h2>Compare two texts</h2>
+      <div class="diff-inputs">
+        <div class="field" style="margin-bottom:0;">
+          <label for="diff-original">Original</label>
+          <textarea id="diff-original" rows="10" placeholder="Paste the original text here..."></textarea>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="diff-changed">Changed</label>
+          <textarea id="diff-changed" rows="10" placeholder="Paste the changed text here..."></textarea>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button type="button" id="diff-compare" class="primary">Compare</button>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <h2>Result</h2>
+      <p class="diff-empty" id="diff-empty">Paste text into both boxes above and click Compare to see a line-by-line diff.</p>
+      <div class="diff-result" id="diff-result" style="display:none;"></div>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-top:0;">
+    <h2>About TextKit Pro</h2>
+    <p>TextKit Pro bundles four everyday text utilities into a single page: a <strong>word counter</strong> with live stats and keyword density analysis, a <strong>case converter</strong> covering nine common formats (including camelCase and snake_case for developers), a <strong>Lorem Ipsum generator</strong> for design mockups, and a <strong>text diff checker</strong> that highlights line-by-line changes between two versions.</p>
+    <p>Everything runs client-side in your browser — nothing you type or paste is ever uploaded to a server, so there's no wait and nothing to worry about privacy-wise.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>© <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/app.js"></script>
+</body>
+</html>

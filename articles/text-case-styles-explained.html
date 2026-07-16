@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text Case Styles Explained: camelCase, snake_case, and More — textkitpro.com</title>
+<meta name="description" content="A genuine explainer on camelCase, PascalCase, snake_case, kebab-case, Title Case, and Sentence case — where each is used and why consistent casing matters in code and writing.">
+<link rel="canonical" href="https://textkitpro.com/articles/text-case-styles-explained.html">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+  </div>
+</header>
+<main class="container-narrow">
+  <h1>Text Case Styles Explained: camelCase, snake_case, and More</h1>
+
+  <p>Every programming language, style guide, and URL scheme seems to have its own opinion about how words should be joined and capitalized. That's not an accident or a matter of taste — each casing convention solves a specific readability or parsing problem, and using the wrong one in the wrong place causes real bugs, broken links, and messy code reviews. Here's what each style actually is, where it's used, and why the distinctions matter more than they look.</p>
+
+  <h2>camelCase</h2>
+  <p>camelCase joins words with no separator and capitalizes every word except the first — <code>totalUserCount</code>, <code>getElementById</code>, <code>isValid</code>. The name comes from the humps the capital letters make in the middle of the word, like a camel's back. It's the dominant convention for variable and function names in JavaScript, Java, and C#, and it shows up constantly in JSON payloads returned by web APIs, since most of those APIs are written in camelCase-first languages. The reason it works well for identifiers is that it keeps names compact — no underscores or hyphens taking up horizontal space — while still marking word boundaries clearly enough to read at a glance.</p>
+
+  <h2>PascalCase</h2>
+  <p>PascalCase is camelCase's sibling, differing only in that the first word is also capitalized — <code>UserAccount</code>, <code>HttpRequest</code>, <code>MainWindow</code>. This small difference carries real meaning in many codebases: by convention, PascalCase marks types, classes, and constructors, while camelCase marks ordinary variables and functions. In React, for example, component names must be PascalCase (<code>UserProfile</code>) precisely so JSX can tell them apart from plain HTML tags, which are lowercase by convention. Mixing this up — naming a component <code>userProfile</code> — isn't just a style violation; in React it silently breaks, because JSX treats a lowercase tag name as a literal HTML element rather than your component.</p>
+
+  <h2>snake_case</h2>
+  <p>snake_case lowercases every word and joins them with underscores — <code>total_user_count</code>, <code>is_valid</code>, <code>get_element_by_id</code>. It's the standard for variable and function names in Python (formalized in the language's PEP 8 style guide) and Ruby, and it's also the near-universal convention for database column and table names in SQL, where case sensitivity varies unpredictably across database engines and underscores sidestep the ambiguity entirely. A close relative, <code>UPPER_SNAKE_CASE</code>, is the standard way to name constants and environment variables across nearly every language — <code>MAX_RETRIES</code>, <code>API_BASE_URL</code> — since the all-caps styling visually flags a value as fixed and non-reassignable well before you read what it does.</p>
+
+  <h2>kebab-case</h2>
+  <p>kebab-case lowercases every word and joins them with hyphens — <code>user-account</code>, <code>main-nav</code>, <code>is-valid</code>. It's named, somewhat jokingly, for resembling pieces of meat on a skewer. This is the standard for URL slugs and HTML/CSS class names, and the reason is concrete rather than aesthetic: browsers and most command-line tools treat underscores and letters as one continuous word for underlining purposes, but search engines historically parsed hyphens as genuine word boundaries in URLs far more reliably than underscores. Google has since said it treats underscores similarly in most contexts, but hyphenated URLs remain the entrenched convention, which is why you'll see <code>/articles/word-count-guide.html</code> rather than an underscored or camelCased path pretty much everywhere on the web, including this site. Command-line flags follow the same pattern for a similar reason — <code>--dry-run</code>, <code>--max-retries</code> — because shells generally don't allow bare hyphens inside identifiers the way they allow letters and digits, making kebab-case a safe, unambiguous choice for flag names typed directly into a terminal.</p>
+
+  <h2>Title Case and Sentence case</h2>
+  <p>Outside of code, two conventions dominate ordinary written English. Title Case capitalizes most words — typically all except short articles, conjunctions, and prepositions like &ldquo;a,&rdquo; &ldquo;the,&rdquo; and &ldquo;of&rdquo; — and is the traditional style for headlines, book titles, and formal document titles: &ldquo;The Lord of the Rings,&rdquo; &ldquo;A Brief History of Time.&rdquo; The exact rule for which small words stay lowercase varies between style guides (APA, Chicago, and AP each differ slightly), which is why Title Case tools, including the one on this page, generally use a simplified rule of capitalizing every word's first letter, since perfectly replicating every style guide's exception list would require knowing which one you're targeting.</p>
+  <p>Sentence case capitalizes only the first word of a sentence (and proper nouns), leaving the rest lowercase — the way ordinary prose is written, and increasingly the preferred style for user-interface labels and headings on modern websites and apps. Interface designers have shifted toward Sentence case for buttons and headings over the last decade partly because it reads faster — a wall of Title Case capitals forces the eye to process more visual noise per word — and partly because it feels less formal and closer to natural speech, which suits conversational app interfaces better than the more ceremonial tone Title Case carries.</p>
+
+  <h2>Why consistent casing actually matters</h2>
+  <p>In code, casing isn't just cosmetic — it's frequently load-bearing. JavaScript, Python, and most other mainstream languages treat <code>userName</code> and <code>UserName</code> as two completely different identifiers, so a single mismatched capital letter produces a &ldquo;not defined&rdquo; error that can take longer to spot than to fix, precisely because the two names look almost identical at a glance. Style guides like PEP 8 for Python and Airbnb's JavaScript style guide standardize casing per language specifically to eliminate this class of bug and to make codebases feel consistent across contributors, so a reader can predict whether something is a class, a constant, or an ordinary variable just from how it's capitalized, without having to check its declaration.</p>
+  <p>In writing, consistency matters for a quieter reason: readers unconsciously use capitalization as a cue for structure and emphasis. A document that randomly mixes Title Case headings with Sentence case ones, or that capitalizes some section titles and not others, reads as sloppier than the actual prose underneath — inconsistency signals a lack of editing pass, even when every sentence is otherwise well-written. Picking one convention and applying it uniformly is a small thing that measurably affects how polished a piece feels.</p>
+
+  <h2>Converting between styles</h2>
+  <p>Converting text between these formats by hand is tedious and error-prone, especially for PascalCase and camelCase, where you have to correctly detect word boundaries inside a string that may already mix cases. This site's <a href="/">case converter</a> handles all six styles above (plus UPPERCASE, lowercase, and aLtErNaTiNg CaSe) by first splitting your input into individual words — treating a lowercase-to-uppercase transition as a boundary, so it can correctly split an existing camelCase or PascalCase string back into words — and then rejoining them according to whichever style you pick. For the exact splitting and joining logic, see <a href="/articles/how-this-tool-works.html">how this tool works</a>.</p>
+
+  <h2>Keep reading</h2>
+  <ul>
+    <li><a href="/articles/word-count-guide.html">Word count standards: how long should your writing be?</a></li>
+    <li><a href="/articles/reading-time-and-readability.html">Reading time and readability: how fast do people actually read?</a></li>
+    <li><a href="/articles/how-this-tool-works.html">How TextKit Pro's tools work under the hood</a></li>
+    <li><a href="/">Use the case converter</a></li>
+  </ul>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>© <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

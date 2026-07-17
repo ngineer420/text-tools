@@ -376,31 +376,61 @@
   (function initTabs() {
     const tabIds = ["tab-wordcount", "tab-case", "tab-lorem", "tab-diff"];
     const tabs = tabIds.map((id) => document.getElementById(id)).filter(Boolean);
+    if (tabs.length === 0) return;
     const panels = {};
     tabs.forEach((t) => {
       panels[t.id] = document.getElementById(t.getAttribute("aria-controls"));
     });
 
-    function select(tab, { focus = true } = {}) {
+    // Only wire the single-page tab behaviour when the panels actually exist,
+    // i.e. on the homepage. Standalone tool pages carry the same menu but have
+    // no panels — there we let the real <a href> links navigate normally.
+    const isHomepage = tabs.every((t) => panels[t.id]);
+    if (!isHomepage) return;
+
+    function select(tab, { focus = false, push = false } = {}) {
       tabs.forEach((t) => {
         const active = t === tab;
         t.setAttribute("aria-selected", String(active));
         t.tabIndex = active ? 0 : -1;
+        t.classList.toggle("is-active", active);
+        if (active) t.setAttribute("aria-current", "page");
+        else t.removeAttribute("aria-current");
         panels[t.id].hidden = !active;
         panels[t.id].classList.toggle("active", active);
       });
+      if (push) history.pushState({ tool: tab.id }, "", tab.getAttribute("href"));
       if (focus) tab.focus();
     }
 
     tabs.forEach((tab, i) => {
-      tab.addEventListener("click", () => select(tab));
+      tab.addEventListener("click", (e) => {
+        // Let modified / middle clicks open the standalone page natively.
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        select(tab, { push: true });
+      });
       tab.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowRight") select(tabs[(i + 1) % tabs.length]);
-        if (e.key === "ArrowLeft") select(tabs[(i - 1 + tabs.length) % tabs.length]);
-        if (e.key === "Home") select(tabs[0]);
-        if (e.key === "End") select(tabs[tabs.length - 1]);
+        let target;
+        if (e.key === "ArrowRight") target = tabs[(i + 1) % tabs.length];
+        else if (e.key === "ArrowLeft") target = tabs[(i - 1 + tabs.length) % tabs.length];
+        else if (e.key === "Home") target = tabs[0];
+        else if (e.key === "End") target = tabs[tabs.length - 1];
+        if (!target) return;
+        e.preventDefault();
+        select(target, { focus: true, push: true });
       });
     });
+
+    window.addEventListener("popstate", (e) => {
+      const id = (e.state && e.state.tool) || "tab-wordcount";
+      select(document.getElementById(id) || tabs[0], { focus: false, push: false });
+    });
+
+    // Seed history state so back/forward can restore the default (Word Counter).
+    const current =
+      tabs.find((t) => t.getAttribute("aria-selected") === "true") || tabs[0];
+    history.replaceState({ tool: current.id }, "", location.pathname + location.search);
   })();
 
   const yearEl = document.getElementById("year");

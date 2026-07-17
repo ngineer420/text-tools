@@ -242,10 +242,15 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 64px; }
   color: var(--text-dim);
   font-size: 14.5px;
   font-weight: 600;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
 }
 .tab-btn:hover { color: var(--text); border-color: var(--border); }
-.tab-btn[aria-selected="true"] { color: var(--accent-dim); border-color: var(--accent); }
-:root[data-theme="dark"] .tab-btn[aria-selected="true"] { color: var(--accent); }
+.tab-btn[aria-selected="true"],
+.tab-btn[aria-current="page"] { color: var(--accent-dim); border-color: var(--accent); }
+:root[data-theme="dark"] .tab-btn[aria-selected="true"],
+:root[data-theme="dark"] .tab-btn[aria-current="page"] { color: var(--accent); }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 

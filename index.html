@@ -60,16 +60,16 @@
     <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>4 tools, 1 page</p>
   </div>
 
-  <div role="tablist" class="tabbar" aria-label="Text tool">
-    <button role="tab" id="tab-wordcount" aria-controls="panel-wordcount" aria-selected="true" class="tab-btn" type="button">Word Counter</button>
-    <button role="tab" id="tab-case" aria-controls="panel-case" aria-selected="false" class="tab-btn" type="button" tabindex="-1">Case Converter</button>
-    <button role="tab" id="tab-lorem" aria-controls="panel-lorem" aria-selected="false" class="tab-btn" type="button" tabindex="-1">Lorem Ipsum</button>
-    <button role="tab" id="tab-diff" aria-controls="panel-diff" aria-selected="false" class="tab-btn" type="button" tabindex="-1">Diff Checker</button>
-  </div>
+  <nav role="tablist" class="tabbar" aria-label="Text tools">
+    <a role="tab" id="tab-wordcount" href="/word-counter" aria-controls="panel-wordcount" aria-selected="true" aria-current="page" class="tab-btn is-active">Word Counter</a>
+    <a role="tab" id="tab-case" href="/case-converter" aria-controls="panel-case" aria-selected="false" class="tab-btn" tabindex="-1">Case Converter</a>
+    <a role="tab" id="tab-lorem" href="/lorem-ipsum-generator" aria-controls="panel-lorem" aria-selected="false" class="tab-btn" tabindex="-1">Lorem Ipsum</a>
+    <a role="tab" id="tab-diff" href="/diff-checker" aria-controls="panel-diff" aria-selected="false" class="tab-btn" tabindex="-1">Diff Checker</a>
+  </nav>
 
   <!-- ===================== WORD COUNTER ===================== -->
   <section role="tabpanel" id="panel-wordcount" aria-labelledby="tab-wordcount" class="tab-panel active">
-    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/word-counter.html">Open the full Word Counter page →</a></p>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/word-counter">Open the full Word Counter page →</a></p>
     <div class="panel">
       <h2>Your text</h2>
       <div class="field">
@@ -122,7 +122,7 @@
 
   <!-- ===================== CASE CONVERTER ===================== -->
   <section role="tabpanel" id="panel-case" aria-labelledby="tab-case" class="tab-panel" hidden>
-    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/case-converter.html">Open the full Case Converter page →</a></p>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/case-converter">Open the full Case Converter page →</a></p>
     <div class="tool-grid tool-grid--split">
       <div class="panel">
         <h2>Input</h2>
@@ -163,7 +163,7 @@
 
   <!-- ===================== LOREM IPSUM ===================== -->
   <section role="tabpanel" id="panel-lorem" aria-labelledby="tab-lorem" class="tab-panel" hidden>
-    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/lorem-ipsum-generator.html">Open the full Lorem Ipsum Generator page →</a></p>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/lorem-ipsum-generator">Open the full Lorem Ipsum Generator page →</a></p>
     <div class="panel">
       <h2>Generate</h2>
       <div class="tool-grid tool-grid--split" style="align-items:end;">
@@ -204,7 +204,7 @@
 
   <!-- ===================== DIFF CHECKER ===================== -->
   <section role="tabpanel" id="panel-diff" aria-labelledby="tab-diff" class="tab-panel" hidden>
-    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/diff-checker.html">Open the full Diff Checker page →</a></p>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/diff-checker">Open the full Diff Checker page →</a></p>
     <div class="panel">
       <h2>Compare two texts</h2>
       <div class="diff-inputs">

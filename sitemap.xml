@@ -6,6 +6,26 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://textkitpro.com/word-counter.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/case-converter.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/lorem-ipsum-generator.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/diff-checker.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://textkitpro.com/articles/word-count-guide.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

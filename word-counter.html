@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Word Counter — Live Word &amp; Character Count | TextKit Pro</title>
+<meta name="description" content="A free online word counter that counts words, characters, sentences, paragraphs, and reading time live as you type — plus keyword density. Runs 100% in your browser.">
+<link rel="canonical" href="https://textkitpro.com/word-counter.html">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free Word Counter — Live Word &amp; Character Count">
+<meta property="og:description" content="Count words, characters, sentences, paragraphs, reading time, and keyword density live as you type. Free and private — nothing is uploaded.">
+<meta property="og:url" content="https://textkitpro.com/word-counter.html">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Word Counter — Live Word &amp; Character Count">
+<meta name="twitter:description" content="Count words, characters, sentences, paragraphs, reading time, and keyword density live as you type.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Word Counter — TextKit Pro",
+  "url": "https://textkitpro.com/word-counter.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free browser-based word counter with live word, character, sentence, paragraph, reading-time and keyword-density stats."
+}
+</script>
+
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <h1>Word Counter</h1>
+    <p>Count words, characters, sentences, paragraphs, and reading time live as you type — with keyword density analysis.</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>Instant results</p>
+  </div>
+
+  <!-- ===================== WORD COUNTER ===================== -->
+  <div class="panel">
+    <h2>Your text</h2>
+    <div class="field">
+      <label for="wc-input" class="visually-hidden">Text to analyze</label>
+      <textarea id="wc-input" rows="10" placeholder="Type or paste your text here..."></textarea>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top: 16px;">
+    <h2>Stats</h2>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="wc-words">0</div>
+        <div class="stat-label">Words</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="wc-chars-spaces">0</div>
+        <div class="stat-label">Characters</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="wc-chars-nospaces">0</div>
+        <div class="stat-label">Chars (no spaces)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="wc-sentences">0</div>
+        <div class="stat-label">Sentences</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="wc-paragraphs">0</div>
+        <div class="stat-label">Paragraphs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="wc-readtime">—</div>
+        <div class="stat-label">Reading time</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top: 16px;">
+    <h2>Keyword density (top 10)</h2>
+    <p class="density-empty" id="wc-density-empty">Type some text above to see the most frequent words.</p>
+    <table class="density-table">
+      <thead>
+        <tr><th>Word</th><th>Count</th><th>%</th></tr>
+      </thead>
+      <tbody id="wc-density-body"></tbody>
+    </table>
+  </div>
+
+  <section class="container-narrow" style="padding-bottom:0;">
+    <h2 style="margin-top:0;">About the word counter</h2>
+    <p>This free <strong>word counter</strong> updates live as you type or paste. It reports your word count, character count (with and without spaces), sentences, paragraphs, and an estimated reading time, alongside a keyword-density table of your ten most frequent words. Everything is calculated client-side in your browser, so nothing you type is ever uploaded to a server.</p>
+  </section>
+
+  <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
+    <h2 style="margin-top:0;">More text tools</h2>
+    <ul>
+      <li><a href="/case-converter.html">Case Converter</a> — convert between UPPERCASE, camelCase, snake_case and more.</li>
+      <li><a href="/lorem-ipsum-generator.html">Lorem Ipsum Generator</a> — placeholder text for mockups.</li>
+      <li><a href="/diff-checker.html">Diff Checker</a> — compare two versions of text line by line.</li>
+      <li><a href="/">All four tools on one page</a></li>
+    </ul>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>© <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/app.js"></script>
+</body>
+</html>

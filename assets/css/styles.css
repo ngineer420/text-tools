@@ -1,6 +1,7 @@
 /* textkitpro.com — design system
-   Clean, minimal, sans-serif. Indigo/teal accent pair, system font stack
-   (zero external font requests). */
+   Editorial toolkit: sans-serif body with a serif display voice, indigo→teal
+   gradient accents, ruled-paper hero. System font stacks only (zero external
+   font requests). */
 
 :root {
   --bg: #f7f7fb;
@@ -24,6 +25,8 @@
   --radius: 8px;
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif;
+  --serif: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", Palatino,
+    "Times New Roman", serif;
   --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas,
     "Liberation Mono", monospace;
   --maxw: 1080px;
@@ -128,12 +131,14 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
   outline-offset: 2px;
 }
 button.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-contrast);
+  background: linear-gradient(135deg, var(--accent-dim), var(--accent) 60%, color-mix(in srgb, var(--accent) 55%, var(--accent-2)));
+  border-color: transparent;
+  color: #fff;
   font-weight: 600;
 }
-button.primary:hover { color: var(--accent-contrast); filter: brightness(1.08); }
+button.primary:hover { color: #fff; filter: brightness(1.06); box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--accent) 75%, transparent); }
+:root[data-theme="dark"] button.primary { color: var(--accent-contrast); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) button.primary { color: var(--accent-contrast); } }
 button:disabled { opacity: .45; cursor: not-allowed; }
 button.icon-btn { padding: 7px 12px; font-size: 13.5px; }
 
@@ -189,8 +194,8 @@ label { display: block; font-size: 12.5px; font-weight: 600; color: var(--text-d
   font-size: 10.5px;
   font-weight: 700;
   letter-spacing: .04em;
-  color: var(--accent-contrast);
-  background: var(--accent);
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-dim), var(--accent) 60%, var(--accent-2));
   padding: 2px 6px;
   border-radius: 5px;
   text-transform: uppercase;
@@ -201,20 +206,68 @@ label { display: block; font-size: 12.5px; font-weight: 600; color: var(--text-d
 main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 64px; }
 
 .container-narrow { max-width: 720px; margin: 0 auto; padding: 44px 20px 64px; }
-.container-narrow h1 { font-size: 24px; }
-.container-narrow h2 { font-size: 17px; margin-top: 32px; }
+.container-narrow h1 { font-family: var(--serif); font-size: 26px; }
+.container-narrow h2 { font-family: var(--serif); font-weight: 700; font-size: 20px; margin-top: 32px; letter-spacing: -0.01em; }
 .container-narrow p, .container-narrow li { color: var(--text-dim); }
 
 .faq-item { margin-bottom: 18px; }
 .faq-item h3 { font-size: 15px; margin: 0 0 6px; }
 .faq-item p { margin: 0; color: var(--text-dim); }
 
-/* ---------- hero ---------- */
-.hero { text-align: center; padding: 12px 0 30px; }
+/* ---------- hero (editorial) ---------- */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 26px 20px 30px;
+  margin-bottom: 4px;
+  border-radius: 16px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 7%, var(--bg-raised)), var(--bg-raised));
+  border: 1px solid var(--border-soft);
+}
+/* faint ruled-paper baseline texture */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    color-mix(in srgb, var(--accent) 10%, transparent) 31px,
+    color-mix(in srgb, var(--accent) 10%, transparent) 32px
+  );
+  opacity: .5;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, transparent, #000 40%, #000 70%, transparent);
+}
+.hero > * { position: relative; }
 .hero h1 {
-  font-size: clamp(24px, 4vw, 36px);
-  margin: 0 0 10px;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(28px, 4.5vw, 44px);
+  line-height: 1.1;
+  margin: 0 0 12px;
   letter-spacing: -0.01em;
+  background: linear-gradient(115deg, var(--accent-dim), var(--accent) 45%, var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+:root[data-theme="dark"] .hero h1 {
+  background: linear-gradient(115deg, var(--accent), #b3a9ff 45%, var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hero h1 {
+    background: linear-gradient(115deg, var(--accent), #b3a9ff 45%, var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 .hero p { color: var(--text-dim); margin: 0; font-size: 15px; }
 .hero .trust-line {
@@ -304,10 +357,19 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 64px; }
   .stat-grid { grid-template-columns: repeat(6, 1fr); }
 }
 .stat-card {
+  position: relative;
   background: var(--bg-inset);
   border: 1px solid var(--border-soft);
   border-radius: 10px;
   padding: 12px 14px;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
 }
 .stat-card .stat-value {
   font-size: 22px;
@@ -413,5 +475,5 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 64px; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
 
-.erabbit-mark { display: block; width: 10px; margin: 0 0 0 auto; line-height: 0; }
+.erabbit-mark { display: block; width: 10px; margin: 0 0 0 auto; line-height: 0; cursor: default; }
 .erabbit-mark img { display: block; width: 10px; height: 10px; }

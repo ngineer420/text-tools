@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text Statistics &amp; Readability Score — Free Online | TextKit Pro</title>
+<meta name="description" content="Analyse any text for reading time, speaking time, sentence and paragraph counts, syllables, unique words, the longest sentence and a Flesch readability score. Free and private.">
+<link rel="canonical" href="https://textkitpro.com/text-statistics">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Text Statistics &amp; Readability Score">
+<meta property="og:description" content="Reading time, sentence and paragraph counts, longest sentence and a Flesch readability score. Free, instant, entirely client-side.">
+<meta property="og:url" content="https://textkitpro.com/text-statistics">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Text Statistics &amp; Readability Score">
+<meta name="twitter:description" content="Reading time, sentence and paragraph counts, longest sentence and a Flesch readability score. Free, instant, entirely client-side.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Text Statistics — TextKit Pro",
+  "url": "https://textkitpro.com/text-statistics",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free browser-based text statistics tool with reading time, readability scoring, sentence analysis and the longest-sentence finder."
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7560786263587509" crossorigin="anonymous"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <h1>Text Statistics &amp; Readability</h1>
+    <p>Reading time, sentence and paragraph counts, the longest sentence, and a Flesch readability score.</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>Readability scoring</p>
+  </div>
+
+  <nav class="tabbar" aria-label="Text tools">
+    <a href="/word-counter" class="tab-btn">Word Counter</a>
+    <a href="/case-converter" class="tab-btn">Case Converter</a>
+    <a href="/lorem-ipsum-generator" class="tab-btn">Lorem Ipsum</a>
+    <a href="/diff-checker" class="tab-btn">Diff Checker</a>
+    <a href="/find-and-replace" class="tab-btn">Find & Replace</a>
+    <a href="/sort-and-dedupe-lines" class="tab-btn">Sort & Dedupe</a>
+    <a href="/markdown-to-html" class="tab-btn">Markdown ↔ HTML</a>
+    <a href="/csv-to-json" class="tab-btn">CSV ↔ JSON</a>
+    <a href="/slugify" class="tab-btn">Slugify</a>
+    <a href="/text-statistics" class="tab-btn is-active" aria-current="page">Text Statistics</a>
+  </nav>
+
+  <!-- ===================== TEXT STATISTICS ===================== -->
+  <section aria-label="Text Statistics tool">
+    <div class="panel">
+      <h2>Your text</h2>
+      <div class="field" style="margin-bottom:0;">
+        <label for="ts-input" class="visually-hidden">Text to analyse</label>
+        <textarea id="ts-input" rows="10" placeholder="Type or paste your text here...">Writing well is hard. The best way to improve is to read your work aloud and cut whatever makes you stumble. Long sentences, in particular, tend to hide the point rather than make it, and a reader who has to start again has already been lost once.</textarea>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <h2>Counts</h2>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-value" id="ts-words">0</div><div class="stat-label">Words</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-characters">0</div><div class="stat-label">Characters</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-charsnospaces">0</div><div class="stat-label">Chars (no spaces)</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-sentences">0</div><div class="stat-label">Sentences</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-paragraphs">0</div><div class="stat-label">Paragraphs</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-uniquewords">0</div><div class="stat-label">Unique words</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-syllables">0</div><div class="stat-label">Syllables</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-readingtime">—</div><div class="stat-label">Reading time</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-speakingtime">—</div><div class="stat-label">Speaking time</div></div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <h2>Readability</h2>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-value" id="ts-ease">—</div><div class="stat-label">Flesch Reading Ease</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-grade">—</div><div class="stat-label">Grade level</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-avgwords">—</div><div class="stat-label">Avg words / sentence</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-avgwordlength">—</div><div class="stat-label">Avg word length</div></div>
+      </div>
+      <p class="hint" id="ts-easelabel" role="status"></p>
+    </div>
+
+    <div class="panel" style="margin-top:16px;" id="ts-longest-wrap">
+      <h2>Longest sentence</h2>
+      <p class="callout" id="ts-longest"></p>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-bottom:0;">
+    <h2 style="margin-top:0;">About the statistics and readability score</h2>
+    <p>This tool reports <strong>reading time</strong> (at 200 words per minute) and <strong>speaking time</strong> (at a slower 130), alongside word, character, sentence, paragraph, syllable and unique-word counts. Sentence splitting is not a naive split on full stops: abbreviations such as <em>Dr.</em> and decimals such as <em>3.5</em> are stitched back together, so the sentence count and every average built on it stay honest. The <strong>Flesch Reading Ease</strong> score runs from roughly 0 to 100, where higher is easier — most general-audience writing aims for 60 or above — and the <strong>Flesch–Kincaid Grade Level</strong> expresses the same thing as a US school grade. Both formulas depend on a syllable count, which is an estimate produced by the standard vowel-group heuristic; every readability formula in common use is built on one. The <strong>longest sentence</strong> is called out separately, because it is usually the one worth rewriting.</p>
+  </section>
+
+  <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
+    <h2 style="margin-top:0;">More text tools</h2>
+    <ul>
+      <li><a href="/word-counter">Word Counter</a> — count words, characters, sentences and reading time live.</li>
+      <li><a href="/case-converter">Case Converter</a> — convert between UPPERCASE, camelCase, snake_case and more.</li>
+      <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a> — placeholder text for mockups.</li>
+      <li><a href="/diff-checker">Diff Checker</a> — compare two versions of text line by line.</li>
+      <li><a href="/find-and-replace">Find &amp; Replace</a> — search and replace with regular expressions and a live match count.</li>
+      <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a> — sort lines and strip duplicates in one pass.</li>
+      <li><a href="/markdown-to-html">Markdown ↔ HTML</a> — convert Markdown to HTML and back again.</li>
+      <li><a href="/csv-to-json">CSV ↔ JSON</a> — convert CSV to JSON and back, with delimiter detection.</li>
+      <li><a href="/slugify">Slugify</a> — turn a title into a clean, URL-safe slug.</li>
+      <li><a href="/">All ten tools on one page</a></li>
+    </ul>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>© <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/app.js"></script>
+<a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>
+</body>
+</html>

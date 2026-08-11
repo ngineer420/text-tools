@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Markdown to HTML Converter (and Back) — Free Online | TextKit Pro</title>
+<meta name="description" content="Convert Markdown to HTML and HTML to Markdown in your browser, with a live preview. Supports headings, lists, tables, links, code blocks and blockquotes. Nothing uploaded.">
+<link rel="canonical" href="https://textkitpro.com/markdown-to-html">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Markdown to HTML Converter (and Back)">
+<meta property="og:description" content="Convert Markdown to HTML and HTML back to Markdown with a live preview. Free, instant, and entirely client-side.">
+<meta property="og:url" content="https://textkitpro.com/markdown-to-html">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Markdown to HTML Converter (and Back)">
+<meta name="twitter:description" content="Convert Markdown to HTML and HTML back to Markdown with a live preview. Free, instant, and entirely client-side.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Markdown ↔ HTML Converter — TextKit Pro",
+  "url": "https://textkitpro.com/markdown-to-html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free browser-based Markdown to HTML converter that also converts HTML back to Markdown, with a live rendered preview."
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7560786263587509" crossorigin="anonymous"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <h1>Markdown ↔ HTML Converter</h1>
+    <p>Convert Markdown to clean HTML and HTML back to Markdown, with a live preview of the rendered result.</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>Both directions</p>
+  </div>
+
+  <nav class="tabbar" aria-label="Text tools">
+    <a href="/word-counter" class="tab-btn">Word Counter</a>
+    <a href="/case-converter" class="tab-btn">Case Converter</a>
+    <a href="/lorem-ipsum-generator" class="tab-btn">Lorem Ipsum</a>
+    <a href="/diff-checker" class="tab-btn">Diff Checker</a>
+    <a href="/find-and-replace" class="tab-btn">Find & Replace</a>
+    <a href="/sort-and-dedupe-lines" class="tab-btn">Sort & Dedupe</a>
+    <a href="/markdown-to-html" class="tab-btn is-active" aria-current="page">Markdown ↔ HTML</a>
+    <a href="/csv-to-json" class="tab-btn">CSV ↔ JSON</a>
+    <a href="/slugify" class="tab-btn">Slugify</a>
+    <a href="/text-statistics" class="tab-btn">Text Statistics</a>
+  </nav>
+
+  <!-- ===================== MARKDOWN ↔ HTML ===================== -->
+  <section aria-label="Markdown ↔ HTML tool">
+    <div class="panel">
+      <h2>Direction</h2>
+      <div class="case-btn-grid">
+        <button type="button" class="case-btn" data-md-dir="md2html" aria-pressed="true">Markdown → HTML</button>
+        <button type="button" class="case-btn" data-md-dir="html2md" aria-pressed="false">HTML → Markdown</button>
+        <button type="button" class="case-btn" id="md-swap">Swap ⇄</button>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2 id="md-input-label">Markdown</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="md-input" class="visually-hidden">Source to convert</label>
+          <textarea id="md-input" rows="14" placeholder="# Paste Markdown here"># Hello world
+
+Some **bold** text, some *italic*, and a bit of `inline code`.
+
+- First item
+- Second item
+
+&gt; A short quote.
+
+[Visit TextKit Pro](https://textkitpro.com/)</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;" id="md-output-label">HTML</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="md-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="md-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="md-output" class="visually-hidden">Converted output</label>
+          <textarea id="md-output" rows="14" readonly></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;" id="md-preview-wrap">
+      <h2>Preview</h2>
+      <div class="md-preview" id="md-preview"></div>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-bottom:0;">
+    <h2 style="margin-top:0;">About the Markdown converter</h2>
+    <p>Convert <strong>Markdown to HTML</strong> and <strong>HTML back to Markdown</strong>, both directions, in the browser. The Markdown side supports headings, bold and italic, inline code, fenced code blocks, links, blockquotes, ordered and unordered lists, and horizontal rules. The HTML side additionally understands tables, images and nested lists, and emits GitHub-flavoured pipe tables. Anything it does not recognise contributes its text and nothing else — you can lose formatting, never content. The converter escapes HTML before interpreting any Markdown syntax, so pasted content can never inject tags into the preview.</p>
+  </section>
+
+  <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
+    <h2 style="margin-top:0;">More text tools</h2>
+    <ul>
+      <li><a href="/word-counter">Word Counter</a> — count words, characters, sentences and reading time live.</li>
+      <li><a href="/case-converter">Case Converter</a> — convert between UPPERCASE, camelCase, snake_case and more.</li>
+      <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a> — placeholder text for mockups.</li>
+      <li><a href="/diff-checker">Diff Checker</a> — compare two versions of text line by line.</li>
+      <li><a href="/find-and-replace">Find &amp; Replace</a> — search and replace with regular expressions and a live match count.</li>
+      <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a> — sort lines and strip duplicates in one pass.</li>
+      <li><a href="/csv-to-json">CSV ↔ JSON</a> — convert CSV to JSON and back, with delimiter detection.</li>
+      <li><a href="/slugify">Slugify</a> — turn a title into a clean, URL-safe slug.</li>
+      <li><a href="/text-statistics">Text Statistics</a> — reading time, readability score and the longest sentence.</li>
+      <li><a href="/">All ten tools on one page</a></li>
+    </ul>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>© <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/markdown.js"></script>
+<script src="/assets/js/app.js"></script>
+<a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>
+</body>
+</html>

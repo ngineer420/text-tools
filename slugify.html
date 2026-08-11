@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slugify — Convert Text to a URL Slug Online | TextKit Pro</title>
+<meta name="description" content="Turn any title into a clean URL-safe slug, with transliteration for accented and special characters, a custom separator, length limit and bulk per-line mode. Free and private.">
+<link rel="canonical" href="https://textkitpro.com/slugify">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Slugify — Convert Text to a URL Slug">
+<meta property="og:description" content="Turn a title into a clean, URL-safe slug with transliteration for accented characters. Free, instant, nothing uploaded.">
+<meta property="og:url" content="https://textkitpro.com/slugify">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Slugify — Convert Text to a URL Slug">
+<meta name="twitter:description" content="Turn a title into a clean, URL-safe slug with transliteration for accented characters. Free, instant, nothing uploaded.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Slugify — TextKit Pro",
+  "url": "https://textkitpro.com/slugify",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free browser-based slug generator that converts text to URL-safe slugs with transliteration and bulk per-line output."
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7560786263587509" crossorigin="anonymous"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <h1>Slugify — Text to URL Slug</h1>
+    <p>Turn a title into a clean, URL-safe slug, with transliteration for accented characters and a bulk per-line mode.</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>Bulk mode</p>
+  </div>
+
+  <nav class="tabbar" aria-label="Text tools">
+    <a href="/word-counter" class="tab-btn">Word Counter</a>
+    <a href="/case-converter" class="tab-btn">Case Converter</a>
+    <a href="/lorem-ipsum-generator" class="tab-btn">Lorem Ipsum</a>
+    <a href="/diff-checker" class="tab-btn">Diff Checker</a>
+    <a href="/find-and-replace" class="tab-btn">Find & Replace</a>
+    <a href="/sort-and-dedupe-lines" class="tab-btn">Sort & Dedupe</a>
+    <a href="/markdown-to-html" class="tab-btn">Markdown ↔ HTML</a>
+    <a href="/csv-to-json" class="tab-btn">CSV ↔ JSON</a>
+    <a href="/slugify" class="tab-btn is-active" aria-current="page">Slugify</a>
+    <a href="/text-statistics" class="tab-btn">Text Statistics</a>
+  </nav>
+
+  <!-- ===================== SLUGIFY ===================== -->
+  <section aria-label="Slugify tool">
+    <div class="panel">
+      <h2>Options</h2>
+      <div class="tool-grid tool-grid--split">
+        <div class="field" style="margin-bottom:0;">
+          <label for="sl-separator">Separator</label>
+          <select id="sl-separator">
+            <option value="-">Hyphen&nbsp;&nbsp;-</option>
+            <option value="_">Underscore&nbsp;&nbsp;_</option>
+            <option value=".">Dot&nbsp;&nbsp;.</option>
+            <option value="none">None</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sl-maxlength">Max length (0 for no limit)</label>
+          <input type="number" id="sl-maxlength" min="0" max="500" value="0">
+        </div>
+      </div>
+      <div class="check-grid" style="margin-top:14px;">
+        <label class="check"><input type="checkbox" id="sl-lowercase" checked> Lowercase</label>
+        <label class="check"><input type="checkbox" id="sl-translit" checked> Transliterate accents</label>
+        <label class="check"><input type="checkbox" id="sl-unicode"> Keep Unicode letters</label>
+        <label class="check"><input type="checkbox" id="sl-perline"> One slug per line</label>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Text</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sl-input" class="visually-hidden">Text to slugify</label>
+          <textarea id="sl-input" rows="8" placeholder="My Great Blog Post Title!">Crème Brûlée &amp; Other Desserts — A Beginner's Guide</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Slug</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="sl-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="sl-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sl-output" class="visually-hidden">Generated slug</label>
+          <textarea id="sl-output" rows="8" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-bottom:0;">
+    <h2 style="margin-top:0;">About slugs</h2>
+    <p>A <strong>slug</strong> is the human-readable part of a URL — the <code>hello-world</code> in <code>example.com/blog/hello-world</code>. This tool lowercases the text, transliterates accented and special characters into their closest ASCII equivalents (<code>é</code> becomes <code>e</code>, <code>ß</code> becomes <code>ss</code>, <code>&amp;</code> becomes <code>and</code>), and replaces every remaining run of non-alphanumeric characters with a single separator, trimming any that end up at the edges. <strong>Keep Unicode</strong> leaves non-Latin scripts intact instead of deleting them, which is the only sane option for a Cyrillic, Greek or CJK title — modern browsers and search engines handle those URLs fine. <strong>Per-line mode</strong> turns a pasted list of titles into a list of slugs in one go.</p>
+  </section>
+
+  <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
+    <h2 style="margin-top:0;">More text tools</h2>
+    <ul>
+      <li><a href="/word-counter">Word Counter</a> — count words, characters, sentences and reading time live.</li>
+      <li><a href="/case-converter">Case Converter</a> — convert between UPPERCASE, camelCase, snake_case and more.</li>
+      <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a> — placeholder text for mockups.</li>
+      <li><a href="/diff-checker">Diff Checker</a> — compare two versions of text line by line.</li>
+      <li><a href="/find-and-replace">Find &amp; Replace</a> — search and replace with regular expressions and a live match count.</li>
+      <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a> — sort lines and strip duplicates in one pass.</li>
+      <li><a href="/markdown-to-html">Markdown ↔ HTML</a> — convert Markdown to HTML and back again.</li>
+      <li><a href="/csv-to-json">CSV ↔ JSON</a> — convert CSV to JSON and back, with delimiter detection.</li>
+      <li><a href="/text-statistics">Text Statistics</a> — reading time, readability score and the longest sentence.</li>
+      <li><a href="/">All ten tools on one page</a></li>
+    </ul>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>© <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/app.js"></script>
+<a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>
+</body>
+</html>

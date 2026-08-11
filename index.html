@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TextKit Pro — Free Word Counter, Case Converter, Lorem Ipsum &amp; Diff Checker</title>
-<meta name="description" content="Four free text tools in one page: a live word counter with keyword density, a case converter (camelCase, snake_case, and more), a Lorem Ipsum generator, and a line-by-line text diff checker. Runs entirely in your browser.">
+<title>TextKit Pro — 10 Free Text Tools: Word Counter, Find &amp; Replace, Markdown, CSV &amp; More</title>
+<meta name="description" content="Ten free text tools in one page: word counter, case converter, Lorem Ipsum, diff checker, regex find and replace, line sorting and dedupe, Markdown ↔ HTML, CSV ↔ JSON, slugify, and readability statistics. Runs entirely in your browser.">
 <link rel="canonical" href="https://textkitpro.com/">
 <meta name="theme-color" content="#14131d">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="TextKit Pro — Free Word Counter, Case Converter, Lorem Ipsum &amp; Diff Checker">
-<meta property="og:description" content="Word counter, case converter, Lorem Ipsum generator, and text diff checker — four free tools in one page, no sign-up, nothing uploaded.">
+<meta property="og:title" content="TextKit Pro — 10 Free Text Tools in One Page">
+<meta property="og:description" content="Word counter, find and replace, line sorting, Markdown ↔ HTML, CSV ↔ JSON, slugify and more — ten free text tools in one page, no sign-up, nothing uploaded.">
 <meta property="og:url" content="https://textkitpro.com/">
 <meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="TextKit Pro — Free Word Counter, Case Converter, Lorem Ipsum &amp; Diff Checker">
-<meta name="twitter:description" content="Word counter, case converter, Lorem Ipsum generator, and text diff checker — four free tools in one page, no sign-up, nothing uploaded.">
+<meta name="twitter:title" content="TextKit Pro — 10 Free Text Tools in One Page">
+<meta name="twitter:description" content="Word counter, find and replace, line sorting, Markdown ↔ HTML, CSV ↔ JSON, slugify and more — ten free text tools in one page, no sign-up, nothing uploaded.">
 <meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
 
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -56,8 +56,8 @@
 <main id="main">
   <div class="hero">
     <h1>Free Text Tools for Writers &amp; Developers</h1>
-    <p>Count words, convert case, generate placeholder text, and diff two versions — instantly, free, no sign-up.</p>
-    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>4 tools, 1 page</p>
+    <p>Count words, convert case, find and replace with regex, sort and dedupe lines, convert Markdown and CSV, and more — instantly, free, no sign-up.</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>10 tools, 1 page</p>
   </div>
 
   <nav role="tablist" class="tabbar" aria-label="Text tools">
@@ -65,6 +65,12 @@
     <a role="tab" id="tab-case" href="/case-converter" aria-controls="panel-case" aria-selected="false" class="tab-btn" tabindex="-1">Case Converter</a>
     <a role="tab" id="tab-lorem" href="/lorem-ipsum-generator" aria-controls="panel-lorem" aria-selected="false" class="tab-btn" tabindex="-1">Lorem Ipsum</a>
     <a role="tab" id="tab-diff" href="/diff-checker" aria-controls="panel-diff" aria-selected="false" class="tab-btn" tabindex="-1">Diff Checker</a>
+    <a role="tab" id="tab-find" href="/find-and-replace" aria-controls="panel-find" aria-selected="false" class="tab-btn" tabindex="-1">Find & Replace</a>
+    <a role="tab" id="tab-sort" href="/sort-and-dedupe-lines" aria-controls="panel-sort" aria-selected="false" class="tab-btn" tabindex="-1">Sort & Dedupe</a>
+    <a role="tab" id="tab-markdown" href="/markdown-to-html" aria-controls="panel-markdown" aria-selected="false" class="tab-btn" tabindex="-1">Markdown ↔ HTML</a>
+    <a role="tab" id="tab-csv" href="/csv-to-json" aria-controls="panel-csv" aria-selected="false" class="tab-btn" tabindex="-1">CSV ↔ JSON</a>
+    <a role="tab" id="tab-slug" href="/slugify" aria-controls="panel-slug" aria-selected="false" class="tab-btn" tabindex="-1">Slugify</a>
+    <a role="tab" id="tab-stats" href="/text-statistics" aria-controls="panel-stats" aria-selected="false" class="tab-btn" tabindex="-1">Text Statistics</a>
   </nav>
 
   <!-- ===================== WORD COUNTER ===================== -->
@@ -229,9 +235,340 @@
     </div>
   </section>
 
+  <!-- ===================== FIND & REPLACE ===================== -->
+  <section role="tabpanel" id="panel-find" aria-labelledby="tab-find" class="tab-panel" hidden>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/find-and-replace">Open the full Find and Replace page →</a></p>
+    <div class="panel">
+      <h2>Search</h2>
+      <div class="tool-grid tool-grid--split">
+        <div class="field" style="margin-bottom:0;">
+          <label for="fr-find">Find</label>
+          <input type="text" id="fr-find" placeholder="Text or pattern to find" value="fox">
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="fr-replace">Replace with</label>
+          <input type="text" id="fr-replace" placeholder="Replacement text" value="cat">
+        </div>
+      </div>
+      <div class="check-grid" style="margin-top:14px;">
+        <label class="check"><input type="checkbox" id="fr-regex"> Regular expression</label>
+        <label class="check"><input type="checkbox" id="fr-case"> Case sensitive</label>
+      </div>
+      <div class="error-banner" id="fr-error" role="alert"></div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <div class="output-toolbar">
+        <h2 style="margin:0;">Text</h2>
+        <span class="count-badge" id="fr-count" role="status">0 matches</span>
+      </div>
+      <div class="field">
+        <label for="fr-input" class="visually-hidden">Text to search</label>
+        <textarea id="fr-input" rows="10" placeholder="Type or paste your text here...">The quick brown fox jumps over the lazy dog. The fox is quick.</textarea>
+      </div>
+      <ul class="match-list" id="fr-groups"></ul>
+      <div class="btn-row">
+        <button type="button" id="fr-apply" class="primary">Replace all</button>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <div class="output-toolbar">
+        <h2 style="margin:0;">Result</h2>
+        <div class="btn-row" style="margin-top:0;">
+          <div class="copy-flash-wrap">
+              <button type="button" id="fr-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="fr-copy-flash">Copied!</span>
+            </div>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label for="fr-output" class="visually-hidden">Text after replacement</label>
+        <textarea id="fr-output" rows="8" readonly placeholder="Click Replace all to see the result here."></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SORT & DEDUPE ===================== -->
+  <section role="tabpanel" id="panel-sort" aria-labelledby="tab-sort" class="tab-panel" hidden>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/sort-and-dedupe-lines">Open the full Sort and Dedupe page →</a></p>
+    <div class="panel">
+      <h2>Options</h2>
+      <div class="tool-grid tool-grid--split">
+        <div class="field" style="margin-bottom:0;">
+          <label for="sd-mode">Sort by</label>
+          <select id="sd-mode">
+            <option value="alpha">Alphabetical</option>
+            <option value="natural">Natural (file2 before file10)</option>
+            <option value="numeric">Numeric</option>
+            <option value="length">Line length</option>
+            <option value="reverse">Reverse current order</option>
+            <option value="shuffle">Shuffle</option>
+            <option value="none">Do not reorder</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sd-direction">Direction</label>
+          <select id="sd-direction">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-top:14px;margin-bottom:0;">
+        <label for="sd-dedupe">Duplicates</label>
+        <select id="sd-dedupe">
+          <option value="none">Keep all lines</option>
+          <option value="first">Remove duplicates, keep the first</option>
+          <option value="last">Remove duplicates, keep the last</option>
+        </select>
+      </div>
+      <div class="check-grid" style="margin-top:14px;">
+        <label class="check"><input type="checkbox" id="sd-trim" checked> Trim whitespace</label>
+        <label class="check"><input type="checkbox" id="sd-blank" checked> Remove blank lines</label>
+        <label class="check"><input type="checkbox" id="sd-case"> Case sensitive</label>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Input</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sd-input" class="visually-hidden">Lines to sort</label>
+          <textarea id="sd-input" rows="12" placeholder="One item per line...">banana
+apple
+cherry
+apple
+date</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Result</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="sd-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="sd-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sd-output" class="visually-hidden">Sorted lines</label>
+          <textarea id="sd-output" rows="12" readonly></textarea>
+        </div>
+        <p class="hint" id="sd-stats" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== MARKDOWN ↔ HTML ===================== -->
+  <section role="tabpanel" id="panel-markdown" aria-labelledby="tab-markdown" class="tab-panel" hidden>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/markdown-to-html">Open the full Markdown ↔ HTML page →</a></p>
+    <div class="panel">
+      <h2>Direction</h2>
+      <div class="case-btn-grid">
+        <button type="button" class="case-btn" data-md-dir="md2html" aria-pressed="true">Markdown → HTML</button>
+        <button type="button" class="case-btn" data-md-dir="html2md" aria-pressed="false">HTML → Markdown</button>
+        <button type="button" class="case-btn" id="md-swap">Swap ⇄</button>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2 id="md-input-label">Markdown</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="md-input" class="visually-hidden">Source to convert</label>
+          <textarea id="md-input" rows="14" placeholder="# Paste Markdown here"># Hello world
+
+Some **bold** text, some *italic*, and a bit of `inline code`.
+
+- First item
+- Second item
+
+&gt; A short quote.
+
+[Visit TextKit Pro](https://textkitpro.com/)</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;" id="md-output-label">HTML</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="md-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="md-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="md-output" class="visually-hidden">Converted output</label>
+          <textarea id="md-output" rows="14" readonly></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;" id="md-preview-wrap">
+      <h2>Preview</h2>
+      <div class="md-preview" id="md-preview"></div>
+    </div>
+  </section>
+
+  <!-- ===================== CSV ↔ JSON ===================== -->
+  <section role="tabpanel" id="panel-csv" aria-labelledby="tab-csv" class="tab-panel" hidden>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/csv-to-json">Open the full CSV ↔ JSON page →</a></p>
+    <div class="panel">
+      <h2>Direction</h2>
+      <div class="case-btn-grid">
+        <button type="button" class="case-btn" data-cj-dir="csv2json" aria-pressed="true">CSV → JSON</button>
+        <button type="button" class="case-btn" data-cj-dir="json2csv" aria-pressed="false">JSON → CSV</button>
+      </div>
+      <div class="field" style="margin-top:14px;margin-bottom:0;" data-csv-only>
+        <label for="cj-delimiter">Delimiter</label>
+        <select id="cj-delimiter">
+          <option value="auto">Detect automatically</option>
+          <option value=",">Comma&nbsp;&nbsp;,</option>
+          <option value=";">Semicolon&nbsp;&nbsp;;</option>
+          <option value="\t">Tab</option>
+          <option value="|">Pipe&nbsp;&nbsp;|</option>
+        </select>
+      </div>
+      <div class="check-grid" style="margin-top:14px;">
+        <label class="check"><input type="checkbox" id="cj-header" checked> First row is a header</label>
+        <label class="check" data-csv-only><input type="checkbox" id="cj-coerce" checked> Convert numbers and booleans</label>
+      </div>
+      <p class="hint" id="cj-detected" role="status"></p>
+      <div class="error-banner" id="cj-error" role="alert"></div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2 id="cj-input-label">CSV</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="cj-input" class="visually-hidden">Data to convert</label>
+          <textarea id="cj-input" rows="12" placeholder="name,age&#10;Ada,36">name,role,years
+Ada Lovelace,Mathematician,36
+Alan Turing,Computer scientist,41
+Grace Hopper,Rear admiral,85</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;" id="cj-output-label">JSON</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="cj-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="cj-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="cj-output" class="visually-hidden">Converted output</label>
+          <textarea id="cj-output" rows="12" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLUGIFY ===================== -->
+  <section role="tabpanel" id="panel-slug" aria-labelledby="tab-slug" class="tab-panel" hidden>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/slugify">Open the full Slugify page →</a></p>
+    <div class="panel">
+      <h2>Options</h2>
+      <div class="tool-grid tool-grid--split">
+        <div class="field" style="margin-bottom:0;">
+          <label for="sl-separator">Separator</label>
+          <select id="sl-separator">
+            <option value="-">Hyphen&nbsp;&nbsp;-</option>
+            <option value="_">Underscore&nbsp;&nbsp;_</option>
+            <option value=".">Dot&nbsp;&nbsp;.</option>
+            <option value="none">None</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sl-maxlength">Max length (0 for no limit)</label>
+          <input type="number" id="sl-maxlength" min="0" max="500" value="0">
+        </div>
+      </div>
+      <div class="check-grid" style="margin-top:14px;">
+        <label class="check"><input type="checkbox" id="sl-lowercase" checked> Lowercase</label>
+        <label class="check"><input type="checkbox" id="sl-translit" checked> Transliterate accents</label>
+        <label class="check"><input type="checkbox" id="sl-unicode"> Keep Unicode letters</label>
+        <label class="check"><input type="checkbox" id="sl-perline"> One slug per line</label>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Text</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sl-input" class="visually-hidden">Text to slugify</label>
+          <textarea id="sl-input" rows="8" placeholder="My Great Blog Post Title!">Crème Brûlée &amp; Other Desserts — A Beginner's Guide</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Slug</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="sl-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="sl-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sl-output" class="visually-hidden">Generated slug</label>
+          <textarea id="sl-output" rows="8" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TEXT STATISTICS ===================== -->
+  <section role="tabpanel" id="panel-stats" aria-labelledby="tab-stats" class="tab-panel" hidden>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/text-statistics">Open the full Text Statistics page →</a></p>
+    <div class="panel">
+      <h2>Your text</h2>
+      <div class="field" style="margin-bottom:0;">
+        <label for="ts-input" class="visually-hidden">Text to analyse</label>
+        <textarea id="ts-input" rows="10" placeholder="Type or paste your text here...">Writing well is hard. The best way to improve is to read your work aloud and cut whatever makes you stumble. Long sentences, in particular, tend to hide the point rather than make it, and a reader who has to start again has already been lost once.</textarea>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <h2>Counts</h2>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-value" id="ts-words">0</div><div class="stat-label">Words</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-characters">0</div><div class="stat-label">Characters</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-charsnospaces">0</div><div class="stat-label">Chars (no spaces)</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-sentences">0</div><div class="stat-label">Sentences</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-paragraphs">0</div><div class="stat-label">Paragraphs</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-uniquewords">0</div><div class="stat-label">Unique words</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-syllables">0</div><div class="stat-label">Syllables</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-readingtime">—</div><div class="stat-label">Reading time</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-speakingtime">—</div><div class="stat-label">Speaking time</div></div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <h2>Readability</h2>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-value" id="ts-ease">—</div><div class="stat-label">Flesch Reading Ease</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-grade">—</div><div class="stat-label">Grade level</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-avgwords">—</div><div class="stat-label">Avg words / sentence</div></div>
+        <div class="stat-card"><div class="stat-value" id="ts-avgwordlength">—</div><div class="stat-label">Avg word length</div></div>
+      </div>
+      <p class="hint" id="ts-easelabel" role="status"></p>
+    </div>
+
+    <div class="panel" style="margin-top:16px;" id="ts-longest-wrap">
+      <h2>Longest sentence</h2>
+      <p class="callout" id="ts-longest"></p>
+    </div>
+  </section>
+
   <section class="container-narrow" style="padding-top:0;">
     <h2>About TextKit Pro</h2>
-    <p>TextKit Pro bundles four everyday text utilities into a single page: a <strong>word counter</strong> with live stats and keyword density analysis, a <strong>case converter</strong> covering nine common formats (including camelCase and snake_case for developers), a <strong>Lorem Ipsum generator</strong> for design mockups, and a <strong>text diff checker</strong> that highlights line-by-line changes between two versions.</p>
+    <p>TextKit Pro bundles ten everyday text utilities into a single page. For writing there is a <strong>word counter</strong> with keyword density, <strong>text statistics</strong> with a Flesch readability score, and a <strong>Lorem Ipsum generator</strong> for mockups. For editing there is <strong>find and replace</strong> with full regular-expression support, <strong>sort and dedupe lines</strong>, and a <strong>diff checker</strong> that highlights line-by-line changes. For developers there is a <strong>case converter</strong> covering nine formats, <strong>Markdown ↔ HTML</strong> and <strong>CSV ↔ JSON</strong> conversion in both directions, and a <strong>slugify</strong> tool that turns a title into a URL-safe slug.</p>
     <p>Everything runs client-side in your browser — nothing you type or paste is ever uploaded to a server, so there's no wait and nothing to worry about privacy-wise.</p>
   </section>
 
@@ -251,7 +588,7 @@
     </div>
     <div class="faq-item">
       <h3><a href="/articles/how-this-tool-works.html">How TextKit Pro's tools work under the hood</a></h3>
-      <p>The actual counting logic, keyword density calculation, and LCS-based diff algorithm behind this page's four tools.</p>
+      <p>The actual counting logic, keyword density calculation, and LCS-based diff algorithm behind this page's core tools.</p>
     </div>
   </section>
 </main>
@@ -266,6 +603,7 @@
   </div>
 </footer>
 
+<script src="/assets/js/markdown.js"></script>
 <script src="/assets/js/app.js"></script>
 <a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>
 </body>

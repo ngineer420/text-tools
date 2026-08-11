@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSV to JSON Converter (and Back) — Free Online | TextKit Pro</title>
+<meta name="description" content="Convert CSV to JSON and JSON to CSV in your browser, with automatic delimiter detection, a header-row toggle and optional type coercion. Nothing is uploaded.">
+<link rel="canonical" href="https://textkitpro.com/csv-to-json">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="CSV to JSON Converter (and Back)">
+<meta property="og:description" content="Convert CSV to JSON and back, with delimiter detection and a header-row toggle. Free, instant, entirely client-side.">
+<meta property="og:url" content="https://textkitpro.com/csv-to-json">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CSV to JSON Converter (and Back)">
+<meta name="twitter:description" content="Convert CSV to JSON and back, with delimiter detection and a header-row toggle. Free, instant, entirely client-side.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "CSV ↔ JSON Converter — TextKit Pro",
+  "url": "https://textkitpro.com/csv-to-json",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free browser-based CSV to JSON converter with automatic delimiter detection, header-row handling and JSON to CSV output."
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7560786263587509" crossorigin="anonymous"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <h1>CSV ↔ JSON Converter</h1>
+    <p>Convert CSV to JSON and JSON back to CSV, with automatic delimiter detection and a header-row toggle.</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>Auto delimiter detection</p>
+  </div>
+
+  <nav class="tabbar" aria-label="Text tools">
+    <a href="/word-counter" class="tab-btn">Word Counter</a>
+    <a href="/case-converter" class="tab-btn">Case Converter</a>
+    <a href="/lorem-ipsum-generator" class="tab-btn">Lorem Ipsum</a>
+    <a href="/diff-checker" class="tab-btn">Diff Checker</a>
+    <a href="/find-and-replace" class="tab-btn">Find & Replace</a>
+    <a href="/sort-and-dedupe-lines" class="tab-btn">Sort & Dedupe</a>
+    <a href="/markdown-to-html" class="tab-btn">Markdown ↔ HTML</a>
+    <a href="/csv-to-json" class="tab-btn is-active" aria-current="page">CSV ↔ JSON</a>
+    <a href="/slugify" class="tab-btn">Slugify</a>
+    <a href="/text-statistics" class="tab-btn">Text Statistics</a>
+  </nav>
+
+  <!-- ===================== CSV ↔ JSON ===================== -->
+  <section aria-label="CSV ↔ JSON tool">
+    <div class="panel">
+      <h2>Direction</h2>
+      <div class="case-btn-grid">
+        <button type="button" class="case-btn" data-cj-dir="csv2json" aria-pressed="true">CSV → JSON</button>
+        <button type="button" class="case-btn" data-cj-dir="json2csv" aria-pressed="false">JSON → CSV</button>
+      </div>
+      <div class="field" style="margin-top:14px;margin-bottom:0;" data-csv-only>
+        <label for="cj-delimiter">Delimiter</label>
+        <select id="cj-delimiter">
+          <option value="auto">Detect automatically</option>
+          <option value=",">Comma&nbsp;&nbsp;,</option>
+          <option value=";">Semicolon&nbsp;&nbsp;;</option>
+          <option value="\t">Tab</option>
+          <option value="|">Pipe&nbsp;&nbsp;|</option>
+        </select>
+      </div>
+      <div class="check-grid" style="margin-top:14px;">
+        <label class="check"><input type="checkbox" id="cj-header" checked> First row is a header</label>
+        <label class="check" data-csv-only><input type="checkbox" id="cj-coerce" checked> Convert numbers and booleans</label>
+      </div>
+      <p class="hint" id="cj-detected" role="status"></p>
+      <div class="error-banner" id="cj-error" role="alert"></div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2 id="cj-input-label">CSV</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="cj-input" class="visually-hidden">Data to convert</label>
+          <textarea id="cj-input" rows="12" placeholder="name,age&#10;Ada,36">name,role,years
+Ada Lovelace,Mathematician,36
+Alan Turing,Computer scientist,41
+Grace Hopper,Rear admiral,85</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;" id="cj-output-label">JSON</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="cj-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="cj-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="cj-output" class="visually-hidden">Converted output</label>
+          <textarea id="cj-output" rows="12" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-bottom:0;">
+    <h2 style="margin-top:0;">About the CSV converter</h2>
+    <p>Convert <strong>CSV to JSON</strong> and <strong>JSON to CSV</strong> without uploading a file anywhere. The parser follows RFC 4180: a doubled quote inside a quoted field is a literal quote, and a newline inside quotes is data rather than a row break. <strong>Delimiter detection</strong> picks between comma, semicolon, tab and pipe by looking for the candidate that gives the most consistent column count — raw frequency counting gets fooled by prose full of commas, consistency does not. Type coercion turns bare numbers and booleans into real JSON types while leaving lookalikes such as <code>007</code> and <code>+1 555</code> as strings. Going the other way, keys are unioned across every row, so a sparse record does not silently lose a column.</p>
+  </section>
+
+  <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
+    <h2 style="margin-top:0;">More text tools</h2>
+    <ul>
+      <li><a href="/word-counter">Word Counter</a> — count words, characters, sentences and reading time live.</li>
+      <li><a href="/case-converter">Case Converter</a> — convert between UPPERCASE, camelCase, snake_case and more.</li>
+      <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a> — placeholder text for mockups.</li>
+      <li><a href="/diff-checker">Diff Checker</a> — compare two versions of text line by line.</li>
+      <li><a href="/find-and-replace">Find &amp; Replace</a> — search and replace with regular expressions and a live match count.</li>
+      <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a> — sort lines and strip duplicates in one pass.</li>
+      <li><a href="/markdown-to-html">Markdown ↔ HTML</a> — convert Markdown to HTML and back again.</li>
+      <li><a href="/slugify">Slugify</a> — turn a title into a clean, URL-safe slug.</li>
+      <li><a href="/text-statistics">Text Statistics</a> — reading time, readability score and the longest sentence.</li>
+      <li><a href="/">All ten tools on one page</a></li>
+    </ul>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>© <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/app.js"></script>
+<a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>
+</body>
+</html>

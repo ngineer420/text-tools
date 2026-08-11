@@ -477,3 +477,95 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 64px; }
 
 .erabbit-mark { display: block; width: 10px; margin: 0 0 0 auto; line-height: 0; cursor: default; }
 .erabbit-mark img { display: block; width: 10px; height: 10px; }
+
+/* ---------- checkbox rows (find/replace, sort, slugify, csv) ---------- */
+/* Checkboxes must not stretch to 100% the way the text inputs above do, and
+   their label belongs beside the box rather than above it. */
+.check-grid { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-bottom: 0;
+  cursor: pointer;
+}
+.check input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ---------- inline status text ---------- */
+.hint { font-size: 12.5px; color: var(--text-faint); margin: 8px 0 0; }
+.count-badge {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent-dim);
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg-inset));
+  border-radius: 999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+:root[data-theme="dark"] .count-badge { color: var(--accent); }
+.error-banner {
+  display: none;
+  margin-top: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  background: var(--removed-bg);
+  color: var(--removed-text);
+  font-size: 13px;
+  border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent);
+}
+
+/* ---------- capture-group preview (find and replace) ---------- */
+.match-list { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 6px; }
+.match-list li {
+  font-size: 12.5px;
+  background: var(--bg-inset);
+  border-radius: 6px;
+  padding: 6px 9px;
+  overflow-wrap: anywhere;
+}
+.match-list code { font-family: var(--mono); font-size: 12px; }
+.match-groups { color: var(--text-faint); font-family: var(--mono); margin-left: 6px; }
+
+/* ---------- markdown preview ---------- */
+.md-preview {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  overflow-x: auto;
+}
+.md-preview > :first-child { margin-top: 0; }
+.md-preview > :last-child { margin-bottom: 0; }
+.md-preview pre {
+  background: var(--bg-raised);
+  border-radius: 6px;
+  padding: 10px 12px;
+  overflow-x: auto;
+}
+.md-preview code { font-family: var(--mono); font-size: 12.5px; }
+.md-preview blockquote {
+  border-left: 3px solid var(--accent);
+  margin: 10px 0;
+  padding-left: 12px;
+  color: var(--text-dim);
+}
+.md-preview table { border-collapse: collapse; }
+.md-preview th, .md-preview td { border: 1px solid var(--border-soft); padding: 5px 9px; }
+
+/* ---------- longest-sentence callout (text statistics) ---------- */
+.callout {
+  background: var(--bg-inset);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  color: var(--text-dim);
+}

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sort Lines &amp; Remove Duplicates Online — Free Tool | TextKit Pro</title>
+<meta name="description" content="Sort lines alphabetically, numerically, by length or in natural order, reverse or shuffle them, and remove duplicate lines keeping the first or last. Free and private.">
+<link rel="canonical" href="https://textkitpro.com/sort-and-dedupe-lines">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sort Lines &amp; Remove Duplicates Online">
+<meta property="og:description" content="Sort lines alphabetically, numerically or by length, and remove duplicates keeping the first or last occurrence. Free, instant, nothing uploaded.">
+<meta property="og:url" content="https://textkitpro.com/sort-and-dedupe-lines">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sort Lines &amp; Remove Duplicates Online">
+<meta name="twitter:description" content="Sort lines alphabetically, numerically or by length, and remove duplicates keeping the first or last occurrence. Free, instant, nothing uploaded.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Sort and Dedupe Lines — TextKit Pro",
+  "url": "https://textkitpro.com/sort-and-dedupe-lines",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free browser-based line sorter and duplicate remover with alphabetical, natural, numeric and length ordering."
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7560786263587509" crossorigin="anonymous"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <h1>Sort and Dedupe Lines</h1>
+    <p>Sort lines alphabetically, numerically, naturally or by length — and remove duplicates, keeping either the first or the last.</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>Instant results</p>
+  </div>
+
+  <nav class="tabbar" aria-label="Text tools">
+    <a href="/word-counter" class="tab-btn">Word Counter</a>
+    <a href="/case-converter" class="tab-btn">Case Converter</a>
+    <a href="/lorem-ipsum-generator" class="tab-btn">Lorem Ipsum</a>
+    <a href="/diff-checker" class="tab-btn">Diff Checker</a>
+    <a href="/find-and-replace" class="tab-btn">Find & Replace</a>
+    <a href="/sort-and-dedupe-lines" class="tab-btn is-active" aria-current="page">Sort & Dedupe</a>
+    <a href="/markdown-to-html" class="tab-btn">Markdown ↔ HTML</a>
+    <a href="/csv-to-json" class="tab-btn">CSV ↔ JSON</a>
+    <a href="/slugify" class="tab-btn">Slugify</a>
+    <a href="/text-statistics" class="tab-btn">Text Statistics</a>
+  </nav>
+
+  <!-- ===================== SORT & DEDUPE ===================== -->
+  <section aria-label="Sort and Dedupe tool">
+    <div class="panel">
+      <h2>Options</h2>
+      <div class="tool-grid tool-grid--split">
+        <div class="field" style="margin-bottom:0;">
+          <label for="sd-mode">Sort by</label>
+          <select id="sd-mode">
+            <option value="alpha">Alphabetical</option>
+            <option value="natural">Natural (file2 before file10)</option>
+            <option value="numeric">Numeric</option>
+            <option value="length">Line length</option>
+            <option value="reverse">Reverse current order</option>
+            <option value="shuffle">Shuffle</option>
+            <option value="none">Do not reorder</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sd-direction">Direction</label>
+          <select id="sd-direction">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-top:14px;margin-bottom:0;">
+        <label for="sd-dedupe">Duplicates</label>
+        <select id="sd-dedupe">
+          <option value="none">Keep all lines</option>
+          <option value="first">Remove duplicates, keep the first</option>
+          <option value="last">Remove duplicates, keep the last</option>
+        </select>
+      </div>
+      <div class="check-grid" style="margin-top:14px;">
+        <label class="check"><input type="checkbox" id="sd-trim" checked> Trim whitespace</label>
+        <label class="check"><input type="checkbox" id="sd-blank" checked> Remove blank lines</label>
+        <label class="check"><input type="checkbox" id="sd-case"> Case sensitive</label>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Input</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sd-input" class="visually-hidden">Lines to sort</label>
+          <textarea id="sd-input" rows="12" placeholder="One item per line...">banana
+apple
+cherry
+apple
+date</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Result</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="sd-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="sd-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="sd-output" class="visually-hidden">Sorted lines</label>
+          <textarea id="sd-output" rows="12" readonly></textarea>
+        </div>
+        <p class="hint" id="sd-stats" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-bottom:0;">
+    <h2 style="margin-top:0;">About sorting and deduplicating lines</h2>
+    <p>Paste a list and this tool will <strong>sort</strong> it and <strong>remove duplicate lines</strong> in one pass. Alphabetical order is the usual default; <strong>natural order</strong> is the one you actually want for filenames, because it puts <code>file2</code> before <code>file10</code> instead of after it. <strong>Numeric</strong> order reads the number at the start of each line and sends lines without one to the bottom rather than pretending they are zero. Deduplication can keep either the first or the last occurrence of each line — which matters when the later copy is the one carrying the data you want. Optional passes trim surrounding whitespace and drop blank lines before anything else runs.</p>
+  </section>
+
+  <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
+    <h2 style="margin-top:0;">More text tools</h2>
+    <ul>
+      <li><a href="/word-counter">Word Counter</a> — count words, characters, sentences and reading time live.</li>
+      <li><a href="/case-converter">Case Converter</a> — convert between UPPERCASE, camelCase, snake_case and more.</li>
+      <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a> — placeholder text for mockups.</li>
+      <li><a href="/diff-checker">Diff Checker</a> — compare two versions of text line by line.</li>
+      <li><a href="/find-and-replace">Find &amp; Replace</a> — search and replace with regular expressions and a live match count.</li>
+      <li><a href="/markdown-to-html">Markdown ↔ HTML</a> — convert Markdown to HTML and back again.</li>
+      <li><a href="/csv-to-json">CSV ↔ JSON</a> — convert CSV to JSON and back, with delimiter detection.</li>
+      <li><a href="/slugify">Slugify</a> — turn a title into a clean, URL-safe slug.</li>
+      <li><a href="/text-statistics">Text Statistics</a> — reading time, readability score and the longest sentence.</li>
+      <li><a href="/">All ten tools on one page</a></li>
+    </ul>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>© <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/app.js"></script>
+<a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>
+</body>
+</html>

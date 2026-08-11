@@ -26,6 +26,36 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://textkitpro.com/find-and-replace</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/sort-and-dedupe-lines</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/markdown-to-html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/csv-to-json</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/slugify</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/text-statistics</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://textkitpro.com/articles/word-count-guide.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

@@ -1164,104 +1164,160 @@
     });
   })();
 
-  /* --------------------------- tab strip ---------------------------------
-     The tool menu is one sideways-scrolling row (see .tabbar in styles.css).
-     Two jobs here: bring the current tool into view, since on a phone it is
-     usually off the right-hand end, and mark the edge that still has tabs
-     behind it. Runs on every page that carries the menu, including the
-     standalone tool pages that initTabs deliberately leaves alone. */
-
-  (function initTabStrip() {
-    const bar = document.querySelector(".tabbar");
+  /* ==================================================================== *
+   * toolbar v1 — the portfolio navigation pattern.                       *
+   * Spec: github.com/ngineer420/ngineer420.github.io/issues/13          *
+   *                                                                     *
+   * Copy this block verbatim into any site in the portfolio. It is pure *
+   * enhancement: with JS off, <details>/<summary> still discloses the   *
+   * sheet, the rail is still a native scroll container of real links,   *
+   * the edge fades are still CSS and the scrim is still CSS. Only the   *
+   * active-chip centring, Escape and click-outside are lost.            *
+   * ================================================================== */
+  function initToolbar() {
+    var bar = document.querySelector(".toolbar");
     if (!bar) return;
+    var rail = bar.querySelector(".tb-rail");
+    var menu = bar.querySelector("details.tb-menu");
 
-    function updateFades() {
-      const max = bar.scrollWidth - bar.clientWidth;
-      bar.classList.toggle("can-scroll-start", bar.scrollLeft > 1);
-      bar.classList.toggle("can-scroll-end", bar.scrollLeft < max - 1);
-    }
-
-    // Centre the active tab in the strip. Assigning scrollLeft rather than
-    // calling scrollIntoView, which would also scroll the document — on a
-    // narrow screen that drops the visitor below the header on arrival.
-    function revealActive() {
-      const active = bar.querySelector('[aria-current="page"]');
-      if (active) {
-        const centred = active.offsetLeft - (bar.clientWidth - active.offsetWidth) / 2;
-        bar.scrollLeft = Math.max(0, centred);
+    if (rail) {
+      // js-on hands the right-hand fade over to measurement. Until then the
+      // CSS keeps it on, so a JS-disabled visitor never gets a chip clipped
+      // mid-word with nothing to say there is more of the row.
+      rail.classList.add("js-on");
+      var fades = function () {
+        var max = rail.scrollWidth - rail.clientWidth;
+        rail.classList.toggle("can-l", rail.scrollLeft > 1);
+        rail.classList.toggle("can-r", rail.scrollLeft < max - 1);
+      };
+      // Assigning scrollLeft, never scrollIntoView: that also scrolls every
+      // ancestor and the document, which on a phone drops the visitor below
+      // the header on arrival.
+      var current = rail.querySelector("[aria-current]");
+      if (current) {
+        rail.scrollLeft = Math.max(
+          0,
+          current.offsetLeft - (rail.clientWidth - current.offsetWidth) / 2
+        );
       }
-      updateFades();
+      rail.addEventListener("scroll", fades, { passive: true });
+      window.addEventListener("resize", fades);
+      fades();
     }
 
-    bar.addEventListener("scroll", updateFades, { passive: true });
-    window.addEventListener("resize", updateFades);
-    revealActive();
-  })();
-
-  /* ------------------------------- tabs ---------------------------------- */
-
-  (function initTabs() {
-    const tabIds = [
-      "tab-wordcount", "tab-case", "tab-lorem", "tab-diff", "tab-find",
-      "tab-sort", "tab-markdown", "tab-csv", "tab-slug", "tab-stats",
-    ];
-    const tabs = tabIds.map((id) => document.getElementById(id)).filter(Boolean);
-    if (tabs.length === 0) return;
-    const panels = {};
-    tabs.forEach((t) => {
-      panels[t.id] = document.getElementById(t.getAttribute("aria-controls"));
-    });
-
-    // Only wire the single-page tab behaviour when the panels actually exist,
-    // i.e. on the homepage. Standalone tool pages carry the same menu but have
-    // no panels — there we let the real <a href> links navigate normally.
-    const isHomepage = tabs.every((t) => panels[t.id]);
-    if (!isHomepage) return;
-
-    function select(tab, { focus = false, push = false } = {}) {
-      tabs.forEach((t) => {
-        const active = t === tab;
-        t.setAttribute("aria-selected", String(active));
-        t.tabIndex = active ? 0 : -1;
-        t.classList.toggle("is-active", active);
-        if (active) t.setAttribute("aria-current", "page");
-        else t.removeAttribute("aria-current");
-        panels[t.id].hidden = !active;
-        panels[t.id].classList.toggle("active", active);
+    if (menu) {
+      // A disclosure, not a modal: focus is deliberately not trapped, Tab
+      // walks the links and straight out the other side.
+      window.addEventListener("keydown", function (e) {
+        if (e.key !== "Escape" || !menu.open) return;
+        menu.open = false;
+        var summary = menu.querySelector("summary");
+        if (summary) summary.focus();
       });
-      if (push) history.pushState({ tool: tab.id }, "", tab.getAttribute("href"));
-      if (focus) tab.focus();
+      document.addEventListener("click", function (e) {
+        if (menu.open && !menu.contains(e.target)) menu.open = false;
+      });
+    }
+  }
+
+  /* ---- homepage: the toolbar's own links switch the ten tool panels ----
+   *
+   * The homepage carries all ten tools on one page. The toolbar is the only
+   * nav layer, so its links do double duty here: a plain left click swaps the
+   * panel in place and pushes that tool's real address, exactly as the old tab
+   * strip did, while a modified click, a JS-disabled visitor and every crawler
+   * get ordinary navigation to the standalone page, which is the same tool.
+   */
+  function initHomePanels() {
+    var bar = document.querySelector(".toolbar");
+    if (!bar) return;
+    var PANELS = {
+      "/word-counter": "panel-wordcount",
+      "/case-converter": "panel-case",
+      "/lorem-ipsum-generator": "panel-lorem",
+      "/diff-checker": "panel-diff",
+      "/find-and-replace": "panel-find",
+      "/sort-and-dedupe-lines": "panel-sort",
+      "/markdown-to-html": "panel-markdown",
+      "/csv-to-json": "panel-csv",
+      "/slugify": "panel-slug",
+      "/text-statistics": "panel-stats",
+    };
+    var keys = Object.keys(PANELS);
+    var panels = {};
+    for (var i = 0; i < keys.length; i++) {
+      var el = document.getElementById(PANELS[keys[i]]);
+      if (!el) return; // a standalone tool page: no panels to switch
+      panels[keys[i]] = el;
+    }
+    var links = Array.prototype.slice.call(bar.querySelectorAll("a[href]"));
+    var rail = bar.querySelector(".tb-rail");
+    var menu = bar.querySelector("details.tb-menu");
+
+    function pathOf(a) {
+      return (a.getAttribute("href") || "").replace(/\.html$/, "").replace(/\/$/, "");
     }
 
-    tabs.forEach((tab, i) => {
-      tab.addEventListener("click", (e) => {
-        // Let modified / middle clicks open the standalone page natively.
+    function show(path, moveFocus) {
+      keys.forEach(function (k) {
+        var on = k === path;
+        panels[k].hidden = !on;
+        panels[k].classList.toggle("active", on);
+      });
+      links.forEach(function (a) {
+        if (pathOf(a) === path) a.setAttribute("aria-current", "page");
+        else a.removeAttribute("aria-current");
+      });
+      if (rail) {
+        var cur = rail.querySelector("[aria-current]");
+        if (cur) {
+          rail.scrollLeft = Math.max(
+            0,
+            cur.offsetLeft - (rail.clientWidth - cur.offsetWidth) / 2
+          );
+        }
+      }
+      if (moveFocus) panels[path].focus();
+    }
+
+    links.forEach(function (a) {
+      var path = pathOf(a);
+      if (!panels[path]) return;
+      a.addEventListener("click", function (e) {
+        // Modified and non-primary clicks fall through to real navigation so
+        // middle-click and cmd/ctrl-click still open the standalone page.
         if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
         e.preventDefault();
-        select(tab, { push: true });
-      });
-      tab.addEventListener("keydown", (e) => {
-        let target;
-        if (e.key === "ArrowRight") target = tabs[(i + 1) % tabs.length];
-        else if (e.key === "ArrowLeft") target = tabs[(i - 1 + tabs.length) % tabs.length];
-        else if (e.key === "Home") target = tabs[0];
-        else if (e.key === "End") target = tabs[tabs.length - 1];
-        if (!target) return;
-        e.preventDefault();
-        select(target, { focus: true, push: true });
+        if (menu) menu.open = false;
+        show(path, true);
+        try {
+          history.pushState({ tool: path }, "", path);
+        } catch (err) {
+          /* history unavailable — the anchor is still a real link */
+        }
       });
     });
 
-    window.addEventListener("popstate", (e) => {
-      const id = (e.state && e.state.tool) || "tab-wordcount";
-      select(document.getElementById(id) || tabs[0], { focus: false, push: false });
+    window.addEventListener("popstate", function (e) {
+      var path = (e.state && e.state.tool) || null;
+      if (!path || !panels[path]) {
+        path = location.pathname.replace(/\.html$/, "").replace(/\/$/, "");
+      }
+      show(panels[path] ? path : keys[0], false);
     });
 
-    // Seed history state so back/forward can restore the default (Word Counter).
-    const current =
-      tabs.find((t) => t.getAttribute("aria-selected") === "true") || tabs[0];
-    history.replaceState({ tool: current.id }, "", location.pathname + location.search);
-  })();
+    // Default panel = the Word Counter, this site's most-visited tool. Seed a
+    // baseline history entry so Back after switching returns here cleanly.
+    show(keys[0], false);
+    try {
+      history.replaceState({ tool: keys[0] }, "", location.pathname + location.search);
+    } catch (err) {
+      /* ignore */
+    }
+  }
+
+  initToolbar();
+  initHomePanels();
 
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();

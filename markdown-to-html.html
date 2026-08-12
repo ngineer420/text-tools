@@ -53,25 +53,57 @@
   </div>
 </header>
 
+<!-- nav:start -->
+<nav class="toolbar" aria-label="Tools">
+  <details class="tb-menu">
+    <summary class="tb-trigger" aria-label="All 10 tools">
+      <span class="tb-glyph" aria-hidden="true">&#9636;</span>
+      <span class="tb-label">All 10<span class="tb-label-long"> tools</span></span>
+    </summary>
+    <div class="tb-sheet">
+      <div class="tb-sheet-cols">
+        <p class="tb-grouplabel" id="tb-g1">Count &amp; compare</p>
+        <ul aria-labelledby="tb-g1">
+          <li><a href="/word-counter">Word Counter</a></li>
+          <li><a href="/diff-checker">Diff Checker</a></li>
+          <li><a href="/text-statistics">Text Statistics</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g2">Clean up text</p>
+        <ul aria-labelledby="tb-g2">
+          <li><a href="/case-converter">Case Converter</a></li>
+          <li><a href="/find-and-replace">Find and Replace</a></li>
+          <li><a href="/sort-and-dedupe-lines">Sort and Dedupe Lines</a></li>
+          <li><a href="/slugify">Slugify</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g3">Convert &amp; generate</p>
+        <ul aria-labelledby="tb-g3">
+          <li><a href="/lorem-ipsum-generator">Lorem Ipsum Generator</a></li>
+          <li><a href="/markdown-to-html" aria-current="page">Markdown ↔ HTML Converter</a></li>
+          <li><a href="/csv-to-json">CSV ↔ JSON Converter</a></li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <div class="tb-scrim"></div>
+  <ul class="tb-rail">
+    <li><a href="/word-counter">Word Counter</a></li>
+    <li><a href="/case-converter">Case Converter</a></li>
+    <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a></li>
+    <li><a href="/diff-checker">Diff Checker</a></li>
+    <li><a href="/find-and-replace">Find &amp; Replace</a></li>
+    <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a></li>
+    <li><a href="/markdown-to-html" aria-current="page">Markdown ↔ HTML</a></li>
+    <li><a href="/csv-to-json">CSV ↔ JSON</a></li>
+  </ul>
+</nav>
+<!-- nav:end -->
+
 <main id="main">
   <div class="hero">
     <h1>Markdown ↔ HTML Converter</h1>
     <p>Convert Markdown to clean HTML and HTML back to Markdown, with a live preview of the rendered result.</p>
     <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>Both directions</p>
   </div>
-
-  <nav class="tabbar" aria-label="Text tools">
-    <a href="/word-counter" class="tab-btn">Word Counter</a>
-    <a href="/case-converter" class="tab-btn">Case Converter</a>
-    <a href="/lorem-ipsum-generator" class="tab-btn">Lorem Ipsum</a>
-    <a href="/diff-checker" class="tab-btn">Diff Checker</a>
-    <a href="/find-and-replace" class="tab-btn">Find & Replace</a>
-    <a href="/sort-and-dedupe-lines" class="tab-btn">Sort & Dedupe</a>
-    <a href="/markdown-to-html" class="tab-btn is-active" aria-current="page">Markdown ↔ HTML</a>
-    <a href="/csv-to-json" class="tab-btn">CSV ↔ JSON</a>
-    <a href="/slugify" class="tab-btn">Slugify</a>
-    <a href="/text-statistics" class="tab-btn">Text Statistics</a>
-  </nav>
 
   <!-- ===================== MARKDOWN ↔ HTML ===================== -->
   <section aria-label="Markdown ↔ HTML tool">
@@ -132,16 +164,9 @@ Some **bold** text, some *italic*, and a bit of `inline code`.
   <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
     <h2 style="margin-top:0;">More text tools</h2>
     <ul>
-      <li><a href="/word-counter">Word Counter</a> — count words, characters, sentences and reading time live.</li>
-      <li><a href="/case-converter">Case Converter</a> — convert between UPPERCASE, camelCase, snake_case and more.</li>
-      <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a> — placeholder text for mockups.</li>
-      <li><a href="/diff-checker">Diff Checker</a> — compare two versions of text line by line.</li>
-      <li><a href="/find-and-replace">Find &amp; Replace</a> — search and replace with regular expressions and a live match count.</li>
-      <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a> — sort lines and strip duplicates in one pass.</li>
       <li><a href="/csv-to-json">CSV ↔ JSON</a> — convert CSV to JSON and back, with delimiter detection.</li>
+      <li><a href="/word-counter">Word Counter</a> — count words, characters, sentences and reading time live.</li>
       <li><a href="/slugify">Slugify</a> — turn a title into a clean, URL-safe slug.</li>
-      <li><a href="/text-statistics">Text Statistics</a> — reading time, readability score and the longest sentence.</li>
-      <li><a href="/">All ten tools on one page</a></li>
     </ul>
   </nav>
 </main>

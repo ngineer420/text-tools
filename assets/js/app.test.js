@@ -42,6 +42,10 @@ const {
   formatDuration,
   decodeEntities,
   htmlToMarkdown,
+  removeLineBreaks,
+  reverseText,
+  splitGraphemes,
+  splitGraphemesFallback,
 } = require("./app.js");
 
 const { renderMarkdown } = require("./markdown.js");
@@ -429,4 +433,120 @@ test("round trip is stable on a second pass", () => {
   const once = htmlToMarkdown(renderMarkdown(doc, { shiftHeadings: false }));
   const twice = htmlToMarkdown(renderMarkdown(once, { shiftHeadings: false }));
   assert.equal(once, twice);
+});
+
+/* --------------------------- remove line breaks --------------------------- */
+
+test("removeLineBreaks joins everything onto one line", () => {
+  const r = removeLineBreaks("one\ntwo\nthree", { mode: "join", replaceWith: "space" });
+  assert.equal(r.text, "one two three");
+  assert.equal(r.stats.linesBefore, 3);
+  assert.equal(r.stats.linesAfter, 1);
+  assert.equal(r.stats.breaksRemoved, 2);
+});
+
+test("removeLineBreaks normalises CRLF and lone CR before joining", () => {
+  assert.equal(removeLineBreaks("one\r\ntwo\rthree", { mode: "join" }).text, "one two three");
+  assert.equal(removeLineBreaks("a\r\nb", { mode: "blank" }).text, "a\nb");
+});
+
+test("removeLineBreaks unwrap keeps the blank line between paragraphs", () => {
+  const text = "The quick\nbrown fox\n\njumps over\nthe lazy dog";
+  assert.equal(
+    removeLineBreaks(text, { mode: "unwrap" }).text,
+    "The quick brown fox\n\njumps over the lazy dog"
+  );
+});
+
+test("removeLineBreaks unwrap collapses runs of blank lines to one break", () => {
+  assert.equal(removeLineBreaks("a\n\n\n\nb", { mode: "unwrap" }).text, "a\n\nb");
+});
+
+test("removeLineBreaks blank mode removes blank lines and nothing else", () => {
+  const r = removeLineBreaks("a\n\n  \nb\n", { mode: "blank" });
+  assert.equal(r.text, "a\nb");
+  assert.equal(r.stats.breaksRemoved, 3);
+});
+
+test("removeLineBreaks replacement character", () => {
+  assert.equal(removeLineBreaks("a\nb", { mode: "join", replaceWith: "comma" }).text, "a, b");
+  assert.equal(removeLineBreaks("a\nb", { mode: "join", replaceWith: "none" }).text, "ab");
+  // An unknown value falls back to a space rather than silently deleting text.
+  assert.equal(removeLineBreaks("a\nb", { mode: "join", replaceWith: "nope" }).text, "a b");
+});
+
+test("removeLineBreaks does not double a separator the line already has", () => {
+  assert.equal(removeLineBreaks("a,\nb", { mode: "join", replaceWith: "comma" }).text, "a, b");
+  assert.equal(removeLineBreaks("a \n b", { mode: "join", replaceWith: "space" }).text, "a b");
+});
+
+test("removeLineBreaks joining with nothing is literal", () => {
+  assert.equal(
+    removeLineBreaks("d41d8cd98f\n00b204e980\n9998ecf842", { mode: "join", replaceWith: "none" }).text,
+    "d41d8cd98f00b204e9809998ecf842"
+  );
+});
+
+test("removeLineBreaks cleanup passes", () => {
+  assert.equal(
+    removeLineBreaks("a\t\tb", { mode: "blank", tabsToSpaces: true, collapseSpaces: true }).text,
+    "a b"
+  );
+  assert.equal(removeLineBreaks("  a  \n  b  ", { mode: "blank", trimLines: true }).text, "a\nb");
+  // Tabs survive when the box is off.
+  assert.equal(removeLineBreaks("a\tb", { mode: "blank" }).text, "a\tb");
+});
+
+test("removeLineBreaks reports the character delta", () => {
+  const r = removeLineBreaks("one\ntwo", { mode: "join", replaceWith: "none" });
+  assert.equal(r.stats.charactersBefore, 7);
+  assert.equal(r.stats.charactersAfter, 6);
+  assert.equal(r.stats.delta, -1);
+});
+
+test("removeLineBreaks handles empty input", () => {
+  const r = removeLineBreaks("", { mode: "join" });
+  assert.equal(r.text, "");
+  assert.equal(r.stats.linesBefore, 0);
+  assert.equal(r.stats.breaksRemoved, 0);
+});
+
+/* ------------------------------- reverse text ----------------------------- */
+
+test("reverseText by character", () => {
+  assert.equal(reverseText("stressed", "characters"), "desserts");
+  assert.equal(reverseText("", "characters"), "");
+});
+
+test("reverseText by character is grapheme-safe", () => {
+  // Surrogate pairs, combining marks and ZWJ sequences come back intact.
+  assert.equal(reverseText("ab👍", "characters"), "👍ba");
+  assert.equal(reverseText("café", "characters"), "éfac");
+  assert.equal(reverseText("x👨‍👩‍👧y", "characters"), "y👨‍👩‍👧x");
+  assert.equal(reverseText("🇬🇧!", "characters"), "!🇬🇧");
+});
+
+test("reverseText by character reverses each line in place", () => {
+  assert.equal(reverseText("ab\ncd", "characters"), "ba\ndc");
+});
+
+test("reverseText by word keeps indentation where it was", () => {
+  assert.equal(reverseText("the quick brown fox", "words"), "fox brown quick the");
+  assert.equal(reverseText("  a b c", "words"), "  c b a");
+  assert.equal(reverseText("one two\nthree four", "words"), "two one\nfour three");
+  assert.equal(reverseText("   ", "words"), "   ");
+});
+
+test("reverseText by line", () => {
+  assert.equal(reverseText("one\ntwo\nthree", "lines"), "three\ntwo\none");
+  assert.equal(reverseText("one\r\ntwo", "lines"), "two\none");
+});
+
+test("splitGraphemes agrees with the no-Intl.Segmenter fallback", () => {
+  const samples = ["stressed", "ab👍", "café", "x👨‍👩‍👧y", "🇬🇧!", "1⃣"];
+  for (const s of samples) {
+    assert.deepEqual(splitGraphemesFallback(s), splitGraphemes(s), s);
+  }
+  assert.deepEqual(splitGraphemes(""), []);
+  assert.deepEqual(splitGraphemesFallback("👍").length, 1);
 });

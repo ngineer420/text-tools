@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TextKit Pro — 10 Free Text Tools: Word Counter, Find &amp; Replace, Markdown, CSV &amp; More</title>
-<meta name="description" content="Ten free text tools in one page: word counter, case converter, Lorem Ipsum, diff checker, regex find and replace, line sorting and dedupe, Markdown ↔ HTML, CSV ↔ JSON, slugify, and readability statistics. Runs entirely in your browser.">
+<title>TextKit Pro — 12 Free Text Tools: Word Counter, Remove Line Breaks, Find &amp; Replace &amp; More</title>
+<meta name="description" content="Twelve free text tools in one page: word counter, remove line breaks, case converter, Lorem Ipsum, diff checker, regex find and replace, line sorting and dedupe, Markdown ↔ HTML, CSV ↔ JSON, slugify, reverse text and readability statistics. Runs entirely in your browser.">
 <link rel="canonical" href="https://textkitpro.com/">
 <meta name="theme-color" content="#14131d">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="TextKit Pro — 10 Free Text Tools in One Page">
-<meta property="og:description" content="Word counter, find and replace, line sorting, Markdown ↔ HTML, CSV ↔ JSON, slugify and more — ten free text tools in one page, no sign-up, nothing uploaded.">
+<meta property="og:title" content="TextKit Pro — 12 Free Text Tools in One Page">
+<meta property="og:description" content="Word counter, find and replace, line sorting, Markdown ↔ HTML, CSV ↔ JSON, slugify and more — twelve free text tools in one page, no sign-up, nothing uploaded.">
 <meta property="og:url" content="https://textkitpro.com/">
 <meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="TextKit Pro — 10 Free Text Tools in One Page">
-<meta name="twitter:description" content="Word counter, find and replace, line sorting, Markdown ↔ HTML, CSV ↔ JSON, slugify and more — ten free text tools in one page, no sign-up, nothing uploaded.">
+<meta name="twitter:title" content="TextKit Pro — 12 Free Text Tools in One Page">
+<meta name="twitter:description" content="Word counter, find and replace, line sorting, Markdown ↔ HTML, CSV ↔ JSON, slugify and more — twelve free text tools in one page, no sign-up, nothing uploaded.">
 <meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
 
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -56,9 +56,9 @@
 <!-- nav:start -->
 <nav class="toolbar" aria-label="Tools">
   <details class="tb-menu">
-    <summary class="tb-trigger" aria-label="All 10 tools">
+    <summary class="tb-trigger" aria-label="All 12 tools">
       <span class="tb-glyph" aria-hidden="true">&#9636;</span>
-      <span class="tb-label">All 10<span class="tb-label-long"> tools</span></span>
+      <span class="tb-label">All 12<span class="tb-label-long"> tools</span></span>
     </summary>
     <div class="tb-sheet">
       <div class="tb-sheet-cols">
@@ -74,12 +74,14 @@
           <li><a href="/find-and-replace">Find and Replace</a></li>
           <li><a href="/sort-and-dedupe-lines">Sort and Dedupe Lines</a></li>
           <li><a href="/slugify">Slugify</a></li>
+          <li><a href="/remove-line-breaks">Remove Line Breaks</a></li>
         </ul>
         <p class="tb-grouplabel" id="tb-g3">Convert &amp; generate</p>
         <ul aria-labelledby="tb-g3">
           <li><a href="/lorem-ipsum-generator">Lorem Ipsum Generator</a></li>
           <li><a href="/markdown-to-html">Markdown ↔ HTML Converter</a></li>
           <li><a href="/csv-to-json">CSV ↔ JSON Converter</a></li>
+          <li><a href="/reverse-text">Reverse Text</a></li>
         </ul>
       </div>
     </div>
@@ -101,8 +103,8 @@
 <main id="main">
   <div class="hero">
     <h1>Free Text Tools for Writers &amp; Developers</h1>
-    <p>Count words, convert case, find and replace with regex, sort and dedupe lines, convert Markdown and CSV, and more — instantly, free, no sign-up.</p>
-    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>10 tools, 1 page</p>
+    <p>Count words, remove line breaks, convert case, find and replace with regex, sort and dedupe lines, convert Markdown and CSV, and more — instantly, free, no sign-up.</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>12 tools, 1 page</p>
   </div>
 
   <!-- ===================== WORD COUNTER ===================== -->
@@ -598,9 +600,119 @@ Grace Hopper,Rear admiral,85</textarea>
     </div>
   </section>
 
+  <!-- ===================== REMOVE LINE BREAKS ===================== -->
+  <section id="panel-removebreaks" class="tab-panel" aria-label="Remove Line Breaks" tabindex="-1" hidden>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/remove-line-breaks">Open the full Remove Line Breaks page →</a></p>
+    <div class="panel">
+      <h2>Options</h2>
+      <div class="tool-grid tool-grid--split">
+        <div class="field" style="margin-bottom:0;">
+          <label for="rb-mode">What to remove</label>
+          <select id="rb-mode">
+            <option value="join">Every line break — one long line</option>
+            <option value="unwrap">Unwrap paragraphs — keep blank lines</option>
+            <option value="blank">Blank lines only</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="rb-replace">Replace each break with</label>
+          <select id="rb-replace">
+            <option value="space">A space</option>
+            <option value="comma">A comma and a space</option>
+            <option value="none">Nothing</option>
+          </select>
+        </div>
+      </div>
+      <div class="check-grid" style="margin-top:14px;">
+        <label class="check"><input type="checkbox" id="rb-trim" checked> Trim each line</label>
+        <label class="check"><input type="checkbox" id="rb-collapse" checked> Collapse repeated spaces</label>
+        <label class="check"><input type="checkbox" id="rb-tabs"> Tabs to spaces</label>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Input</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="rb-input" class="visually-hidden">Text with line breaks</label>
+          <textarea id="rb-input" rows="10" placeholder="Paste the text with the line breaks in it...">The quick brown fox jumps
+over the lazy dog and keeps
+running until it reaches the wall.
+
+The second paragraph starts here
+and is wrapped the same way.</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Result</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="rb-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="rb-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="rb-output" class="visually-hidden">Text without line breaks</label>
+          <textarea id="rb-output" rows="10" readonly></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <h2>Before and after</h2>
+      <div class="stat-grid" style="margin-bottom:0;">
+        <div class="stat-card"><div class="stat-value" id="rb-before">0</div><div class="stat-label">Characters in</div></div>
+        <div class="stat-card"><div class="stat-value" id="rb-after">0</div><div class="stat-label">Characters out</div></div>
+        <div class="stat-card"><div class="stat-value" id="rb-delta">0</div><div class="stat-label">Difference</div></div>
+        <div class="stat-card"><div class="stat-value" id="rb-breaks">0</div><div class="stat-label">Breaks removed</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== REVERSE TEXT ===================== -->
+  <section id="panel-reverse" class="tab-panel" aria-label="Reverse Text" tabindex="-1" hidden>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/reverse-text">Open the full Reverse Text page →</a></p>
+    <div class="panel">
+      <h2>Reverse by</h2>
+      <div class="case-btn-grid">
+        <button type="button" class="case-btn" data-reverse="characters" aria-pressed="true">Character</button>
+        <button type="button" class="case-btn" data-reverse="words" aria-pressed="false">Word</button>
+        <button type="button" class="case-btn" data-reverse="lines" aria-pressed="false">Line</button>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Input</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="rv-input" class="visually-hidden">Text to reverse</label>
+          <textarea id="rv-input" rows="10" placeholder="Type or paste your text here...">The quick brown fox jumps over the lazy dog</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Reversed</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="rv-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="rv-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="rv-output" class="visually-hidden">Reversed text</label>
+          <textarea id="rv-output" rows="10" readonly></textarea>
+        </div>
+        <p class="hint" id="rv-stats" role="status"></p>
+      </div>
+    </div>
+  </section>
+
   <section class="container-narrow" style="padding-top:0;">
     <h2>About TextKit Pro</h2>
-    <p>TextKit Pro bundles ten everyday text utilities into a single page. For writing there is a <strong>word counter</strong> with keyword density, <strong>text statistics</strong> with a Flesch readability score, and a <strong>Lorem Ipsum generator</strong> for mockups. For editing there is <strong>find and replace</strong> with full regular-expression support, <strong>sort and dedupe lines</strong>, and a <strong>diff checker</strong> that highlights line-by-line changes. For developers there is a <strong>case converter</strong> covering nine formats, <strong>Markdown ↔ HTML</strong> and <strong>CSV ↔ JSON</strong> conversion in both directions, and a <strong>slugify</strong> tool that turns a title into a URL-safe slug.</p>
+    <p>TextKit Pro bundles twelve everyday text utilities into a single page. For writing there is a <strong>word counter</strong> with keyword density, <strong>text statistics</strong> with a Flesch readability score, and a <strong>Lorem Ipsum generator</strong> for mockups. For editing there is <strong>find and replace</strong> with full regular-expression support, <strong>sort and dedupe lines</strong>, and a <strong>diff checker</strong> that highlights line-by-line changes. For developers there is a <strong>case converter</strong> covering nine formats, <strong>Markdown ↔ HTML</strong> and <strong>CSV ↔ JSON</strong> conversion in both directions, and a <strong>slugify</strong> tool that turns a title into a URL-safe slug. For tidying up whatever you just pasted there is <strong>remove line breaks</strong>, which joins wrapped lines or unwraps a paragraph copied out of a PDF, and <strong>reverse text</strong>, which flips text by character, word or line.</p>
     <p>Everything runs client-side in your browser — nothing you type or paste is ever uploaded to a server, so there's no wait and nothing to worry about privacy-wise.</p>
   </section>
 

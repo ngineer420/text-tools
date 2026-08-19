@@ -46,6 +46,15 @@ const {
   reverseText,
   splitGraphemes,
   splitGraphemesFallback,
+  removeExtraSpaces,
+  removePunctuation,
+  removeSpecialChars,
+  removeNumbers,
+  removeEmoji,
+  stripHtmlTags,
+  removeAccents,
+  cleanText,
+  CLEANER_ORDER,
 } = require("./app.js");
 
 const { renderMarkdown } = require("./markdown.js");
@@ -549,4 +558,144 @@ test("splitGraphemes agrees with the no-Intl.Segmenter fallback", () => {
   }
   assert.deepEqual(splitGraphemes(""), []);
   assert.deepEqual(splitGraphemesFallback("👍").length, 1);
+});
+
+/* ------------------------------ text cleaners ----------------------------- */
+
+test("removeExtraSpaces collapses runs and trims, per mode", () => {
+  assert.equal(removeExtraSpaces("a   b  c"), "a b c");
+  assert.equal(removeExtraSpaces("  padded  "), "padded");
+  assert.equal(removeExtraSpaces("    keep   me", { mode: "indent" }), "    keep me");
+  assert.equal(removeExtraSpaces("  a   b  ", { mode: "trim" }), "a   b");
+  assert.equal(removeExtraSpaces("a b\tc", { mode: "all" }), "abc");
+});
+
+test("removeExtraSpaces handles the spaces you cannot see", () => {
+  assert.equal(removeExtraSpaces("a\u00a0\u00a0b"), "a b");
+  assert.equal(removeExtraSpaces("a\u200bb"), "ab");
+  assert.equal(removeExtraSpaces("a\u3000b"), "a b");
+  assert.equal(removeExtraSpaces("a\u00a0b", { unifySpaces: false }), "a\u00a0b");
+});
+
+test("removeExtraSpaces blank-line modes", () => {
+  assert.equal(removeExtraSpaces("a\n\n\n\nb"), "a\n\nb");
+  assert.equal(removeExtraSpaces("a\n\nb", { blankLines: "remove" }), "a\nb");
+  assert.equal(removeExtraSpaces("a\n\n\nb", { blankLines: "keep" }), "a\n\n\nb");
+});
+
+test("removePunctuation keeps only what was asked for", () => {
+  assert.equal(removePunctuation("Hi, there!"), "Hi there");
+  assert.equal(removePunctuation("Hi, there!", { keep: "sentence" }), "Hi, there!");
+  assert.equal(removePunctuation("(a) well-known don't", { keep: "words" }), "a well-known don't");
+});
+
+test("removePunctuation folds the typographic forms of a kept mark", () => {
+  assert.equal(removePunctuation("don’t — stop", { keep: "words" }), "don't  stop");
+  // The em dash is not a hyphen, so keeping hyphens must not keep it.
+  assert.equal(removePunctuation("a—b", { keep: "words" }), "ab");
+  assert.equal(removePunctuation("don’t", { keep: "words", foldQuotes: false }), "don’t");
+});
+
+test("removePunctuation leaves symbols alone - they are not punctuation", () => {
+  assert.equal(removePunctuation("+44 x=y $5 ~z"), "+44 x=y $5 ~z");
+});
+
+test("removeSpecialChars honours the keep set", () => {
+  assert.equal(removeSpecialChars("a~b+c", { keep: "alnum" }), "abc");
+  assert.equal(removeSpecialChars("a, b~c", { keep: "basic" }), "a, bc");
+  assert.equal(removeSpecialChars("café ✓", { keep: "ascii" }), "cafe ");
+  assert.equal(removeSpecialChars("café", { keep: "ascii", transliterate: false }), "caf");
+  assert.equal(removeSpecialChars("café", { keep: "alnum" }), "café");
+});
+
+test("removeSpecialChars drops control characters in every mode", () => {
+  assert.equal(removeSpecialChars("a\u0007b", { keep: "alnum" }), "ab");
+  assert.equal(removeSpecialChars("a\nb", { keep: "alnum" }), "a\nb");
+});
+
+test("removeNumbers standalone mode spares digits inside words", () => {
+  assert.equal(removeNumbers("2024 mp3 H2O A4", { mode: "standalone" }), " mp3 H2O A4");
+  assert.equal(removeNumbers("3.5kg", { mode: "standalone" }), "3.5kg");
+  assert.equal(removeNumbers("costs 1,240.00.", { mode: "standalone" }), "costs .");
+});
+
+test("removeNumbers all and listmarkers modes", () => {
+  assert.equal(removeNumbers("mp3 in 2024", { mode: "all" }), "mp in ");
+  assert.equal(removeNumbers("1. one\n2) two\n  (3) three", { mode: "listmarkers" }),
+    "one\ntwo\n  three");
+  assert.equal(removeNumbers("2024 only", { mode: "listmarkers" }), "2024 only");
+});
+
+test("removeNumbers currency is opt-in", () => {
+  assert.equal(removeNumbers("€5 and 10%", { mode: "all" }), "€ and %");
+  assert.equal(removeNumbers("€5 and 10%", { mode: "all", currency: true }), " and ");
+});
+
+test("removeEmoji takes whole clusters, not codepoints", () => {
+  assert.equal(removeEmoji("hi 👍🏿 there"), "hi  there");
+  assert.equal(removeEmoji("a🇬🇧b"), "ab");
+  assert.equal(removeEmoji("x👨‍👩‍👧y"), "xy");
+  assert.equal(removeEmoji("rank 1️⃣"), "rank ");
+});
+
+test("removeEmoji keeps text-style symbols unless told otherwise", () => {
+  assert.equal(removeEmoji("© 2024"), "© 2024");
+  assert.equal(removeEmoji("© 2024", { keepTextSymbols: false }), " 2024");
+  assert.equal(removeEmoji("done ✓"), "done ✓");
+  assert.equal(removeEmoji("done ✓", { symbols: true }), "done ");
+});
+
+test("stripHtmlTags keeps the words and the line structure", () => {
+  assert.equal(stripHtmlTags("<p>a <strong>b</strong></p>"), "a b");
+  assert.equal(stripHtmlTags("<ul><li>one</li><li>two</li></ul>"), "one\ntwo");
+  assert.equal(stripHtmlTags("<p>a</p><p>b</p>", { blockBreaks: false }), "ab");
+  assert.equal(stripHtmlTags("a<br>b"), "a\nb");
+});
+
+test("stripHtmlTags drops script bodies and decodes entities", () => {
+  assert.equal(stripHtmlTags("a<script>var x=1;</script>b"), "ab");
+  assert.equal(stripHtmlTags("<!-- note -->a"), "a");
+  assert.equal(stripHtmlTags("a &amp; b"), "a & b");
+  assert.equal(stripHtmlTags("a &amp; b", { decodeEntities: false }), "a &amp; b");
+  assert.equal(stripHtmlTags('<a href="/x?a=1&b=2" title="a>b">link</a>'), "link");
+});
+
+test("removeAccents folds the letters NFKD cannot decompose", () => {
+  assert.equal(removeAccents("résumé"), "resume");
+  assert.equal(removeAccents("Straße"), "Strasse");
+  assert.equal(removeAccents("Łódź"), "Lodz");
+  assert.equal(removeAccents("Đặng"), "Dang");
+});
+
+test("removeAccents never spells out the symbols slugify does", () => {
+  assert.equal(removeAccents("12% of €5 & up"), "12% of €5 & up");
+});
+
+test("removeAccents modes differ", () => {
+  assert.equal(removeAccents("café 你好", { mode: "fold" }), "cafe 你好");
+  assert.equal(removeAccents("café 你好", { mode: "ascii" }), "cafe ");
+  assert.equal(removeAccents("½", { mode: "marks" }), "½");
+  assert.equal(removeAccents("½", { mode: "fold" }), "1⁄2");
+});
+
+test("cleanText runs the pipeline in CLEANER_ORDER, not selection order", () => {
+  assert.deepEqual(CLEANER_ORDER, [
+    "html-tags", "emoji", "accents", "numbers", "punctuation",
+    "special-chars", "extra-spaces",
+  ]);
+  const r = cleanText("<p>Café  2024!</p>", {
+    "extra-spaces": true, "html-tags": true, accents: true,
+  });
+  assert.equal(r.text, "Cafe 2024!");
+  assert.deepEqual(r.applied, ["html-tags", "accents", "extra-spaces"]);
+});
+
+test("cleanText reports before/after stats and skips unselected cleaners", () => {
+  const r = cleanText("a  b", { "extra-spaces": true });
+  assert.equal(r.stats.charactersBefore, 4);
+  assert.equal(r.stats.charactersAfter, 3);
+  assert.equal(r.stats.removed, 1);
+  assert.equal(r.stats.wordsBefore, 2);
+  assert.deepEqual(cleanText("a  b", {}).text, "a  b");
+  assert.deepEqual(cleanText("a  b", {}).applied, []);
 });

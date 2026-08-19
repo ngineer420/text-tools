@@ -22,7 +22,7 @@ hrefs are the clean extensionless paths the site already publishes in its
 canonicals, sitemap and in-body lists.
 """
 
-# Noun used in the menu trigger: "All 13 tools".
+# Noun used in the menu trigger: "All 19 tools".
 NOUN = "tools"
 
 # Tier-1 tools, in traffic order. The first eight are the rail.
@@ -45,6 +45,18 @@ TOOLS = [
     {"href": "/remove-line-breaks",     "label": "Remove Breaks",   "long": "Remove Line Breaks",        "group": "cleanup",  "tier": 1},
     {"href": "/reverse-text",           "label": "Reverse Text",    "long": "Reverse Text",              "group": "convert",  "tier": 1},
     {"href": "/text-cleaner",           "label": "Text Cleaner",    "long": "Text Cleaner",              "group": "cleanup",  "tier": 1},
+    # --- the translator family, added together and therefore ranked together ---
+    # Six tools, one engine in assets/js/codecs.js, six different questions:
+    # nobody searching "nato phonetic alphabet" would accept a Caesar cipher.
+    # All six land sheet-only, which is the rail cap doing its job rather than
+    # a slight: a page published today has no measured traffic to have earned a
+    # chip with, and the rail is measured traffic.
+    {"href": "/morse-code-translator",  "label": "Morse Code",      "long": "Morse Code Translator",     "group": "translate", "tier": 1},
+    {"href": "/text-to-binary",         "label": "Text to Binary",  "long": "Text to Binary",            "group": "translate", "tier": 1},
+    {"href": "/binary-to-text",         "label": "Binary to Text",  "long": "Binary to Text",            "group": "translate", "tier": 1},
+    {"href": "/caesar-cipher",          "label": "Caesar Cipher",   "long": "Caesar Cipher",             "group": "translate", "tier": 1},
+    {"href": "/rot13",                  "label": "ROT13",           "long": "ROT13",                     "group": "translate", "tier": 1},
+    {"href": "/nato-phonetic-alphabet", "label": "NATO Phonetic",   "long": "NATO Phonetic Alphabet",    "group": "translate", "tier": 1},
 ]
 
 # Sheet groups, in order: (key, label). Named for what a visitor came to do,
@@ -53,6 +65,7 @@ GROUPS = [
     ("measure", "Count & compare"),
     ("cleanup", "Clean up text"),
     ("convert", "Convert & generate"),
+    ("translate", "Encode & translate"),
 ]
 
 # /text-cleaner is the combined tool AND the hub for the seven generated
@@ -66,7 +79,7 @@ HUBS = [
     ("/text-cleaner", "Remove spaces, punctuation, emoji, HTML"),
 ]
 
-# The rail plus the sheet carry all thirteen tools on every page, and each tool page
+# The rail plus the sheet carry all nineteen tools on every page, and each tool page
 # keeps a short "More text tools" block of three related siblings, so a footer
 # duplicate would be boilerplate rather than a new crawl surface.
 FOOTER = []

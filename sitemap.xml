@@ -71,6 +71,36 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://textkitpro.com/morse-code-translator</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/text-to-binary</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/binary-to-text</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/caesar-cipher</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/rot13</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/nato-phonetic-alphabet</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://textkitpro.com/remove-extra-spaces</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

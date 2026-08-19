@@ -32,9 +32,12 @@ Then open `http://localhost:8000`.
 ## Structure
 
 ```
-index.html             Main app (all thirteen tools, tabbed)
+index.html             Main app (the original thirteen tools, tabbed)
 text-cleaner.html        The combined cleaner — hand-written hub for the generated remove-X family
 remove-*.html            Generated: one page per cleaner (see tools/build_cleaner_pages.py)
+morse-code-translator.html, text-to-binary.html, binary-to-text.html,
+caesar-cipher.html, rot13.html, nato-phonetic-alphabet.html
+                         Generated: the six translators (see tools/build_codec_pages.py)
 articles/                Original written content (content-depth round)
 privacy.html            Privacy policy (required for ad networks)
 terms.html               Terms of use
@@ -47,10 +50,16 @@ assets/js/app.js         All app logic — pure text/diff functions plus DOM wir
 assets/js/markdown.js    Markdown renderer, shared verbatim with notepadly.app (see below)
 assets/js/app.test.js    node:test suite for the pure functions — run with `node assets/js/app.test.js`
 assets/js/cleaner-page.js  Shared renderer for the generated remove-X pages, driven by data-cleaner on <main>
+assets/js/codecs.js      Pure codec engine — Morse (ITU table + WPM timing), binary/hex, Caesar/ROT13, NATO
+assets/js/codecs.test.js node:test suite for codecs.js — run with `node assets/js/codecs.test.js`
+assets/js/codec-page.js  Runtime for the six translator pages, driven by data-codec-engine on <main>
 tools/nav_data.py        The toolbar's single source of truth (per-site)
 tools/sync_nav.py        Renders the toolbar into every page's nav marker pair
 tools/cleaner_pages.py   Data + page copy for the remove-X family
 tools/build_cleaner_pages.py  Writes the remove-X pages and rebuilds sitemap.xml
+tools/codec_pages.py     Data + page copy for the six translators
+tools/build_codec_pages.py    Writes the six translator pages
+tools/dump_codecs.js     Prints the Morse/NATO/ASCII tables out of codecs.js for the builder
 CNAME                    GitHub Pages custom domain (textkitpro.com)
 ```
 
@@ -63,9 +72,16 @@ hand — the next build overwrites the change, and `--check` fails while one exi
 ```
 python3 tools/build_cleaner_pages.py          # regenerate
 python3 tools/build_cleaner_pages.py --check  # fail if anything is stale
+python3 tools/build_codec_pages.py            # the six translators
+python3 tools/build_codec_pages.py --check
 python3 tools/sync_nav.py                     # roll the toolbar into every page
 python3 tools/sync_nav.py --check
 ```
+
+`sitemap.xml` has exactly one owner, `tools/build_cleaner_pages.py`. The
+translator slugs are listed in its `STATIC_URLS` and `build_codec_pages.py`
+asserts they are still there rather than writing a second copy — two generators
+rewriting one file fight forever and both `--check`s flip-flop.
 
 `text-cleaner.html` is deliberately hand-written: it is the head term and the
 full combined tool rather than an index, so it is not generated from the same

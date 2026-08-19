@@ -835,3 +835,81 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 64px; }
    more room per row than the incidental checkbox rows elsewhere. */
 .clean-toggles { gap: 10px 22px; }
 .clean-toggles .check { font-size: 13.5px; }
+
+/* ---------- translators (morse, binary, cipher, phonetic) ---------- */
+/* The player is the reason /morse-code-translator exists rather than being an
+   H2 on another page, so it is laid out as the first thing in the panel and
+   not as a row of incidental controls under a textarea. */
+.codec-player { display: flex; flex-wrap: wrap; gap: 18px 26px; align-items: flex-end; }
+.codec-player-btns { display: flex; align-items: center; gap: 10px; }
+.codec-sliders { display: flex; flex-wrap: wrap; gap: 14px 22px; flex: 1 1 320px; min-width: 0; }
+.codec-sliders .field { flex: 1 1 150px; min-width: 0; }
+.codec-slider-value { color: var(--text-faint); font-variant-numeric: tabular-nums; font-weight: 400; }
+
+/* The lamp follows the message for anyone who has the sound off, or whose
+   browser has no Web Audio at all. It is decorative for everyone else, hence
+   aria-hidden on the element itself. */
+.codec-lamp {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-inset);
+  transition: background 40ms linear, box-shadow 40ms linear;
+}
+.codec-lamp.is-on {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+@media (prefers-reduced-motion: reduce) { .codec-lamp { transition: none; } }
+
+/* The site had no range input until the WPM slider, so this is the whole
+   definition rather than an override of one. */
+input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 22px; background: transparent; cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 2px; background: var(--border);
+}
+input[type="range"]::-moz-range-track {
+  height: 4px; border-radius: 2px; background: var(--border);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 16px; height: 16px; margin-top: -6px; border-radius: 50%;
+  background: var(--accent); border: 2px solid var(--bg-raised);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent); border: 2px solid var(--bg-raised);
+}
+input[type="range"]:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+/* A reference chart is not a stats table: the second column is a Morse symbol
+   or a spoken word, so it must not inherit .density-table's right-aligned
+   tabular numerals. */
+.table-scroll { overflow-x: auto; max-width: 100%; }
+/* .density-table right-aligns columns 2 and 3 as tabular numerals, which is
+   right for a word-frequency count and wrong for a Morse symbol. The selector
+   has to out-specify that one rather than merely follow it. */
+.ref-table td:nth-child(n), .ref-table th:nth-child(n) { text-align: left; font-variant-numeric: normal; }
+.ref-table th[scope="row"] { color: var(--text); font-size: 15px; text-transform: none; letter-spacing: 0; }
+
+/* A reference chart is scanned, not read, so it goes short and wide. Each
+   column is a real table with its own header row, which keeps the header
+   visible beside every part of the chart and survives the stack at 700px. */
+.ref-columns { display: grid; gap: 0 26px; grid-template-columns: 1fr; }
+@media (min-width: 700px) {
+  .ref-columns { grid-template-columns: repeat(var(--ref-cols, 3), minmax(0, 1fr)); }
+}
+.ref-columns .density-table { font-size: 13px; }
+.ref-columns .density-table th, .ref-columns .density-table td { padding: 5px 8px; }
+.ref-code { font-family: var(--mono); font-size: 13px; letter-spacing: .02em; white-space: nowrap; }
+
+/* Twenty-six rows is a lot of page, so the shift table scrolls inside itself
+   rather than pushing the prose off the bottom of the screen. */
+.shift-table-wrap { max-height: 340px; overflow: auto; border: 1px solid var(--border-soft); border-radius: var(--radius); }
+.shift-table { font-size: 13.5px; }
+.shift-table th[scope="row"] { color: var(--text-faint); font-variant-numeric: tabular-nums; white-space: nowrap; width: 1%; }
+.shift-table td.shift-text { font-family: var(--mono); font-size: 12.5px; word-break: break-word; }
+.shift-table tr.is-current { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.shift-table tr.is-current th, .shift-table tr.is-current td { color: var(--text); }

@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<!-- GENERATED FILE - do not edit by hand.
+     Written by tools/build_codec_pages.py from tools/codec_pages.py.
+     Any edit here is lost on the next build, and
+     `python3 tools/build_codec_pages.py --check` fails while one exists. -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caesar Cipher Encoder and Decoder — All 26 Shifts at Once | TextKit Pro</title>
+<meta name="description" content="Shift letters by any amount, or break a Caesar cipher by reading all twenty-six shifts at once. Frequency analysis suggests the answer; your eye confirms it.">
+<link rel="canonical" href="https://textkitpro.com/caesar-cipher">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Caesar Cipher Encoder and Decoder — All 26 Shifts at Once">
+<meta property="og:description" content="Shift letters by any amount, or break a Caesar cipher by reading all twenty-six shifts at once. Frequency analysis suggests the answer; your eye confirms it.">
+<meta property="og:url" content="https://textkitpro.com/caesar-cipher">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Caesar Cipher Encoder and Decoder — All 26 Shifts at Once">
+<meta name="twitter:description" content="Shift letters by any amount, or break a Caesar cipher by reading all twenty-six shifts at once. Frequency analysis suggests the answer; your eye confirms it.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Caesar Cipher — TextKit Pro",
+  "url": "https://textkitpro.com/caesar-cipher",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Shift letters by any amount, or break a Caesar cipher by reading all twenty-six shifts at once. Frequency analysis suggests the answer; your eye confirms it."
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I break a Caesar cipher without knowing the shift?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Read all twenty-six shifts and pick the English one — the table on this page updates as you type, so the answer is already on screen. That works because the key space is twenty-six, small enough to check exhaustively by eye in seconds. For a longer text the frequency button gets you there in one step by matching letter counts against English's expected distribution, but on anything shorter than a sentence you should trust your eye over the arithmetic."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it shift numbers and punctuation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, and that is the standard definition rather than a shortcut. Only the twenty-six letters rotate; digits, spaces and punctuation pass through untouched. This is also the cipher's second weakness after its tiny key space: word lengths, apostrophes and sentence punctuation all survive, so the shape of the message is legible even before it is decoded."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a Caesar cipher the same as ROT13?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ROT13 is a Caesar cipher with the shift fixed at 13. The reason it gets its own name is that 13 is exactly half of 26, so applying it twice returns the original text and one operation serves as both encoder and decoder. Caesar's own letters used a shift of three, which does not have that property."
+      }
+    }
+  ]
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7560786263587509" crossorigin="anonymous"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">&#9680;</button>
+    </div>
+  </div>
+</header>
+
+<!-- nav:start -->
+<nav class="toolbar" aria-label="Tools">
+  <details class="tb-menu">
+    <summary class="tb-trigger" aria-label="All 19 tools">
+      <span class="tb-glyph" aria-hidden="true">&#9636;</span>
+      <span class="tb-label">All 19<span class="tb-label-long"> tools</span></span>
+    </summary>
+    <div class="tb-sheet">
+      <div class="tb-sheet-cols">
+        <p class="tb-grouplabel" id="tb-g1">Count &amp; compare</p>
+        <ul aria-labelledby="tb-g1">
+          <li><a href="/word-counter">Word Counter</a></li>
+          <li><a href="/diff-checker">Diff Checker</a></li>
+          <li><a href="/text-statistics">Text Statistics</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g2">Clean up text</p>
+        <ul aria-labelledby="tb-g2">
+          <li><a href="/case-converter">Case Converter</a></li>
+          <li><a href="/find-and-replace">Find and Replace</a></li>
+          <li><a href="/sort-and-dedupe-lines">Sort and Dedupe Lines</a></li>
+          <li><a href="/slugify">Slugify</a></li>
+          <li><a href="/remove-line-breaks">Remove Line Breaks</a></li>
+          <li><a href="/text-cleaner">Text Cleaner</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g3">Convert &amp; generate</p>
+        <ul aria-labelledby="tb-g3">
+          <li><a href="/lorem-ipsum-generator">Lorem Ipsum Generator</a></li>
+          <li><a href="/markdown-to-html">Markdown ↔ HTML Converter</a></li>
+          <li><a href="/csv-to-json">CSV ↔ JSON Converter</a></li>
+          <li><a href="/reverse-text">Reverse Text</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g4">Encode &amp; translate</p>
+        <ul aria-labelledby="tb-g4">
+          <li><a href="/morse-code-translator">Morse Code Translator</a></li>
+          <li><a href="/text-to-binary">Text to Binary</a></li>
+          <li><a href="/binary-to-text">Binary to Text</a></li>
+          <li><a href="/caesar-cipher" aria-current="page">Caesar Cipher</a></li>
+          <li><a href="/rot13">ROT13</a></li>
+          <li><a href="/nato-phonetic-alphabet">NATO Phonetic Alphabet</a></li>
+        </ul>
+        <p class="tb-hub"><a href="/text-cleaner">Remove spaces, punctuation, emoji, HTML →</a></p>
+      </div>
+    </div>
+  </details>
+  <div class="tb-scrim"></div>
+  <ul class="tb-rail">
+    <li><a href="/word-counter">Word Counter</a></li>
+    <li><a href="/case-converter">Case Converter</a></li>
+    <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a></li>
+    <li><a href="/diff-checker">Diff Checker</a></li>
+    <li><a href="/find-and-replace">Find &amp; Replace</a></li>
+    <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a></li>
+    <li><a href="/markdown-to-html">Markdown ↔ HTML</a></li>
+    <li><a href="/csv-to-json">CSV ↔ JSON</a></li>
+  </ul>
+</nav>
+<!-- nav:end -->
+<main id="main" data-codec-engine="caesar" data-codec-init-dir="encode" data-codec-init-shift="3">
+  <div class="hero">
+    <h1>Caesar Cipher</h1>
+    <p>Encode with any shift, or break one by reading all twenty-six answers</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">&bull;</span>Nothing is uploaded to a server<span class="dot">&bull;</span>Instant results</p>
+  </div>
+
+  <section aria-label="Caesar Cipher tool">
+    <div class="panel">
+      <h2>Direction</h2>
+      <div class="case-btn-grid">
+        <button type="button" class="case-btn" data-codec-dir="encode" aria-pressed="true">Encode</button>
+        <button type="button" class="case-btn" data-codec-dir="decode" aria-pressed="false">Decode</button>
+        <button type="button" class="case-btn" id="co-swap">Swap &#8646;</button>
+      </div>
+      <h2 style="margin:22px 0 14px;">Shift</h2>
+      <div class="tool-grid tool-grid--three">
+        <div class="field" style="margin-bottom:0;">
+          <label for="co-shift">Places to move each letter</label>
+          <input type="number" id="co-shift" min="0" max="25" step="1" value="3">
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="co-guess">Do not know the shift?</label>
+          <button type="button" id="co-guess">Guess it from letter frequencies</button>
+        </div>
+      </div>
+      <div class="case-btn-grid" style="margin-top:14px;">
+        <button type="button" class="case-btn" data-codec-shift="1" aria-pressed="false">1</button>
+        <button type="button" class="case-btn" data-codec-shift="3" aria-pressed="false">3</button>
+        <button type="button" class="case-btn" data-codec-shift="5" aria-pressed="false">5</button>
+        <button type="button" class="case-btn" data-codec-shift="7" aria-pressed="false">7</button>
+        <button type="button" class="case-btn" data-codec-shift="13" aria-pressed="false">13</button>
+        <button type="button" class="case-btn" data-codec-shift="25" aria-pressed="false">25</button>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Input</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="co-input" class="visually-hidden">Text to translate</label>
+          <textarea id="co-input" rows="10" placeholder="Type or paste here...">attack at dawn</textarea>
+        </div>
+        <div class="error-banner" id="co-error" role="alert"></div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Result</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="co-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="co-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="co-output" class="visually-hidden">Result</label>
+          <textarea id="co-output" rows="10" readonly></textarea>
+        </div>
+        <p class="hint" id="co-stats" role="status"></p>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:16px;">
+      <h2>All twenty-six shifts</h2>
+      <p class="hint" style="margin-top:0;">The key space is twenty-six. That is the whole weakness &mdash; you do not need a technique, you read the list and pick the English one.</p>
+      <div class="shift-table-wrap">
+        <table class="density-table shift-table">
+          <thead>
+            <tr><th scope="col">Shift</th><th scope="col">Text</th></tr>
+          </thead>
+          <tbody id="co-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-bottom:0;">
+    <h2 style="margin-top:0;">A cipher with twenty-five wrong answers is not really a cipher</h2>
+    <p>Suetonius records that Julius Caesar wrote his confidential letters with each letter replaced by the one three places further on, so that A became D and the message meant nothing to a courier who intercepted it. It worked, and the reason it worked has nothing to do with the cipher: almost nobody in first-century Rome could read at all, and the few who could had never met the idea that writing might be deliberately scrambled. The security was in the novelty.</p>
+    <p>The moment the idea is known, the whole scheme collapses, because there are only twenty-five wrong answers. That is not a large enough space to hide in — you do not need a computer, a key or any cleverness, you write out all twenty-six lines and look for the one that is English. This page shows you those twenty-six lines rather than pretending anything more sophisticated is required, and that table is the honest teaching tool: it makes the size of the key space visible in a way a paragraph about it cannot.</p>
+    <p>The frequency button is the other classic method, and it is worth understanding rather than just pressing. English is lopsided — E is about 12% of letters, T about 9%, and the bottom half of the alphabet barely registers — so a shifted text has a shifted version of that same lopsided shape. Comparing the letter counts against the expected English shape at each of the twenty-six offsets and picking the closest is one line of arithmetic. It is reliable on a sentence, unreliable on three words, and useless on a single one, which is why it suggests a shift here rather than announcing an answer.</p>
+    <p>One property worth noticing: shift 13 is its own inverse, because 13 is half of 26. Encoding twice returns the original, so encoder and decoder are the same operation and no direction has to travel with the message. That single convenience is why ROT13, and not shift 3 or shift 7, is the one that became a convention, and it has <a href="/rot13">its own page</a>.</p>
+
+    <p class="example-heading">Caesar&#x27;s own shift of three</p>
+    <div class="cleaner-example">
+      <figure>
+        <figcaption>In</figcaption>
+        <pre>attack at dawn</pre>
+      </figure>
+      <figure>
+        <figcaption>Out</figcaption>
+        <pre>dwwdfn dw gdzq</pre>
+      </figure>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-top:24px;padding-bottom:0;">
+    <h2 style="margin-top:0;">Caesar Cipher questions</h2>
+    <div class="faq-item">
+      <h3>How do I break a Caesar cipher without knowing the shift?</h3>
+      <p>Read all twenty-six shifts and pick the English one — the table on this page updates as you type, so the answer is already on screen. That works because the key space is twenty-six, small enough to check exhaustively by eye in seconds. For a longer text the frequency button gets you there in one step by matching letter counts against English's expected distribution, but on anything shorter than a sentence you should trust your eye over the arithmetic.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does it shift numbers and punctuation?</h3>
+      <p>No, and that is the standard definition rather than a shortcut. Only the twenty-six letters rotate; digits, spaces and punctuation pass through untouched. This is also the cipher's second weakness after its tiny key space: word lengths, apostrophes and sentence punctuation all survive, so the shape of the message is legible even before it is decoded.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is a Caesar cipher the same as ROT13?</h3>
+      <p>ROT13 is a Caesar cipher with the shift fixed at 13. The reason it gets its own name is that 13 is exactly half of 26, so applying it twice returns the original text and one operation serves as both encoder and decoder. Caesar's own letters used a shift of three, which does not have that property.</p>
+    </div>
+  </section>
+
+  <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
+    <h2 style="margin-top:0;">More text tools</h2>
+    <ul>
+      <li><a href="/rot13">ROT13</a> &mdash; the shift-13 special case, and why it needs no decode button.</li>
+      <li><a href="/binary-to-text">Binary to Text</a> &mdash; when the puzzle is an encoding rather than a cipher.</li>
+      <li><a href="/reverse-text">Reverse Text</a> &mdash; the other thing a scrambled-looking string often turns out to be.</li>
+    </ul>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>&copy; <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/codecs.js"></script>
+<script src="/assets/js/app.js"></script>
+<script src="/assets/js/codec-page.js"></script>
+<a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>
+</body>
+</html>

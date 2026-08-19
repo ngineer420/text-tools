@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<!-- GENERATED FILE - do not edit by hand.
+     Written by tools/build_codec_pages.py from tools/codec_pages.py.
+     Any edit here is lost on the next build, and
+     `python3 tools/build_codec_pages.py --check` fails while one exists. -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Binary to Text Converter — Decode 1s and 0s, With or Without Spaces | TextKit Pro</title>
+<meta name="description" content="Paste binary with spaces, without spaces, in commas or as hex, and read it back as text. Tells you which group failed instead of returning nothing.">
+<link rel="canonical" href="https://textkitpro.com/binary-to-text">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Binary to Text Converter — Decode 1s and 0s, With or Without Spaces">
+<meta property="og:description" content="Paste binary with spaces, without spaces, in commas or as hex, and read it back as text. Tells you which group failed instead of returning nothing.">
+<meta property="og:url" content="https://textkitpro.com/binary-to-text">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Binary to Text Converter — Decode 1s and 0s, With or Without Spaces">
+<meta name="twitter:description" content="Paste binary with spaces, without spaces, in commas or as hex, and read it back as text. Tells you which group failed instead of returning nothing.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Binary to Text — TextKit Pro",
+  "url": "https://textkitpro.com/binary-to-text",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Paste binary with spaces, without spaces, in commas or as hex, and read it back as text. Tells you which group failed instead of returning nothing."
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "It decoded but the text is gibberish. What now?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Check the group width first — the commonest cause is a string built as 7-bit ASCII being read as 8-bit, which shifts everything after the first character. Then try code points mode, which reads each group as one whole character rather than one UTF-8 byte. If the gibberish is readable letters in a scrambled order rather than symbols, the string is text but it was reversed or shifted, and it is a cipher rather than an encoding problem."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it handle binary with no spaces?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Unseparated input is chopped into eight-digit groups, which is the right guess for the overwhelming majority of what people paste. Commas, line breaks and mixed whitespace all work as separators too. What cannot be guessed is a string of seven-bit groups run together with no separator, because nothing in the digits themselves says where one character stops."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does one emoji come out as four odd characters?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because you are decoding as code points and the source was UTF-8 bytes. An emoji is four bytes in UTF-8, and reading those four bytes as four separate characters gives you four meaningless ones instead of the emoji. Switch to UTF-8 bytes mode and the four groups recombine into the single character they encode."
+      }
+    }
+  ]
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7560786263587509" crossorigin="anonymous"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">&#9680;</button>
+    </div>
+  </div>
+</header>
+
+<!-- nav:start -->
+<nav class="toolbar" aria-label="Tools">
+  <details class="tb-menu">
+    <summary class="tb-trigger" aria-label="All 19 tools">
+      <span class="tb-glyph" aria-hidden="true">&#9636;</span>
+      <span class="tb-label">All 19<span class="tb-label-long"> tools</span></span>
+    </summary>
+    <div class="tb-sheet">
+      <div class="tb-sheet-cols">
+        <p class="tb-grouplabel" id="tb-g1">Count &amp; compare</p>
+        <ul aria-labelledby="tb-g1">
+          <li><a href="/word-counter">Word Counter</a></li>
+          <li><a href="/diff-checker">Diff Checker</a></li>
+          <li><a href="/text-statistics">Text Statistics</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g2">Clean up text</p>
+        <ul aria-labelledby="tb-g2">
+          <li><a href="/case-converter">Case Converter</a></li>
+          <li><a href="/find-and-replace">Find and Replace</a></li>
+          <li><a href="/sort-and-dedupe-lines">Sort and Dedupe Lines</a></li>
+          <li><a href="/slugify">Slugify</a></li>
+          <li><a href="/remove-line-breaks">Remove Line Breaks</a></li>
+          <li><a href="/text-cleaner">Text Cleaner</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g3">Convert &amp; generate</p>
+        <ul aria-labelledby="tb-g3">
+          <li><a href="/lorem-ipsum-generator">Lorem Ipsum Generator</a></li>
+          <li><a href="/markdown-to-html">Markdown ↔ HTML Converter</a></li>
+          <li><a href="/csv-to-json">CSV ↔ JSON Converter</a></li>
+          <li><a href="/reverse-text">Reverse Text</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g4">Encode &amp; translate</p>
+        <ul aria-labelledby="tb-g4">
+          <li><a href="/morse-code-translator">Morse Code Translator</a></li>
+          <li><a href="/text-to-binary">Text to Binary</a></li>
+          <li><a href="/binary-to-text" aria-current="page">Binary to Text</a></li>
+          <li><a href="/caesar-cipher">Caesar Cipher</a></li>
+          <li><a href="/rot13">ROT13</a></li>
+          <li><a href="/nato-phonetic-alphabet">NATO Phonetic Alphabet</a></li>
+        </ul>
+        <p class="tb-hub"><a href="/text-cleaner">Remove spaces, punctuation, emoji, HTML →</a></p>
+      </div>
+    </div>
+  </details>
+  <div class="tb-scrim"></div>
+  <ul class="tb-rail">
+    <li><a href="/word-counter">Word Counter</a></li>
+    <li><a href="/case-converter">Case Converter</a></li>
+    <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a></li>
+    <li><a href="/diff-checker">Diff Checker</a></li>
+    <li><a href="/find-and-replace">Find &amp; Replace</a></li>
+    <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a></li>
+    <li><a href="/markdown-to-html">Markdown ↔ HTML</a></li>
+    <li><a href="/csv-to-json">CSV ↔ JSON</a></li>
+  </ul>
+</nav>
+<!-- nav:end -->
+<main id="main" data-codec-engine="binary" data-codec-init-base="binary" data-codec-init-dir="decode">
+  <div class="hero">
+    <h1>Binary to Text</h1>
+    <p>Paste the blob somebody sent you and find out what it says — or why it will not decode</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">&bull;</span>Nothing is uploaded to a server<span class="dot">&bull;</span>Instant results</p>
+  </div>
+
+  <section aria-label="Binary to Text tool">
+    <div class="panel">
+      <h2>Direction</h2>
+      <div class="case-btn-grid">
+        <button type="button" class="case-btn" data-codec-dir="encode" aria-pressed="true">Text &rarr; Binary</button>
+        <button type="button" class="case-btn" data-codec-dir="decode" aria-pressed="false">Binary &rarr; Text</button>
+        <button type="button" class="case-btn" id="co-swap">Swap &#8646;</button>
+      </div>
+      <h2 style="margin:22px 0 14px;">Base</h2>
+      <div class="case-btn-grid">
+        <button type="button" class="case-btn" data-codec-base="binary" aria-pressed="true">Binary</button>
+        <button type="button" class="case-btn" data-codec-base="hex" aria-pressed="false">Hex</button>
+      </div>
+      <h2 style="margin:22px 0 14px;">One group per</h2>
+      <div class="case-btn-grid">
+        <button type="button" class="case-btn" data-codec-mode="bytes" aria-pressed="true">UTF-8 byte</button>
+        <button type="button" class="case-btn" data-codec-mode="codepoints" aria-pressed="false">Character</button>
+      </div>
+      <div class="tool-grid tool-grid--three" style="margin-top:22px;">
+        <div class="field" style="margin-bottom:0;">
+          <label for="co-sep">Separator</label>
+          <select id="co-sep">
+            <option value="space">Space</option>
+            <option value="none">None</option>
+            <option value="comma">Comma</option>
+            <option value="newline">One per line</option>
+          </select>
+        </div>
+      </div>
+      <p class="hint">UTF-8 byte is what a computer means and round-trips anything. Character is what a puzzle means. Pure ASCII is identical either way.</p>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Input</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="co-input" class="visually-hidden">Text to translate</label>
+          <textarea id="co-input" rows="10" placeholder="Type or paste here...">01001000 01100101 01101100 01101100 01101111</textarea>
+        </div>
+        <div class="error-banner" id="co-error" role="alert"></div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Output</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="co-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="co-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="co-output" class="visually-hidden">Result</label>
+          <textarea id="co-output" rows="10" readonly></textarea>
+        </div>
+        <p class="hint" id="co-stats" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-bottom:0;">
+    <h2 style="margin-top:0;">When a binary string refuses to decode, it is almost always one of four things</h2>
+    <p>Decoding is where binary gets interesting, because encoding cannot really fail and decoding fails constantly. The string arrives from a puzzle, a forum post, a game, a tattoo photo or a homework sheet, and the four ways it goes wrong are worth knowing by sight.</p>
+    <p><strong>The length is not a multiple of eight.</strong> Count the digits. If the total does not divide by eight, a digit was lost in the copy or the sender was using seven-bit groups, which was normal in the era when ASCII was seven bits and the eighth was a parity check. A stray leading zero disappearing from the front of a group is the single most common transcription error, because it looks like nothing.</p>
+    <p><strong>It is not actually binary.</strong> If there is a digit above 1 anywhere, the string is decimal or hex. Long runs of digits with the occasional letter a to f are hex — switch the base rather than trying to fix the string. This page names the offending group rather than returning an empty box, because “nothing happened” tells you nothing about which of eight hundred characters was wrong.</p>
+    <p><strong>The groups are the wrong width.</strong> Unseparated binary is only decodable if you know the width. Eight is the usual answer and the one assumed here. If eight produces plausible-looking gibberish — readable letters in the wrong order, or every character shifted — try reading it as code points instead, which is how binary written for a puzzle rather than for a computer is usually built.</p>
+    <p><strong>The text was never ASCII.</strong> If the decode produces the right number of characters and half of them are replacement marks, the original was UTF-8 with multi-byte characters and something truncated it, or the groups were code points and you are decoding as bytes. The mode toggle is the fix; those two readings are genuinely different for anything above 127.</p>
+
+    <p class="example-heading">Five groups, one word</p>
+    <div class="cleaner-example">
+      <figure>
+        <figcaption>In</figcaption>
+        <pre>01001000 01100101 01101100 01101100 01101111</pre>
+      </figure>
+      <figure>
+        <figcaption>Out</figcaption>
+        <pre>Hello</pre>
+      </figure>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-top:24px;padding-bottom:0;">
+    <h2 style="margin-top:0;">ASCII in three bases</h2>
+    <p>If a decode looks close but wrong, comparing a few groups against this table usually shows the offset immediately.</p>
+    <div class="ref-columns" style="--ref-cols:3;">
+      <table class="density-table ref-table">
+        <thead><tr><th scope="col">Character</th><th scope="col">Binary</th><th scope="col">Hex</th><th scope="col">Decimal</th></tr></thead>
+        <tbody>
+            <tr><th scope="row">(space)</th><td class="ref-code">00100000</td><td class="ref-code">20</td><td class="ref-code">32</td></tr>
+            <tr><th scope="row">!</th><td class="ref-code">00100001</td><td class="ref-code">21</td><td class="ref-code">33</td></tr>
+            <tr><th scope="row">&quot;</th><td class="ref-code">00100010</td><td class="ref-code">22</td><td class="ref-code">34</td></tr>
+            <tr><th scope="row">#</th><td class="ref-code">00100011</td><td class="ref-code">23</td><td class="ref-code">35</td></tr>
+            <tr><th scope="row">$</th><td class="ref-code">00100100</td><td class="ref-code">24</td><td class="ref-code">36</td></tr>
+            <tr><th scope="row">%</th><td class="ref-code">00100101</td><td class="ref-code">25</td><td class="ref-code">37</td></tr>
+            <tr><th scope="row">&amp;</th><td class="ref-code">00100110</td><td class="ref-code">26</td><td class="ref-code">38</td></tr>
+            <tr><th scope="row">&#x27;</th><td class="ref-code">00100111</td><td class="ref-code">27</td><td class="ref-code">39</td></tr>
+            <tr><th scope="row">(</th><td class="ref-code">00101000</td><td class="ref-code">28</td><td class="ref-code">40</td></tr>
+            <tr><th scope="row">)</th><td class="ref-code">00101001</td><td class="ref-code">29</td><td class="ref-code">41</td></tr>
+            <tr><th scope="row">*</th><td class="ref-code">00101010</td><td class="ref-code">2A</td><td class="ref-code">42</td></tr>
+            <tr><th scope="row">+</th><td class="ref-code">00101011</td><td class="ref-code">2B</td><td class="ref-code">43</td></tr>
+            <tr><th scope="row">,</th><td class="ref-code">00101100</td><td class="ref-code">2C</td><td class="ref-code">44</td></tr>
+            <tr><th scope="row">-</th><td class="ref-code">00101101</td><td class="ref-code">2D</td><td class="ref-code">45</td></tr>
+            <tr><th scope="row">.</th><td class="ref-code">00101110</td><td class="ref-code">2E</td><td class="ref-code">46</td></tr>
+            <tr><th scope="row">/</th><td class="ref-code">00101111</td><td class="ref-code">2F</td><td class="ref-code">47</td></tr>
+            <tr><th scope="row">0</th><td class="ref-code">00110000</td><td class="ref-code">30</td><td class="ref-code">48</td></tr>
+            <tr><th scope="row">1</th><td class="ref-code">00110001</td><td class="ref-code">31</td><td class="ref-code">49</td></tr>
+            <tr><th scope="row">2</th><td class="ref-code">00110010</td><td class="ref-code">32</td><td class="ref-code">50</td></tr>
+            <tr><th scope="row">3</th><td class="ref-code">00110011</td><td class="ref-code">33</td><td class="ref-code">51</td></tr>
+            <tr><th scope="row">4</th><td class="ref-code">00110100</td><td class="ref-code">34</td><td class="ref-code">52</td></tr>
+            <tr><th scope="row">5</th><td class="ref-code">00110101</td><td class="ref-code">35</td><td class="ref-code">53</td></tr>
+            <tr><th scope="row">6</th><td class="ref-code">00110110</td><td class="ref-code">36</td><td class="ref-code">54</td></tr>
+            <tr><th scope="row">7</th><td class="ref-code">00110111</td><td class="ref-code">37</td><td class="ref-code">55</td></tr>
+            <tr><th scope="row">8</th><td class="ref-code">00111000</td><td class="ref-code">38</td><td class="ref-code">56</td></tr>
+            <tr><th scope="row">9</th><td class="ref-code">00111001</td><td class="ref-code">39</td><td class="ref-code">57</td></tr>
+            <tr><th scope="row">:</th><td class="ref-code">00111010</td><td class="ref-code">3A</td><td class="ref-code">58</td></tr>
+            <tr><th scope="row">;</th><td class="ref-code">00111011</td><td class="ref-code">3B</td><td class="ref-code">59</td></tr>
+            <tr><th scope="row">&lt;</th><td class="ref-code">00111100</td><td class="ref-code">3C</td><td class="ref-code">60</td></tr>
+            <tr><th scope="row">=</th><td class="ref-code">00111101</td><td class="ref-code">3D</td><td class="ref-code">61</td></tr>
+            <tr><th scope="row">&gt;</th><td class="ref-code">00111110</td><td class="ref-code">3E</td><td class="ref-code">62</td></tr>
+            <tr><th scope="row">?</th><td class="ref-code">00111111</td><td class="ref-code">3F</td><td class="ref-code">63</td></tr>
+        </tbody>
+      </table>
+      <table class="density-table ref-table">
+        <thead><tr><th scope="col">Character</th><th scope="col">Binary</th><th scope="col">Hex</th><th scope="col">Decimal</th></tr></thead>
+        <tbody>
+            <tr><th scope="row">@</th><td class="ref-code">01000000</td><td class="ref-code">40</td><td class="ref-code">64</td></tr>
+            <tr><th scope="row">A</th><td class="ref-code">01000001</td><td class="ref-code">41</td><td class="ref-code">65</td></tr>
+            <tr><th scope="row">B</th><td class="ref-code">01000010</td><td class="ref-code">42</td><td class="ref-code">66</td></tr>
+            <tr><th scope="row">C</th><td class="ref-code">01000011</td><td class="ref-code">43</td><td class="ref-code">67</td></tr>
+            <tr><th scope="row">D</th><td class="ref-code">01000100</td><td class="ref-code">44</td><td class="ref-code">68</td></tr>
+            <tr><th scope="row">E</th><td class="ref-code">01000101</td><td class="ref-code">45</td><td class="ref-code">69</td></tr>
+            <tr><th scope="row">F</th><td class="ref-code">01000110</td><td class="ref-code">46</td><td class="ref-code">70</td></tr>
+            <tr><th scope="row">G</th><td class="ref-code">01000111</td><td class="ref-code">47</td><td class="ref-code">71</td></tr>
+            <tr><th scope="row">H</th><td class="ref-code">01001000</td><td class="ref-code">48</td><td class="ref-code">72</td></tr>
+            <tr><th scope="row">I</th><td class="ref-code">01001001</td><td class="ref-code">49</td><td class="ref-code">73</td></tr>
+            <tr><th scope="row">J</th><td class="ref-code">01001010</td><td class="ref-code">4A</td><td class="ref-code">74</td></tr>
+            <tr><th scope="row">K</th><td class="ref-code">01001011</td><td class="ref-code">4B</td><td class="ref-code">75</td></tr>
+            <tr><th scope="row">L</th><td class="ref-code">01001100</td><td class="ref-code">4C</td><td class="ref-code">76</td></tr>
+            <tr><th scope="row">M</th><td class="ref-code">01001101</td><td class="ref-code">4D</td><td class="ref-code">77</td></tr>
+            <tr><th scope="row">N</th><td class="ref-code">01001110</td><td class="ref-code">4E</td><td class="ref-code">78</td></tr>
+            <tr><th scope="row">O</th><td class="ref-code">01001111</td><td class="ref-code">4F</td><td class="ref-code">79</td></tr>
+            <tr><th scope="row">P</th><td class="ref-code">01010000</td><td class="ref-code">50</td><td class="ref-code">80</td></tr>
+            <tr><th scope="row">Q</th><td class="ref-code">01010001</td><td class="ref-code">51</td><td class="ref-code">81</td></tr>
+            <tr><th scope="row">R</th><td class="ref-code">01010010</td><td class="ref-code">52</td><td class="ref-code">82</td></tr>
+            <tr><th scope="row">S</th><td class="ref-code">01010011</td><td class="ref-code">53</td><td class="ref-code">83</td></tr>
+            <tr><th scope="row">T</th><td class="ref-code">01010100</td><td class="ref-code">54</td><td class="ref-code">84</td></tr>
+            <tr><th scope="row">U</th><td class="ref-code">01010101</td><td class="ref-code">55</td><td class="ref-code">85</td></tr>
+            <tr><th scope="row">V</th><td class="ref-code">01010110</td><td class="ref-code">56</td><td class="ref-code">86</td></tr>
+            <tr><th scope="row">W</th><td class="ref-code">01010111</td><td class="ref-code">57</td><td class="ref-code">87</td></tr>
+            <tr><th scope="row">X</th><td class="ref-code">01011000</td><td class="ref-code">58</td><td class="ref-code">88</td></tr>
+            <tr><th scope="row">Y</th><td class="ref-code">01011001</td><td class="ref-code">59</td><td class="ref-code">89</td></tr>
+            <tr><th scope="row">Z</th><td class="ref-code">01011010</td><td class="ref-code">5A</td><td class="ref-code">90</td></tr>
+            <tr><th scope="row">[</th><td class="ref-code">01011011</td><td class="ref-code">5B</td><td class="ref-code">91</td></tr>
+            <tr><th scope="row">\</th><td class="ref-code">01011100</td><td class="ref-code">5C</td><td class="ref-code">92</td></tr>
+            <tr><th scope="row">]</th><td class="ref-code">01011101</td><td class="ref-code">5D</td><td class="ref-code">93</td></tr>
+            <tr><th scope="row">^</th><td class="ref-code">01011110</td><td class="ref-code">5E</td><td class="ref-code">94</td></tr>
+            <tr><th scope="row">_</th><td class="ref-code">01011111</td><td class="ref-code">5F</td><td class="ref-code">95</td></tr>
+        </tbody>
+      </table>
+      <table class="density-table ref-table">
+        <thead><tr><th scope="col">Character</th><th scope="col">Binary</th><th scope="col">Hex</th><th scope="col">Decimal</th></tr></thead>
+        <tbody>
+            <tr><th scope="row">`</th><td class="ref-code">01100000</td><td class="ref-code">60</td><td class="ref-code">96</td></tr>
+            <tr><th scope="row">a</th><td class="ref-code">01100001</td><td class="ref-code">61</td><td class="ref-code">97</td></tr>
+            <tr><th scope="row">b</th><td class="ref-code">01100010</td><td class="ref-code">62</td><td class="ref-code">98</td></tr>
+            <tr><th scope="row">c</th><td class="ref-code">01100011</td><td class="ref-code">63</td><td class="ref-code">99</td></tr>
+            <tr><th scope="row">d</th><td class="ref-code">01100100</td><td class="ref-code">64</td><td class="ref-code">100</td></tr>
+            <tr><th scope="row">e</th><td class="ref-code">01100101</td><td class="ref-code">65</td><td class="ref-code">101</td></tr>
+            <tr><th scope="row">f</th><td class="ref-code">01100110</td><td class="ref-code">66</td><td class="ref-code">102</td></tr>
+            <tr><th scope="row">g</th><td class="ref-code">01100111</td><td class="ref-code">67</td><td class="ref-code">103</td></tr>
+            <tr><th scope="row">h</th><td class="ref-code">01101000</td><td class="ref-code">68</td><td class="ref-code">104</td></tr>
+            <tr><th scope="row">i</th><td class="ref-code">01101001</td><td class="ref-code">69</td><td class="ref-code">105</td></tr>
+            <tr><th scope="row">j</th><td class="ref-code">01101010</td><td class="ref-code">6A</td><td class="ref-code">106</td></tr>
+            <tr><th scope="row">k</th><td class="ref-code">01101011</td><td class="ref-code">6B</td><td class="ref-code">107</td></tr>
+            <tr><th scope="row">l</th><td class="ref-code">01101100</td><td class="ref-code">6C</td><td class="ref-code">108</td></tr>
+            <tr><th scope="row">m</th><td class="ref-code">01101101</td><td class="ref-code">6D</td><td class="ref-code">109</td></tr>
+            <tr><th scope="row">n</th><td class="ref-code">01101110</td><td class="ref-code">6E</td><td class="ref-code">110</td></tr>
+            <tr><th scope="row">o</th><td class="ref-code">01101111</td><td class="ref-code">6F</td><td class="ref-code">111</td></tr>
+            <tr><th scope="row">p</th><td class="ref-code">01110000</td><td class="ref-code">70</td><td class="ref-code">112</td></tr>
+            <tr><th scope="row">q</th><td class="ref-code">01110001</td><td class="ref-code">71</td><td class="ref-code">113</td></tr>
+            <tr><th scope="row">r</th><td class="ref-code">01110010</td><td class="ref-code">72</td><td class="ref-code">114</td></tr>
+            <tr><th scope="row">s</th><td class="ref-code">01110011</td><td class="ref-code">73</td><td class="ref-code">115</td></tr>
+            <tr><th scope="row">t</th><td class="ref-code">01110100</td><td class="ref-code">74</td><td class="ref-code">116</td></tr>
+            <tr><th scope="row">u</th><td class="ref-code">01110101</td><td class="ref-code">75</td><td class="ref-code">117</td></tr>
+            <tr><th scope="row">v</th><td class="ref-code">01110110</td><td class="ref-code">76</td><td class="ref-code">118</td></tr>
+            <tr><th scope="row">w</th><td class="ref-code">01110111</td><td class="ref-code">77</td><td class="ref-code">119</td></tr>
+            <tr><th scope="row">x</th><td class="ref-code">01111000</td><td class="ref-code">78</td><td class="ref-code">120</td></tr>
+            <tr><th scope="row">y</th><td class="ref-code">01111001</td><td class="ref-code">79</td><td class="ref-code">121</td></tr>
+            <tr><th scope="row">z</th><td class="ref-code">01111010</td><td class="ref-code">7A</td><td class="ref-code">122</td></tr>
+            <tr><th scope="row">{</th><td class="ref-code">01111011</td><td class="ref-code">7B</td><td class="ref-code">123</td></tr>
+            <tr><th scope="row">|</th><td class="ref-code">01111100</td><td class="ref-code">7C</td><td class="ref-code">124</td></tr>
+            <tr><th scope="row">}</th><td class="ref-code">01111101</td><td class="ref-code">7D</td><td class="ref-code">125</td></tr>
+            <tr><th scope="row">~</th><td class="ref-code">01111110</td><td class="ref-code">7E</td><td class="ref-code">126</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-top:24px;padding-bottom:0;">
+    <h2 style="margin-top:0;">Binary to Text questions</h2>
+    <div class="faq-item">
+      <h3>It decoded but the text is gibberish. What now?</h3>
+      <p>Check the group width first — the commonest cause is a string built as 7-bit ASCII being read as 8-bit, which shifts everything after the first character. Then try code points mode, which reads each group as one whole character rather than one UTF-8 byte. If the gibberish is readable letters in a scrambled order rather than symbols, the string is text but it was reversed or shifted, and it is a cipher rather than an encoding problem.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does it handle binary with no spaces?</h3>
+      <p>Yes. Unseparated input is chopped into eight-digit groups, which is the right guess for the overwhelming majority of what people paste. Commas, line breaks and mixed whitespace all work as separators too. What cannot be guessed is a string of seven-bit groups run together with no separator, because nothing in the digits themselves says where one character stops.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why does one emoji come out as four odd characters?</h3>
+      <p>Because you are decoding as code points and the source was UTF-8 bytes. An emoji is four bytes in UTF-8, and reading those four bytes as four separate characters gives you four meaningless ones instead of the emoji. Switch to UTF-8 bytes mode and the four groups recombine into the single character they encode.</p>
+    </div>
+  </section>
+
+  <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
+    <h2 style="margin-top:0;">More text tools</h2>
+    <ul>
+      <li><a href="/text-to-binary">Text to Binary</a> &mdash; the encoding direction, and what the two modes actually mean.</li>
+      <li><a href="/caesar-cipher">Caesar Cipher</a> &mdash; for when the decode works but the words are still scrambled.</li>
+      <li><a href="/text-cleaner">Text Cleaner</a> &mdash; strip the stray characters a bad copy-paste dragged in.</li>
+    </ul>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>&copy; <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/codecs.js"></script>
+<script src="/assets/js/app.js"></script>
+<script src="/assets/js/codec-page.js"></script>
+<a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<!-- GENERATED FILE - do not edit by hand.
+     Written by tools/build_codec_pages.py from tools/codec_pages.py.
+     Any edit here is lost on the next build, and
+     `python3 tools/build_codec_pages.py --check` fails while one exists. -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morse Code Translator with Sound — Text to Morse and Back | TextKit Pro</title>
+<meta name="description" content="Translate text to Morse code and Morse back to text, then actually hear it: a real oscillator plays your message at any speed from 5 to 40 WPM. No audio files, no upload.">
+<link rel="canonical" href="https://textkitpro.com/morse-code-translator">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Morse Code Translator with Sound — Text to Morse and Back">
+<meta property="og:description" content="Translate text to Morse code and Morse back to text, then actually hear it: a real oscillator plays your message at any speed from 5 to 40 WPM. No audio files, no upload.">
+<meta property="og:url" content="https://textkitpro.com/morse-code-translator">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Morse Code Translator with Sound — Text to Morse and Back">
+<meta name="twitter:description" content="Translate text to Morse code and Morse back to text, then actually hear it: a real oscillator plays your message at any speed from 5 to 40 WPM. No audio files, no upload.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Morse Code Translator — TextKit Pro",
+  "url": "https://textkitpro.com/morse-code-translator",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Translate text to Morse code and Morse back to text, then actually hear it: a real oscillator plays your message at any speed from 5 to 40 WPM. No audio files, no upload."
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why does the sound matter more than the chart?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because Morse at any usable speed is received by ear as whole-letter sounds, not decoded mark by mark. Operators call the visual approach the counting habit, and it caps you at roughly ten words a minute — the point where there is no longer a gap in which to count. Learning the rhythm from the start skips that ceiling entirely, which is why the Koch and Farnsworth methods both teach at full character speed from lesson one and slow the gaps instead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What speed should I start at?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Put the slider at 5 to 8 WPM to take a letter apart, but do not stay there. The usual advice is Farnsworth timing: characters sent at 18 to 20 WPM with long gaps between them, so your ear learns each letter at the speed you will eventually need while your brain still gets time to think. This page's slider changes both together, so the nearest equivalent is to work at 10 to 12 and move up as soon as it stops feeling frantic."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does anything still use Morse?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Commercial maritime use ended in 1999 when GMDSS replaced it, and aviation now uses it only for one job — navigation beacons still identify themselves by transmitting their two or three letter code on a loop, which is why pilots learn to read it. Amateur radio is where it stayed alive by choice: CW gets through noise and weak signals that would swallow voice, using a fraction of the bandwidth and the power."
+      }
+    }
+  ]
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7560786263587509" crossorigin="anonymous"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">&#9680;</button>
+    </div>
+  </div>
+</header>
+
+<!-- nav:start -->
+<nav class="toolbar" aria-label="Tools">
+  <details class="tb-menu">
+    <summary class="tb-trigger" aria-label="All 19 tools">
+      <span class="tb-glyph" aria-hidden="true">&#9636;</span>
+      <span class="tb-label">All 19<span class="tb-label-long"> tools</span></span>
+    </summary>
+    <div class="tb-sheet">
+      <div class="tb-sheet-cols">
+        <p class="tb-grouplabel" id="tb-g1">Count &amp; compare</p>
+        <ul aria-labelledby="tb-g1">
+          <li><a href="/word-counter">Word Counter</a></li>
+          <li><a href="/diff-checker">Diff Checker</a></li>
+          <li><a href="/text-statistics">Text Statistics</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g2">Clean up text</p>
+        <ul aria-labelledby="tb-g2">
+          <li><a href="/case-converter">Case Converter</a></li>
+          <li><a href="/find-and-replace">Find and Replace</a></li>
+          <li><a href="/sort-and-dedupe-lines">Sort and Dedupe Lines</a></li>
+          <li><a href="/slugify">Slugify</a></li>
+          <li><a href="/remove-line-breaks">Remove Line Breaks</a></li>
+          <li><a href="/text-cleaner">Text Cleaner</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g3">Convert &amp; generate</p>
+        <ul aria-labelledby="tb-g3">
+          <li><a href="/lorem-ipsum-generator">Lorem Ipsum Generator</a></li>
+          <li><a href="/markdown-to-html">Markdown ↔ HTML Converter</a></li>
+          <li><a href="/csv-to-json">CSV ↔ JSON Converter</a></li>
+          <li><a href="/reverse-text">Reverse Text</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g4">Encode &amp; translate</p>
+        <ul aria-labelledby="tb-g4">
+          <li><a href="/morse-code-translator" aria-current="page">Morse Code Translator</a></li>
+          <li><a href="/text-to-binary">Text to Binary</a></li>
+          <li><a href="/binary-to-text">Binary to Text</a></li>
+          <li><a href="/caesar-cipher">Caesar Cipher</a></li>
+          <li><a href="/rot13">ROT13</a></li>
+          <li><a href="/nato-phonetic-alphabet">NATO Phonetic Alphabet</a></li>
+        </ul>
+        <p class="tb-hub"><a href="/text-cleaner">Remove spaces, punctuation, emoji, HTML →</a></p>
+      </div>
+    </div>
+  </details>
+  <div class="tb-scrim"></div>
+  <ul class="tb-rail">
+    <li><a href="/word-counter">Word Counter</a></li>
+    <li><a href="/case-converter">Case Converter</a></li>
+    <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a></li>
+    <li><a href="/diff-checker">Diff Checker</a></li>
+    <li><a href="/find-and-replace">Find &amp; Replace</a></li>
+    <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a></li>
+    <li><a href="/markdown-to-html">Markdown ↔ HTML</a></li>
+    <li><a href="/csv-to-json">CSV ↔ JSON</a></li>
+  </ul>
+</nav>
+<!-- nav:end -->
+<main id="main" data-codec-engine="morse" data-codec-init-dir="encode">
+  <div class="hero">
+    <h1>Morse Code Translator</h1>
+    <p>Type it, read it, and hear it played at whatever speed you can follow</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">&bull;</span>Nothing is uploaded to a server<span class="dot">&bull;</span>Instant results</p>
+  </div>
+
+  <section aria-label="Morse Code Translator tool">
+    <div class="panel">
+      <h2>Play it</h2>
+      <div class="codec-player">
+        <div class="codec-player-btns">
+          <button type="button" id="co-play" class="primary">&#9654; Play</button>
+          <button type="button" id="co-stop">Stop</button>
+          <span class="codec-lamp" id="co-lamp" aria-hidden="true"></span>
+        </div>
+        <div class="codec-sliders">
+          <div class="field" style="margin-bottom:0;">
+            <label for="co-wpm">Speed <span class="codec-slider-value" id="co-wpm-value">20 WPM</span></label>
+            <input type="range" id="co-wpm" min="5" max="40" step="1" value="20">
+          </div>
+          <div class="field" style="margin-bottom:0;">
+            <label for="co-pitch">Pitch <span class="codec-slider-value" id="co-pitch-value">600 Hz</span></label>
+            <input type="range" id="co-pitch" min="300" max="1000" step="20" value="600">
+          </div>
+        </div>
+      </div>
+      <p class="hint" id="co-play-hint">The tone is generated in the browser, not downloaded &mdash; there is no audio file, so it works offline. Timing is the ITU's: a dah is three dits, and WPM is measured against PARIS.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Direction</h2>
+      <div class="case-btn-grid">
+        <button type="button" class="case-btn" data-codec-dir="encode" aria-pressed="true">Text &rarr; Morse</button>
+        <button type="button" class="case-btn" data-codec-dir="decode" aria-pressed="false">Morse &rarr; Text</button>
+        <button type="button" class="case-btn" id="co-swap">Swap &#8646;</button>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Input</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="co-input" class="visually-hidden">Text to translate</label>
+          <textarea id="co-input" rows="10" placeholder="Type or paste here...">HELLO WORLD</textarea>
+        </div>
+        <div class="error-banner" id="co-error" role="alert"></div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Morse</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="co-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="co-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="co-output" class="visually-hidden">Result</label>
+          <textarea id="co-output" rows="10" readonly></textarea>
+        </div>
+        <p class="hint" id="co-stats" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-bottom:0;">
+    <h2 style="margin-top:0;">Morse is a rhythm, which is why reading it off a screen never works</h2>
+    <p>Every guide to learning Morse says the same thing and every beginner ignores it: do not learn the dots and dashes as shapes. A person receiving Morse is not looking at <code>.-..</code> and counting marks, they are hearing <em>di-dah-di-dit</em> as one sound with one length, the way you hear a word rather than a row of letters. Learn it visually and you build a lookup step that has to be unlearned later, at around ten words a minute, when there is no longer time to count anything.</p>
+    <p>That is the whole reason this page leads with the player rather than a text box. The written line is the transcription; the sound is the code. The oscillator here runs at 600&nbsp;Hz by default, near the pitch most operators set their receivers to, and the speed slider covers 5 to 40 words per minute — 5 for picking a letter apart, 20 for the speed most amateur licence tests use, 40 for what a practised contest operator copies in their head while writing down the last callsign.</p>
+    <p>The timing is the ITU's, not an approximation. A dah is exactly three dits long, the gap inside a letter is one dit, between letters three, between words seven, and words-per-minute is calibrated against <strong>PARIS</strong> — the standard fifty-dit word — so 20&nbsp;WPM really is a 60&nbsp;millisecond dit and not merely something that feels about right. Speed changes the dit length and nothing else; the ratios never move, because the ratios are what makes it Morse.</p>
+    <p>The table is the ITU-R M.1677-1 alphabet, which includes punctuation most charts drop and a handful of accented letters English speakers never meet. The prosigns are listed separately because they are not letters at all: <code>&lt;AR&gt;</code> is di-dah-di-dah-dit, exactly the same marks as A followed by R, and only the missing gap between them says it means <em>end of message</em> rather than the letters. Type them in angle brackets and they encode as one unbroken symbol.</p>
+
+    <p class="example-heading">SOS, the one everybody knows</p>
+    <div class="cleaner-example">
+      <figure>
+        <figcaption>In</figcaption>
+        <pre>SOS</pre>
+      </figure>
+      <figure>
+        <figcaption>Out</figcaption>
+        <pre>... --- ...</pre>
+      </figure>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-top:24px;padding-bottom:0;">
+    <h2 style="margin-top:0;">The ITU Morse alphabet</h2>
+    <p>Letters, digits and the punctuation the recommendation actually defines. A slash between symbols is a word gap; three or more spaces means the same thing, because pasted Morse from three sites uses three conventions.</p>
+    <div class="ref-columns" style="--ref-cols:4;">
+      <table class="density-table ref-table">
+        <thead><tr><th scope="col">Character</th><th scope="col">Morse</th></tr></thead>
+        <tbody>
+            <tr><th scope="row">0</th><td class="ref-code">-----</td></tr>
+            <tr><th scope="row">1</th><td class="ref-code">.----</td></tr>
+            <tr><th scope="row">2</th><td class="ref-code">..---</td></tr>
+            <tr><th scope="row">3</th><td class="ref-code">...--</td></tr>
+            <tr><th scope="row">4</th><td class="ref-code">....-</td></tr>
+            <tr><th scope="row">5</th><td class="ref-code">.....</td></tr>
+            <tr><th scope="row">6</th><td class="ref-code">-....</td></tr>
+            <tr><th scope="row">7</th><td class="ref-code">--...</td></tr>
+            <tr><th scope="row">8</th><td class="ref-code">---..</td></tr>
+            <tr><th scope="row">9</th><td class="ref-code">----.</td></tr>
+            <tr><th scope="row">A</th><td class="ref-code">.-</td></tr>
+            <tr><th scope="row">B</th><td class="ref-code">-...</td></tr>
+            <tr><th scope="row">C</th><td class="ref-code">-.-.</td></tr>
+            <tr><th scope="row">D</th><td class="ref-code">-..</td></tr>
+            <tr><th scope="row">E</th><td class="ref-code">.</td></tr>
+            <tr><th scope="row">F</th><td class="ref-code">..-.</td></tr>
+        </tbody>
+      </table>
+      <table class="density-table ref-table">
+        <thead><tr><th scope="col">Character</th><th scope="col">Morse</th></tr></thead>
+        <tbody>
+            <tr><th scope="row">G</th><td class="ref-code">--.</td></tr>
+            <tr><th scope="row">H</th><td class="ref-code">....</td></tr>
+            <tr><th scope="row">I</th><td class="ref-code">..</td></tr>
+            <tr><th scope="row">J</th><td class="ref-code">.---</td></tr>
+            <tr><th scope="row">K</th><td class="ref-code">-.-</td></tr>
+            <tr><th scope="row">L</th><td class="ref-code">.-..</td></tr>
+            <tr><th scope="row">M</th><td class="ref-code">--</td></tr>
+            <tr><th scope="row">N</th><td class="ref-code">-.</td></tr>
+            <tr><th scope="row">O</th><td class="ref-code">---</td></tr>
+            <tr><th scope="row">P</th><td class="ref-code">.--.</td></tr>
+            <tr><th scope="row">Q</th><td class="ref-code">--.-</td></tr>
+            <tr><th scope="row">R</th><td class="ref-code">.-.</td></tr>
+            <tr><th scope="row">S</th><td class="ref-code">...</td></tr>
+            <tr><th scope="row">T</th><td class="ref-code">-</td></tr>
+            <tr><th scope="row">U</th><td class="ref-code">..-</td></tr>
+            <tr><th scope="row">V</th><td class="ref-code">...-</td></tr>
+        </tbody>
+      </table>
+      <table class="density-table ref-table">
+        <thead><tr><th scope="col">Character</th><th scope="col">Morse</th></tr></thead>
+        <tbody>
+            <tr><th scope="row">W</th><td class="ref-code">.--</td></tr>
+            <tr><th scope="row">X</th><td class="ref-code">-..-</td></tr>
+            <tr><th scope="row">Y</th><td class="ref-code">-.--</td></tr>
+            <tr><th scope="row">Z</th><td class="ref-code">--..</td></tr>
+            <tr><th scope="row">.</th><td class="ref-code">.-.-.-</td></tr>
+            <tr><th scope="row">,</th><td class="ref-code">--..--</td></tr>
+            <tr><th scope="row">?</th><td class="ref-code">..--..</td></tr>
+            <tr><th scope="row">&#x27;</th><td class="ref-code">.----.</td></tr>
+            <tr><th scope="row">!</th><td class="ref-code">-.-.--</td></tr>
+            <tr><th scope="row">/</th><td class="ref-code">-..-.</td></tr>
+            <tr><th scope="row">(</th><td class="ref-code">-.--.</td></tr>
+            <tr><th scope="row">)</th><td class="ref-code">-.--.-</td></tr>
+            <tr><th scope="row">&amp;</th><td class="ref-code">.-...</td></tr>
+            <tr><th scope="row">:</th><td class="ref-code">---...</td></tr>
+            <tr><th scope="row">;</th><td class="ref-code">-.-.-.</td></tr>
+            <tr><th scope="row">=</th><td class="ref-code">-...-</td></tr>
+        </tbody>
+      </table>
+      <table class="density-table ref-table">
+        <thead><tr><th scope="col">Character</th><th scope="col">Morse</th></tr></thead>
+        <tbody>
+            <tr><th scope="row">+</th><td class="ref-code">.-.-.</td></tr>
+            <tr><th scope="row">-</th><td class="ref-code">-....-</td></tr>
+            <tr><th scope="row">_</th><td class="ref-code">..--.-</td></tr>
+            <tr><th scope="row">&quot;</th><td class="ref-code">.-..-.</td></tr>
+            <tr><th scope="row">$</th><td class="ref-code">...-..-</td></tr>
+            <tr><th scope="row">@</th><td class="ref-code">.--.-.</td></tr>
+            <tr><th scope="row">À</th><td class="ref-code">.--.-</td></tr>
+            <tr><th scope="row">Ä</th><td class="ref-code">.-.-</td></tr>
+            <tr><th scope="row">Ç</th><td class="ref-code">-.-..</td></tr>
+            <tr><th scope="row">È</th><td class="ref-code">.-..-</td></tr>
+            <tr><th scope="row">É</th><td class="ref-code">..-..</td></tr>
+            <tr><th scope="row">Ñ</th><td class="ref-code">--.--</td></tr>
+            <tr><th scope="row">Ö</th><td class="ref-code">---.</td></tr>
+            <tr><th scope="row">Ü</th><td class="ref-code">..--</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Prosigns</h3>
+    <p>Procedural signals, not letters. Each is sent as one unbroken symbol &mdash; type them in angle brackets and they encode as one.</p>
+    <div class="table-scroll">
+      <table class="density-table ref-table">
+        <thead><tr><th scope="col">Prosign</th><th scope="col">Morse</th><th scope="col">Means</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">&lt;AR&gt;</th><td class="ref-code">.-.-.</td><td>End of message</td></tr>
+          <tr><th scope="row">&lt;AS&gt;</th><td class="ref-code">.-...</td><td>Wait</td></tr>
+          <tr><th scope="row">&lt;BK&gt;</th><td class="ref-code">-...-.-</td><td>Break</td></tr>
+          <tr><th scope="row">&lt;BT&gt;</th><td class="ref-code">-...-</td><td>New paragraph</td></tr>
+          <tr><th scope="row">&lt;CL&gt;</th><td class="ref-code">-.-..-..</td><td>Closing station</td></tr>
+          <tr><th scope="row">&lt;CT&gt;</th><td class="ref-code">-.-.-</td><td>Start of transmission</td></tr>
+          <tr><th scope="row">&lt;KN&gt;</th><td class="ref-code">-.--.</td><td>Go ahead, named station only</td></tr>
+          <tr><th scope="row">&lt;SK&gt;</th><td class="ref-code">...-.-</td><td>End of contact</td></tr>
+          <tr><th scope="row">&lt;SN&gt;</th><td class="ref-code">...-.</td><td>Understood</td></tr>
+          <tr><th scope="row">&lt;SOS&gt;</th><td class="ref-code">...---...</td><td>Distress</td></tr>
+          <tr><th scope="row">&lt;HH&gt;</th><td class="ref-code">........</td><td>Error</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-top:24px;padding-bottom:0;">
+    <h2 style="margin-top:0;">Morse Code Translator questions</h2>
+    <div class="faq-item">
+      <h3>Why does the sound matter more than the chart?</h3>
+      <p>Because Morse at any usable speed is received by ear as whole-letter sounds, not decoded mark by mark. Operators call the visual approach the counting habit, and it caps you at roughly ten words a minute — the point where there is no longer a gap in which to count. Learning the rhythm from the start skips that ceiling entirely, which is why the Koch and Farnsworth methods both teach at full character speed from lesson one and slow the gaps instead.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What speed should I start at?</h3>
+      <p>Put the slider at 5 to 8 WPM to take a letter apart, but do not stay there. The usual advice is Farnsworth timing: characters sent at 18 to 20 WPM with long gaps between them, so your ear learns each letter at the speed you will eventually need while your brain still gets time to think. This page's slider changes both together, so the nearest equivalent is to work at 10 to 12 and move up as soon as it stops feeling frantic.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does anything still use Morse?</h3>
+      <p>Commercial maritime use ended in 1999 when GMDSS replaced it, and aviation now uses it only for one job — navigation beacons still identify themselves by transmitting their two or three letter code on a loop, which is why pilots learn to read it. Amateur radio is where it stayed alive by choice: CW gets through noise and weak signals that would swallow voice, using a fraction of the bandwidth and the power.</p>
+    </div>
+  </section>
+
+  <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
+    <h2 style="margin-top:0;">More text tools</h2>
+    <ul>
+      <li><a href="/nato-phonetic-alphabet">NATO Phonetic Alphabet</a> &mdash; the same job for a voice channel instead of a key.</li>
+      <li><a href="/text-to-binary">Text to Binary</a> &mdash; the other way of spelling a letter out one signal at a time.</li>
+      <li><a href="/rot13">ROT13</a> &mdash; a cipher, rather than an alphabet — Morse hides nothing.</li>
+    </ul>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>&copy; <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/codecs.js"></script>
+<script src="/assets/js/app.js"></script>
+<script src="/assets/js/codec-page.js"></script>
+<a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>
+</body>
+</html>

@@ -66,8 +66,8 @@ GENERATED_WARNING = (
     "     `python3 tools/build_cleaner_pages.py --check` fails while one exists. -->"
 )
 
-# Hand-written pages, in the order the sitemap should list them. The builder
-# owns sitemap.xml, so it has to know about the pages it does not write.
+# Pages this builder does not write, in the order the sitemap should list them.
+# It owns sitemap.xml outright, so it has to know about all of them.
 STATIC_URLS = [
     ("/", "weekly", "1.0"),
     ("/word-counter", "monthly", "0.8"),
@@ -83,6 +83,15 @@ STATIC_URLS = [
     ("/remove-line-breaks", "monthly", "0.8"),
     ("/reverse-text", "monthly", "0.8"),
     ("/text-cleaner", "weekly", "0.9"),
+    # The translator family. Written by tools/build_codec_pages.py, listed here
+    # because sitemap.xml has exactly one owner and this is it — that builder
+    # asserts these six rows still exist rather than writing a second copy.
+    ("/morse-code-translator", "monthly", "0.8"),
+    ("/text-to-binary", "monthly", "0.8"),
+    ("/binary-to-text", "monthly", "0.8"),
+    ("/caesar-cipher", "monthly", "0.8"),
+    ("/rot13", "monthly", "0.8"),
+    ("/nato-phonetic-alphabet", "monthly", "0.8"),
 ]
 
 ARTICLE_URLS = [

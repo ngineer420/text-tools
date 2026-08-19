@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<!-- GENERATED FILE - do not edit by hand.
+     Written by tools/build_codec_pages.py from tools/codec_pages.py.
+     Any edit here is lost on the next build, and
+     `python3 tools/build_codec_pages.py --check` fails while one exists. -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROT13 Encoder and Decoder — One Button, Both Directions | TextKit Pro</title>
+<meta name="description" content="Rotate letters by 13. Because 13 is half of 26, encoding and decoding are the same operation, so there is one button and no direction to get wrong.">
+<link rel="canonical" href="https://textkitpro.com/rot13">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="ROT13 Encoder and Decoder — One Button, Both Directions">
+<meta property="og:description" content="Rotate letters by 13. Because 13 is half of 26, encoding and decoding are the same operation, so there is one button and no direction to get wrong.">
+<meta property="og:url" content="https://textkitpro.com/rot13">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ROT13 Encoder and Decoder — One Button, Both Directions">
+<meta name="twitter:description" content="Rotate letters by 13. Because 13 is half of 26, encoding and decoding are the same operation, so there is one button and no direction to get wrong.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "ROT13 — TextKit Pro",
+  "url": "https://textkitpro.com/rot13",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Rotate letters by 13. Because 13 is half of 26, encoding and decoding are the same operation, so there is one button and no direction to get wrong."
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why is there no decode button?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because there is nothing for it to do. Thirteen is half of twenty-six, so rotating by thirteen twice takes every letter all the way around the alphabet and back to itself. The encoder is the decoder. Paste encoded text into the same box and the plain text comes out — a separate decode mode would be a second button running identical code."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is ROT13 secure?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not remotely, and it was never meant to be. There is no key, the algorithm is public, and undoing it is one automatic step — which is the requirement, not the flaw, because the reader is supposed to be able to reveal a spoiler effortlessly. It is a curtain over a punchline. For anything that actually needs protecting, use encryption."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What about numbers — is there a ROT5?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. ROT5 does the same trick to the ten digits, since five is half of ten, and ROT18 is the two combined so that letters and numbers both rotate and both self-invert. ROT47 extends the idea across most of the printable ASCII range including punctuation. All three are the same one idea applied to a different alphabet size."
+      }
+    }
+  ]
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7560786263587509" crossorigin="anonymous"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">&#9680;</button>
+    </div>
+  </div>
+</header>
+
+<!-- nav:start -->
+<nav class="toolbar" aria-label="Tools">
+  <details class="tb-menu">
+    <summary class="tb-trigger" aria-label="All 19 tools">
+      <span class="tb-glyph" aria-hidden="true">&#9636;</span>
+      <span class="tb-label">All 19<span class="tb-label-long"> tools</span></span>
+    </summary>
+    <div class="tb-sheet">
+      <div class="tb-sheet-cols">
+        <p class="tb-grouplabel" id="tb-g1">Count &amp; compare</p>
+        <ul aria-labelledby="tb-g1">
+          <li><a href="/word-counter">Word Counter</a></li>
+          <li><a href="/diff-checker">Diff Checker</a></li>
+          <li><a href="/text-statistics">Text Statistics</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g2">Clean up text</p>
+        <ul aria-labelledby="tb-g2">
+          <li><a href="/case-converter">Case Converter</a></li>
+          <li><a href="/find-and-replace">Find and Replace</a></li>
+          <li><a href="/sort-and-dedupe-lines">Sort and Dedupe Lines</a></li>
+          <li><a href="/slugify">Slugify</a></li>
+          <li><a href="/remove-line-breaks">Remove Line Breaks</a></li>
+          <li><a href="/text-cleaner">Text Cleaner</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g3">Convert &amp; generate</p>
+        <ul aria-labelledby="tb-g3">
+          <li><a href="/lorem-ipsum-generator">Lorem Ipsum Generator</a></li>
+          <li><a href="/markdown-to-html">Markdown ↔ HTML Converter</a></li>
+          <li><a href="/csv-to-json">CSV ↔ JSON Converter</a></li>
+          <li><a href="/reverse-text">Reverse Text</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g4">Encode &amp; translate</p>
+        <ul aria-labelledby="tb-g4">
+          <li><a href="/morse-code-translator">Morse Code Translator</a></li>
+          <li><a href="/text-to-binary">Text to Binary</a></li>
+          <li><a href="/binary-to-text">Binary to Text</a></li>
+          <li><a href="/caesar-cipher">Caesar Cipher</a></li>
+          <li><a href="/rot13" aria-current="page">ROT13</a></li>
+          <li><a href="/nato-phonetic-alphabet">NATO Phonetic Alphabet</a></li>
+        </ul>
+        <p class="tb-hub"><a href="/text-cleaner">Remove spaces, punctuation, emoji, HTML →</a></p>
+      </div>
+    </div>
+  </details>
+  <div class="tb-scrim"></div>
+  <ul class="tb-rail">
+    <li><a href="/word-counter">Word Counter</a></li>
+    <li><a href="/case-converter">Case Converter</a></li>
+    <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a></li>
+    <li><a href="/diff-checker">Diff Checker</a></li>
+    <li><a href="/find-and-replace">Find &amp; Replace</a></li>
+    <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a></li>
+    <li><a href="/markdown-to-html">Markdown ↔ HTML</a></li>
+    <li><a href="/csv-to-json">CSV ↔ JSON</a></li>
+  </ul>
+</nav>
+<!-- nav:end -->
+<main id="main" data-codec-engine="caesar" data-codec-init-dir="encode" data-codec-init-locked="1" data-codec-init-shift="13">
+  <div class="hero">
+    <h1>ROT13</h1>
+    <p>Rotate by thirteen — run it twice and you are back where you started</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">&bull;</span>Nothing is uploaded to a server<span class="dot">&bull;</span>Instant results</p>
+  </div>
+
+  <section aria-label="ROT13 tool">
+    <div class="panel">
+      <h2>One operation, both ways</h2>
+      <p class="hint" style="margin-top:0;">Thirteen is half of twenty-six, so rotating twice returns the original. There is no decode button because there is nothing for it to do &mdash; paste encoded text in and the plain text comes out.</p>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Input</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="co-input" class="visually-hidden">Text to translate</label>
+          <textarea id="co-input" rows="10" placeholder="Type or paste here...">Spoilers ahead: the butler did it.</textarea>
+        </div>
+        <div class="error-banner" id="co-error" role="alert"></div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Rotated</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="co-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="co-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="co-output" class="visually-hidden">Result</label>
+          <textarea id="co-output" rows="10" readonly></textarea>
+        </div>
+        <p class="hint" id="co-stats" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-bottom:0;">
+    <h2 style="margin-top:0;">Not a cipher. A politeness protocol that happens to look like one</h2>
+    <p>ROT13 has never been about secrecy and nobody who used it thought it was. It appeared on Usenet in the early 1980s as a courtesy: a way to post a punchline, a spoiler or an answer so that it did not arrive in your eye before you had chosen to read it. The reader who wanted it typed a key; the reader who did not, did not. It is a curtain, not a lock, and every newsreader of the era had a single keystroke to pull it back.</p>
+    <p>The mechanism is one property of the number 26. Rotating a letter thirteen places and then thirteen more moves it twenty-six places, which is all the way round the alphabet and back to where it started. So ROT13 is its own inverse: the encoder and the decoder are the same operation, there is no second function, and no direction has to travel alongside the message. That is why this page has one button rather than an encode/decode toggle — a decode toggle would be a control that does nothing.</p>
+    <p>It is still in daily use for exactly the job it was invented for. Puzzle communities post hints in it, mailing lists hide answers in it, some CTF and adventure-game hint systems still serve it, and it survives in the classic <code>tr a-zA-Z n-za-mN-ZA-M</code> one-liner that half of Unix's users know by heart. It has also earned an ironic second life as the standard example in any conversation about security theatre.</p>
+    <p>So: do not use it to protect anything. It has no key, its algorithm is universally known, and reversing it is a single automatic step — which is the whole point, since a reader has to be able to undo it trivially for the convention to work at all. If you need something a person cannot casually read, that is <a href="/caesar-cipher">not what a rotation cipher is for</a> either; it is a job for real encryption.</p>
+
+    <p class="example-heading">Run it twice and the text comes back</p>
+    <div class="cleaner-example">
+      <figure>
+        <figcaption>In</figcaption>
+        <pre>Spoilers ahead: the butler did it.</pre>
+      </figure>
+      <figure>
+        <figcaption>Out</figcaption>
+        <pre>Fcbvyref nurnq: gur ohgyre qvq vg.</pre>
+      </figure>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-top:24px;padding-bottom:0;">
+    <h2 style="margin-top:0;">ROT13 questions</h2>
+    <div class="faq-item">
+      <h3>Why is there no decode button?</h3>
+      <p>Because there is nothing for it to do. Thirteen is half of twenty-six, so rotating by thirteen twice takes every letter all the way around the alphabet and back to itself. The encoder is the decoder. Paste encoded text into the same box and the plain text comes out — a separate decode mode would be a second button running identical code.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is ROT13 secure?</h3>
+      <p>Not remotely, and it was never meant to be. There is no key, the algorithm is public, and undoing it is one automatic step — which is the requirement, not the flaw, because the reader is supposed to be able to reveal a spoiler effortlessly. It is a curtain over a punchline. For anything that actually needs protecting, use encryption.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What about numbers — is there a ROT5?</h3>
+      <p>Yes. ROT5 does the same trick to the ten digits, since five is half of ten, and ROT18 is the two combined so that letters and numbers both rotate and both self-invert. ROT47 extends the idea across most of the printable ASCII range including punctuation. All three are the same one idea applied to a different alphabet size.</p>
+    </div>
+  </section>
+
+  <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
+    <h2 style="margin-top:0;">More text tools</h2>
+    <ul>
+      <li><a href="/caesar-cipher">Caesar Cipher</a> &mdash; any shift, plus the table that breaks one.</li>
+      <li><a href="/text-to-binary">Text to Binary</a> &mdash; an encoding, where ROT13 is a substitution.</li>
+      <li><a href="/find-and-replace">Find and Replace</a> &mdash; for substitutions that are not a rotation.</li>
+    </ul>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>&copy; <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/codecs.js"></script>
+<script src="/assets/js/app.js"></script>
+<script src="/assets/js/codec-page.js"></script>
+<a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>
+</body>
+</html>

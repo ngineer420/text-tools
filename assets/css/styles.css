@@ -784,3 +784,54 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 64px; }
   font-size: 13.5px;
   color: var(--text-dim);
 }
+
+/* ---------- text cleaner: three-up options, worked examples ---------- */
+/* The cleaner pages carry two or three selects depending on the transform, so
+   the split grid the other tools use is not enough on its own. */
+@media (min-width: 760px) {
+  .tool-grid--three { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 560px) and (max-width: 759px) {
+  .tool-grid--three { grid-template-columns: 1fr 1fr; }
+}
+
+.example-heading { font-size: 15px; margin: 26px 0 0; }
+.cleaner-example {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 12px 0 0;
+}
+@media (min-width: 700px) {
+  .cleaner-example { grid-template-columns: 1fr 1fr; }
+}
+.cleaner-example figure { margin: 0; min-width: 0; }
+.cleaner-example figcaption {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 600;
+  color: var(--text-faint);
+  margin-bottom: 6px;
+}
+/* pre-wrap rather than a horizontal scroller: these samples are short and the
+   whole point of the block is that both halves line up beside each other. */
+.cleaner-example pre {
+  margin: 0;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-dim);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* The combined tool's checkbox stack is the page's primary control, so it gets
+   more room per row than the incidental checkbox rows elsewhere. */
+.clean-toggles { gap: 10px 22px; }
+.clean-toggles .check { font-size: 13.5px; }

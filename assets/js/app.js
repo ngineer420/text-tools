@@ -628,23 +628,46 @@
 
   /* -------------------------------- slugify ------------------------------ */
 
-  // Characters that NFKD will not decompose into "letter + accent".
-  const TRANSLITERATIONS = {
+  // Letters that NFKD will not decompose into "letter + accent". These have no
+  // decomposition at all - they are letters in their own right - so a
+  // normalise-and-strip pass leaves them untouched and any ASCII filter after
+  // it then deletes them outright, turning "Straße" into "Strae".
+  const LETTER_FOLD = {
     "ß": "ss", "æ": "ae", "Æ": "ae", "œ": "oe", "Œ": "oe", "ø": "o", "Ø": "o",
     "đ": "d", "Đ": "d", "ð": "d", "Ð": "d", "þ": "th", "Þ": "th", "ł": "l",
-    "Ł": "l", "ı": "i", "ħ": "h", "ŋ": "n", "ĸ": "k", "€": "euro", "£": "gbp",
-    "$": "dollar", "&": "and", "@": "at", "%": "percent", "©": "c", "®": "r",
-    "№": "no", "°": "deg", "µ": "u", "«": "", "»": "", "“": "", "”": "",
-    "‘": "", "’": "", "…": "",
+    "Ł": "l", "ı": "i", "ħ": "h", "ŋ": "n", "ĸ": "k",
   };
 
-  function transliterate(text) {
+  // Slug-only. A URL wants "50-percent" rather than "50", so slugify spells
+  // these out - but an accent remover must not, or "12%" comes back as
+  // "12percent" and "€1,240" as "euro1,240".
+  const SLUG_SYMBOLS = {
+    "€": "euro", "£": "gbp", "$": "dollar", "&": "and", "@": "at",
+    "%": "percent", "©": "c", "®": "r", "№": "no", "°": "deg", "µ": "u",
+    "«": "", "»": "", "“": "", "”": "", "‘": "", "’": "", "…": "",
+  };
+
+  const TRANSLITERATIONS = Object.assign({}, LETTER_FOLD, SLUG_SYMBOLS);
+
+  // Uppercase forms worth keeping uppercase. slugify lowercases everything a
+  // moment later so it never notices the difference, but "Łódź" is a name and
+  // "lodz" in the middle of a sentence is wrong.
+  const LETTER_FOLD_CASED = Object.assign({}, LETTER_FOLD, {
+    "Æ": "AE", "Œ": "OE", "Ø": "O", "Đ": "D", "Ð": "D", "Þ": "TH", "Ł": "L",
+  });
+
+  /** Apply a substitution map, then NFKD-decompose and drop the marks left. */
+  function foldMarks(text, map) {
     let out = "";
     for (const ch of String(text == null ? "" : text)) {
-      out += Object.prototype.hasOwnProperty.call(TRANSLITERATIONS, ch) ? TRANSLITERATIONS[ch] : ch;
+      out += Object.prototype.hasOwnProperty.call(map, ch) ? map[ch] : ch;
     }
     // NFKD splits "é" into "e" + combining acute; drop the accents that leaves.
     return out.normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  function transliterate(text) {
+    return foldMarks(text, TRANSLITERATIONS);
   }
 
   /**
@@ -1201,6 +1224,327 @@
     return source.split("\n").map(reverseGraphemes).join("\n");
   }
 
+  /* ------------------------------- cleaners ------------------------------ */
+
+  /* The "remove X from text" family. One pure function per transform, plus a
+     registry, so the combined tool on /text-cleaner and every generated
+     /remove-… page run exactly the same code rather than near-copies of it.
+
+     Every function takes (text, options) and returns a string. cleanText()
+     runs a selection of them in CLEANER_ORDER, which is a fixed pipeline
+     because the order changes the answer: markup has to go before punctuation
+     (or `<p>` leaves a stray `p` behind), accents before an ASCII-only pass,
+     and the whitespace tidy-up has to run last so it can close the gaps every
+     earlier step opened. */
+
+  // Everything that looks like a space but is not U+0020, plus the invisible
+  // characters that survive a copy out of a web page and break a later diff.
+  const UNICODE_SPACES = /[\u00a0\u1680\u2000-\u200a\u202f\u205f\u3000]/g;
+  const ZERO_WIDTH = /[\u200b-\u200d\u2060\ufeff]/g;
+
+  /**
+   * Whitespace cleanup.
+   * @param {{mode, blankLines, tabsToSpaces, unifySpaces}} options
+   *   mode: "collapse" runs to one space and trim the ends (default),
+   *         "indent" collapse runs but keep the leading indentation,
+   *         "trim" only strip the ends, "all" delete every space and tab.
+   */
+  function removeExtraSpaces(text, options) {
+    const o = options || {};
+    let s = normalizeNewlines(text);
+    if (o.unifySpaces !== false) s = s.replace(UNICODE_SPACES, " ").replace(ZERO_WIDTH, "");
+    if (o.tabsToSpaces !== false) s = s.replace(/\t/g, " ");
+
+    const mode = o.mode || "collapse";
+    s = s
+      .split("\n")
+      .map((line) => {
+        if (mode === "all") return line.replace(/[ \t]+/g, "");
+        if (mode === "trim") return line.replace(/^[ \t]+|[ \t]+$/g, "");
+        if (mode === "indent") {
+          // The leading run is structure here, not noise, so the collapse pass
+          // starts after it. Collapsing it too is what turns a YAML block or a
+          // Python function into one flat column.
+          const indent = line.match(/^[ \t]*/)[0];
+          return indent + line.slice(indent.length)
+            .replace(/([ \t])[ \t]+/g, "$1")
+            .replace(/[ \t]+$/, "");
+        }
+        return line.replace(/([ \t])[ \t]+/g, "$1").replace(/^[ \t]+|[ \t]+$/g, "");
+      })
+      .join("\n");
+
+    const blanks = o.blankLines || "collapse";
+    if (blanks === "remove") s = s.split("\n").filter((l) => l.trim() !== "").join("\n");
+    else if (blanks === "collapse") s = s.replace(/\n{3,}/g, "\n\n");
+    return s;
+  }
+
+  // Which marks survive, by intent rather than by codepoint list.
+  const PUNCT_KEEP = {
+    none: "",
+    sentence: ".!?,;:",
+    words: "'-",
+    both: ".!?,;:'-",
+  };
+
+  // Typographic forms of a mark whose ASCII twin may be on the keep list. A
+  // curly apostrophe in "don’t" has to survive a "keep apostrophes" setting,
+  // and the only sane way to keep it is to hand back the straight one.
+  //
+  // The en and em dash are deliberately NOT folded onto the hyphen. They are a
+  // different mark doing a different job: "well-known" is one word and "a — b"
+  // is a sentence break, so keeping hyphens should not quietly keep every dash.
+  // U+2010 and U+2011 are folded, because those really are hyphens.
+  const PUNCT_FOLD = {
+    "‘": "'", "’": "'", "‚": "'", "‛": "'",
+    "‐": "-", "‑": "-",
+    "…": ".", "‼": "!", "⁇": "?", "⁈": "?", "⁉": "!",
+    "！": "!", "，": ",", "．": ".", "：": ":", "；": ";", "？": "?",
+  };
+
+  /**
+   * Strip punctuation. Symbols (+ = < > | ~ $ ^ `) are Unicode \p{S}, not
+   * \p{P}, and belong to removeSpecialChars — a "remove punctuation" tool that
+   * silently eats the plus sign in a phone number is the wrong tool.
+   * @param {{keep, replaceWith, foldQuotes}} options
+   */
+  function removePunctuation(text, options) {
+    const o = options || {};
+    const keepSrc = PUNCT_KEEP[o.keep] === undefined ? PUNCT_KEEP.none : PUNCT_KEEP[o.keep];
+    const keep = new Set(keepSrc.split(""));
+    const rep = o.replaceWith === "space" ? " " : "";
+    let out = "";
+    for (const ch of String(text == null ? "" : text)) {
+      if (!/\p{P}/u.test(ch)) { out += ch; continue; }
+      if (keep.has(ch)) { out += ch; continue; }
+      const folded = Object.prototype.hasOwnProperty.call(PUNCT_FOLD, ch) ? PUNCT_FOLD[ch] : ch;
+      if (keep.has(folded)) { out += o.foldQuotes === false ? ch : folded; continue; }
+      out += rep;
+    }
+    return out;
+  }
+
+  // What "special character" means depends entirely on where the text is going,
+  // so the choice is the page's first control rather than a hidden constant.
+  const SPECIAL_KEEP = {
+    alnum: /[^\p{L}\p{N}\s]/gu,
+    basic: /[^\p{L}\p{N}\s.,!?'"()\-:;/@#&%]/gu,
+    ascii: /[^\x20-\x7e\n]/g,
+  };
+
+  /**
+   * Remove symbols, control characters and anything outside the chosen set.
+   * @param {{keep, replaceWith, transliterate}} options
+   */
+  function removeSpecialChars(text, options) {
+    const o = options || {};
+    const keep = SPECIAL_KEEP[o.keep] ? o.keep : "alnum";
+    const rep = o.replaceWith === "space" ? " " : "";
+    let s = normalizeNewlines(text);
+    // Control characters are invisible and are never what anyone means to keep.
+    s = s.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "");
+    // Folding first is what turns "café" into "cafe" rather than "caf" when the
+    // target is ASCII; without it an ASCII pass deletes every accented letter.
+    if (keep === "ascii" && o.transliterate !== false) s = foldMarks(s, LETTER_FOLD_CASED);
+    const re = SPECIAL_KEEP[keep];
+    return s.replace(new RegExp(re.source, re.flags), rep);
+  }
+
+  // Digits with their separators, anchored so a match cannot start mid-token.
+  const NUMBER_TOKEN = /(^|[^\p{L}\p{N}])([-+]?\p{Nd}[\p{Nd},.]*)/gu;
+  const CURRENCY = /[$¢-¥₠-₿%‰]/g;
+
+  /**
+   * Remove numbers.
+   * @param {{mode, replaceWith, currency}} options
+   *   mode: "all" every digit anywhere, "standalone" whole numbers only so
+   *   mp3, H2O and A4 keep their digits, "listmarkers" only the "1." that
+   *   opens a line of a pasted numbered list.
+   */
+  function removeNumbers(text, options) {
+    const o = options || {};
+    const mode = o.mode || "all";
+    const rep = o.replaceWith === "space" ? " " : "";
+    let s = normalizeNewlines(text);
+
+    if (mode === "listmarkers") {
+      // The dot, bracket or colon is required. Without it "2024 was a good
+      // year" reads as list item 2024 and loses its opening word.
+      s = s.split("\n").map((l) => l.replace(/^(\s*)[([]?\p{Nd}+[.)\]:][ \t]+/u, "$1")).join("\n");
+    } else if (mode === "standalone") {
+      s = s.replace(NUMBER_TOKEN, (whole, pre, num, idx, full) => {
+        // "3.5kg" and "1st" are words with a number in them, not numbers.
+        const after = full[idx + whole.length];
+        if (after && /\p{L}/u.test(after)) return whole;
+        let token = num;
+        let tail = "";
+        const trailing = token.match(/[.,]+$/);
+        if (trailing) { tail = trailing[0]; token = token.slice(0, -tail.length); }
+        return pre + rep + tail;
+      });
+    } else {
+      s = s.replace(/\p{Nd}/gu, rep);
+    }
+
+    if (o.currency) s = s.replace(CURRENCY, rep);
+    return s;
+  }
+
+  /* Emoji are clusters, not characters: a base pictograph plus an optional
+     skin tone and variation selector, several of those joined by ZWJ into a
+     family or a profession, a pair of regional indicators for a flag, or a
+     digit plus U+20E3 for a keycap. Deleting one codepoint at a time leaves
+     orphaned joiners and half a flag behind. */
+  const EMOJI_TONE = "[\\u{1F3FB}-\\u{1F3FF}]";
+  const EMOJI_ATOM = "(?:\\p{Extended_Pictographic}(?:\\uFE0F|\\uFE0E)?" + EMOJI_TONE + "?)";
+  const EMOJI_CLUSTER =
+    "(?:\\p{RI}\\p{RI}|[0-9#*]\\uFE0F?\\u20E3|" + EMOJI_ATOM + "(?:\\u200D" + EMOJI_ATOM + ")*)";
+
+  /* Extended_Pictographic also covers © ® ™ ‼ ⁉ ℹ ↔ and friends, which are
+     ordinary punctuation in running prose and only become emoji when they
+     carry U+FE0F. Removing the © off a footer line is not what anyone asked
+     for, so the text-presentation forms are kept unless keepTextSymbols is
+     switched off. */
+  const TEXT_PRESENTATION =
+    /[©®™‼⁉ℹ↔-↪⌚⌛Ⓜ▪-◾☀-☄☎☑☔☕☘☝☠-☣☦☪☮☯☸-☺♀♂♈-♓]/;
+
+  /**
+   * Remove emoji.
+   * @param {{replaceWith, symbols, keepTextSymbols}} options
+   */
+  function removeEmoji(text, options) {
+    const o = options || {};
+    const rep = o.replaceWith === "space" ? " " : "";
+    let s = String(text == null ? "" : text);
+    const cluster = new RegExp(EMOJI_CLUSTER, "gu");
+    s = s.replace(cluster, (match) => {
+      if (o.keepTextSymbols !== false && match.length === 1 && TEXT_PRESENTATION.test(match)) {
+        return match;
+      }
+      return rep;
+    });
+    // ☑ ➜ ⚑ and the rest of the dingbats are \p{So} rather than pictographs.
+    if (o.symbols) s = s.replace(/\p{So}/gu, rep);
+    // A joiner or a variation selector left on its own renders as nothing but
+    // still breaks string comparison, so it goes whatever else was kept.
+    s = s.replace(/(^|[^\p{Extended_Pictographic}])[\ufe0e\ufe0f\u200d]+/gu, "$1");
+    return s;
+  }
+
+  /* Tags whose closing edge is a line in the rendered page. Everything else is
+     inline and closing it must not introduce a break, or a paragraph with a
+     <strong> in it comes back as three lines. */
+  const HTML_BLOCK_TAG = /^(?:address|article|aside|blockquote|br|div|dd|dl|dt|fieldset|figcaption|figure|footer|form|h[1-6]|header|hr|li|main|nav|ol|p|pre|section|table|tbody|td|tfoot|th|thead|tr|ul)$/i;
+
+  /**
+   * Strip HTML tags, leaving the text between them.
+   * @param {{blockBreaks, dropScripts, dropComments, decodeEntities, tidy}} options
+   */
+  function stripHtmlTags(text, options) {
+    const o = options || {};
+    let s = normalizeNewlines(text);
+    if (o.dropComments !== false) s = s.replace(/<!--[\s\S]*?-->/g, "");
+    // A <script> body is code, not text, so dropping the tags alone would
+    // paste a function into the middle of the result.
+    if (o.dropScripts !== false) {
+      s = s.replace(/<(script|style|noscript|template)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, "");
+    }
+    s = s.replace(/<![a-zA-Z][^>]*>/g, "");
+    // The break belongs to the *closing* edge of a block, plus the two tags
+    // that are a break in themselves. Breaking on the opening tag as well puts
+    // a blank line between every list item.
+    s = s.replace(/<(\/?)([a-zA-Z][a-zA-Z0-9-]*)\b(?:"[^"]*"|'[^']*'|[^>])*>/g, (whole, slash, tag) => {
+      if (o.blockBreaks === false || !HTML_BLOCK_TAG.test(tag)) return "";
+      return slash || /^(?:br|hr)$/i.test(tag) ? "\n" : "";
+    });
+    if (o.decodeEntities !== false) s = decodeEntities(s);
+    if (o.tidy !== false) {
+      s = s.replace(/[ \t]+/g, " ").replace(/[ \t]*\n[ \t]*/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+    }
+    return s;
+  }
+
+  /**
+   * Remove accents and diacritics.
+   * @param {{mode, transliterate, replaceWith}} options
+   *   mode: "fold" é→e and ß→ss, leaving other scripts alone (default),
+   *         "marks" drop the combining marks but keep every script,
+   *         "ascii" fold, then delete anything still outside ASCII.
+   */
+  function removeAccents(text, options) {
+    const o = options || {};
+    const s = String(text == null ? "" : text);
+    if (o.mode === "marks") {
+      // NFD then NFC, not NFKD: decomposing compatibility forms would turn ½
+      // into 1⁄2 and ﬁ into fi, which is a different job.
+      return s.normalize("NFD").replace(/\p{M}/gu, "").normalize("NFC");
+    }
+    // foldMarks with the letter map, NOT transliterate(): slugify's map also
+    // spells out % as "percent" and € as "euro", which is right for a URL and
+    // very wrong for a page that only claims to remove accents.
+    let out = o.transliterate === false
+      ? s.normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
+      : foldMarks(s, LETTER_FOLD_CASED);
+    if (o.mode === "ascii") {
+      out = out.replace(/[^\x00-\x7f]/g, o.replaceWith === "space" ? " " : "");
+    }
+    return out;
+  }
+
+  /* The registry. `id` is the value of the data-cleaner attribute on a
+     generated page and the key in a cleanText() selection, so it is the one
+     string shared between the Python builder, the page markup and this file. */
+  const CLEANERS = {
+    "html-tags":     { id: "html-tags",     label: "HTML tags",          href: "/remove-html-tags",          fn: stripHtmlTags },
+    "emoji":         { id: "emoji",         label: "Emoji",              href: "/remove-emojis",             fn: removeEmoji },
+    "accents":       { id: "accents",       label: "Accents",            href: "/remove-accents",            fn: removeAccents },
+    "numbers":       { id: "numbers",       label: "Numbers",            href: "/remove-numbers",            fn: removeNumbers },
+    "punctuation":   { id: "punctuation",   label: "Punctuation",        href: "/remove-punctuation",        fn: removePunctuation },
+    "special-chars": { id: "special-chars", label: "Special characters", href: "/remove-special-characters", fn: removeSpecialChars },
+    "extra-spaces":  { id: "extra-spaces",  label: "Extra spaces",       href: "/remove-extra-spaces",       fn: removeExtraSpaces },
+  };
+
+  // Pipeline order, deliberately not the display order — see the note above.
+  const CLEANER_ORDER = [
+    "html-tags", "emoji", "accents", "numbers", "punctuation", "special-chars", "extra-spaces",
+  ];
+
+  function cleanStats(before, after) {
+    const countLines = (s) => (s === "" ? 0 : s.split("\n").length);
+    return {
+      charactersBefore: before.length,
+      charactersAfter: after.length,
+      delta: after.length - before.length,
+      removed: Math.max(0, before.length - after.length),
+      wordsBefore: countWords(before),
+      wordsAfter: countWords(after),
+      linesBefore: countLines(before),
+      linesAfter: countLines(after),
+    };
+  }
+
+  /**
+   * Run a selection of cleaners over some text.
+   * @param {string} text
+   * @param {Object} selection  id -> options object, or `true` for defaults.
+   *   Ids missing from the object are skipped, so the same call shape serves
+   *   the seven single-transform pages and the everything-on combined tool.
+   */
+  function cleanText(text, selection) {
+    const source = normalizeNewlines(text);
+    const sel = selection || {};
+    const applied = [];
+    let out = source;
+    for (const id of CLEANER_ORDER) {
+      const chosen = sel[id];
+      if (!chosen) continue;
+      out = CLEANERS[id].fn(out, chosen === true ? {} : chosen);
+      applied.push(id);
+    }
+    return { text: out, stats: cleanStats(source, out), applied };
+  }
+
   /* ============================================================
      Export pure functions for Node-based sanity checks (see README).
      In the browser this block is skipped and the IIFE below runs.
@@ -1244,6 +1588,15 @@
       reverseGraphemes,
       reverseWordsInLine,
       reverseText,
+      removeExtraSpaces,
+      removePunctuation,
+      removeSpecialChars,
+      removeNumbers,
+      removeEmoji,
+      stripHtmlTags,
+      removeAccents,
+      cleanText,
+      CLEANER_ORDER,
       countWords,
       countCharsWithSpaces,
       countCharsWithoutSpaces,
@@ -1403,6 +1756,7 @@
       "/text-statistics": "panel-stats",
       "/remove-line-breaks": "panel-removebreaks",
       "/reverse-text": "panel-reverse",
+      "/text-cleaner": "panel-cleaner",
     };
     var keys = Object.keys(PANELS);
     var panels = {};
@@ -2031,6 +2385,88 @@
       el.addEventListener("change", render)
     );
     wireCopy("rb-copy", "rb-copy-flash", () => output.value);
+    render();
+  })();
+
+  /* ----------------------------- text cleaner ---------------------------- */
+
+  /* Shared with assets/js/cleaner-page.js, which drives the seven generated
+     single-transform pages. Exposing the registry rather than duplicating it
+     is what keeps /remove-emojis and the "Emoji" checkbox on /text-cleaner
+     from drifting apart. */
+  window.TextKitClean = {
+    CLEANERS,
+    CLEANER_ORDER,
+    cleanText,
+    readOptions: readCleanerOptions,
+    renderStats: renderCleanerStats,
+    wireCopy,
+    debounce,
+  };
+
+  /* Read a set of option controls into cleanText()'s selection shape.
+
+     Every control carries `data-opt="<optionName>"` and, on a page with more
+     than one cleaner in play, `data-for="<cleanerId>"`. Nothing about which
+     options exist is written twice: the builder emits the controls from
+     tools/cleaner_pages.py and this reads back whatever it finds. */
+  function readCleanerOptions(scope, selection, defaultId) {
+    Array.from(scope.querySelectorAll("[data-opt]")).forEach((el) => {
+      const target = selection[el.dataset.for || defaultId];
+      const enabled = !!target;
+      // A "keep apostrophes" select means nothing while punctuation is off,
+      // and a live control that changes nothing is the worst kind of control.
+      if (el.dataset.for) el.disabled = !enabled;
+      if (!enabled) return;
+      target[el.dataset.opt] = el.type === "checkbox" ? el.checked : el.value;
+    });
+    return selection;
+  }
+
+  /** Fill the four before/after cards every cleaner page shares. */
+  function renderCleanerStats(prefix, s) {
+    const set = (suffix, value) => {
+      const el = document.getElementById(prefix + suffix);
+      if (el) el.textContent = value;
+    };
+    set("-before", s.charactersBefore.toLocaleString());
+    set("-after", s.charactersAfter.toLocaleString());
+    set("-removed", s.removed.toLocaleString());
+    set("-words", s.wordsBefore.toLocaleString() + " → " + s.wordsAfter.toLocaleString());
+  }
+
+  /* The combined tool on /text-cleaner: all seven transforms at once, each on
+     a checkbox, all of them on when the page loads. */
+  (function textCleanerTool() {
+    const input = document.getElementById("tc-input");
+    if (!input) return;
+    const output = document.getElementById("tc-output");
+    const panel = document.getElementById("tc-controls");
+    const summary = document.getElementById("tc-summary");
+    const toggles = Array.from(panel.querySelectorAll("[data-clean]"));
+
+    function render() {
+      const selection = {};
+      toggles.forEach((t) => { if (t.checked) selection[t.dataset.clean] = {}; });
+      readCleanerOptions(panel, selection, null);
+
+      const result = cleanText(input.value, selection);
+      output.value = result.text;
+      renderCleanerStats("tc", result.stats);
+
+      if (summary) {
+        const names = result.applied.map((id) => CLEANERS[id].label.toLowerCase());
+        summary.textContent = names.length
+          ? "Removing " + (names.length === 1
+              ? names[0]
+              : names.slice(0, -1).join(", ") + " and " + names[names.length - 1]) + "."
+          : "Nothing is switched on, so the text comes back exactly as pasted.";
+      }
+    }
+
+    input.addEventListener("input", debounce(render, 100));
+    panel.addEventListener("change", render);
+    wireCopy("tc-copy", "tc-copy-flash", () => output.value);
     render();
   })();
 

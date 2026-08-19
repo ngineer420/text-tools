@@ -10,12 +10,12 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="TextKit Pro — 12 Free Text Tools in One Page">
-<meta property="og:description" content="Word counter, find and replace, line sorting, Markdown ↔ HTML, CSV ↔ JSON, slugify and more — twelve free text tools in one page, no sign-up, nothing uploaded.">
+<meta property="og:description" content="Word counter, find and replace, line sorting, Markdown ↔ HTML, CSV ↔ JSON, slugify and more — thirteen free text tools in one page, no sign-up, nothing uploaded.">
 <meta property="og:url" content="https://textkitpro.com/">
 <meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="TextKit Pro — 12 Free Text Tools in One Page">
-<meta name="twitter:description" content="Word counter, find and replace, line sorting, Markdown ↔ HTML, CSV ↔ JSON, slugify and more — twelve free text tools in one page, no sign-up, nothing uploaded.">
+<meta name="twitter:description" content="Word counter, find and replace, line sorting, Markdown ↔ HTML, CSV ↔ JSON, slugify and more — thirteen free text tools in one page, no sign-up, nothing uploaded.">
 <meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
 
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -56,9 +56,9 @@
 <!-- nav:start -->
 <nav class="toolbar" aria-label="Tools">
   <details class="tb-menu">
-    <summary class="tb-trigger" aria-label="All 12 tools">
+    <summary class="tb-trigger" aria-label="All 13 tools">
       <span class="tb-glyph" aria-hidden="true">&#9636;</span>
-      <span class="tb-label">All 12<span class="tb-label-long"> tools</span></span>
+      <span class="tb-label">All 13<span class="tb-label-long"> tools</span></span>
     </summary>
     <div class="tb-sheet">
       <div class="tb-sheet-cols">
@@ -75,6 +75,7 @@
           <li><a href="/sort-and-dedupe-lines">Sort and Dedupe Lines</a></li>
           <li><a href="/slugify">Slugify</a></li>
           <li><a href="/remove-line-breaks">Remove Line Breaks</a></li>
+          <li><a href="/text-cleaner">Text Cleaner</a></li>
         </ul>
         <p class="tb-grouplabel" id="tb-g3">Convert &amp; generate</p>
         <ul aria-labelledby="tb-g3">
@@ -83,6 +84,7 @@
           <li><a href="/csv-to-json">CSV ↔ JSON Converter</a></li>
           <li><a href="/reverse-text">Reverse Text</a></li>
         </ul>
+        <p class="tb-hub"><a href="/text-cleaner">Remove spaces, punctuation, emoji, HTML →</a></p>
       </div>
     </div>
   </details>
@@ -104,7 +106,7 @@
   <div class="hero">
     <h1>Free Text Tools for Writers &amp; Developers</h1>
     <p>Count words, remove line breaks, convert case, find and replace with regex, sort and dedupe lines, convert Markdown and CSV, and more — instantly, free, no sign-up.</p>
-    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>12 tools, 1 page</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>13 tools, 1 page</p>
   </div>
 
   <!-- ===================== WORD COUNTER ===================== -->
@@ -710,9 +712,139 @@ and is wrapped the same way.</textarea>
     </div>
   </section>
 
+  <!-- ===================== TEXT CLEANER ===================== -->
+  <section id="panel-cleaner" class="tab-panel" aria-label="Text Cleaner" tabindex="-1" hidden>
+    <p style="margin:0 0 14px;font-size:13.5px;"><a href="/text-cleaner">Open the full Text Cleaner page &rarr;</a></p>
+    <div class="panel" id="tc-controls">
+      <h2>What to remove</h2>
+      <div class="check-grid clean-toggles">
+        <label class="check"><input type="checkbox" data-clean="extra-spaces" checked> Extra spaces</label>
+        <label class="check"><input type="checkbox" data-clean="punctuation" checked> Punctuation</label>
+        <label class="check"><input type="checkbox" data-clean="special-chars" checked> Special characters</label>
+        <label class="check"><input type="checkbox" data-clean="numbers" checked> Numbers</label>
+        <label class="check"><input type="checkbox" data-clean="emoji" checked> Emoji</label>
+        <label class="check"><input type="checkbox" data-clean="html-tags" checked> HTML tags</label>
+        <label class="check"><input type="checkbox" data-clean="accents" checked> Accents</label>
+      </div>
+
+      <h2 style="margin:22px 0 14px;">Fine tuning</h2>
+      <div class="tool-grid tool-grid--three">
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-punct-keep">Punctuation &mdash; keep</label>
+          <select id="tc-punct-keep" data-for="punctuation" data-opt="keep">
+            <option value="both" selected>Sentence endings, apostrophes and hyphens</option>
+            <option value="words">Apostrophes and hyphens only</option>
+            <option value="sentence">Sentence endings only</option>
+            <option value="none">Nothing &mdash; remove every mark</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-numbers-mode">Numbers</label>
+          <select id="tc-numbers-mode" data-for="numbers" data-opt="mode">
+            <option value="standalone" selected>Whole numbers only &mdash; keep mp3, H2O</option>
+            <option value="all">Every digit, wherever it appears</option>
+            <option value="listmarkers">Only the numbering at the start of a line</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-special-keep">Special characters &mdash; keep</label>
+          <select id="tc-special-keep" data-for="special-chars" data-opt="keep">
+            <option value="basic" selected>Letters, digits and basic punctuation</option>
+            <option value="alnum">Letters and digits only</option>
+            <option value="ascii">Plain ASCII only</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-accents-mode">Accents</label>
+          <select id="tc-accents-mode" data-for="accents" data-opt="mode">
+            <option value="fold" selected>Fold &eacute; &uuml; &ntilde;, leave other scripts alone</option>
+            <option value="marks">Drop the marks only, keep every script</option>
+            <option value="ascii">Fold, then drop anything outside ASCII</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-spaces-mode">Spaces inside a line</label>
+          <select id="tc-spaces-mode" data-for="extra-spaces" data-opt="mode">
+            <option value="collapse" selected>Collapse runs to one, trim both ends</option>
+            <option value="indent">Collapse runs, keep the indentation</option>
+            <option value="trim">Trim the ends only</option>
+            <option value="all">Delete every space and tab</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-blank-lines">Blank lines</label>
+          <select id="tc-blank-lines" data-for="extra-spaces" data-opt="blankLines">
+            <option value="collapse" selected>Collapse runs to one</option>
+            <option value="remove">Remove every blank line</option>
+            <option value="keep">Leave them alone</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="check-grid" style="margin-top:16px;">
+        <label class="check"><input type="checkbox" data-for="emoji" data-opt="keepTextSymbols" checked> Keep &copy; &reg; &trade;</label>
+        <label class="check"><input type="checkbox" data-for="emoji" data-opt="symbols"> Also dingbats (&#10003; &#10140; &#9873;)</label>
+        <label class="check"><input type="checkbox" data-for="html-tags" data-opt="decodeEntities" checked> Decode HTML entities</label>
+        <label class="check"><input type="checkbox" data-for="html-tags" data-opt="blockBreaks" checked> Keep the page's line structure</label>
+        <label class="check"><input type="checkbox" data-for="numbers" data-opt="currency"> Currency symbols and %</label>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Input</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-input" class="visually-hidden">Text to clean</label>
+          <textarea id="tc-input" rows="12" placeholder="Paste the messy text here...">&lt;p&gt;Q3 update &amp;amp; next steps &#128640;&lt;/p&gt;
+
+1. Caf&eacute; M&uuml;ller  (Berlin)  &#10003;  invoice #4471, &euro;1,240.00
+2. Bj&ouml;rk Gu&eth;mundsd&oacute;ttir &mdash; mp3 masters due 14 March</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Result</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="tc-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="tc-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-output" class="visually-hidden">Cleaned text</label>
+          <textarea id="tc-output" rows="12" readonly></textarea>
+        </div>
+      </div>
+    </div>
+    <p class="hint" id="tc-summary" role="status"></p>
+
+    <div class="panel" style="margin-top:16px;">
+      <h2>Before and after</h2>
+      <div class="stat-grid" style="margin-bottom:0;">
+        <div class="stat-card">
+          <div class="stat-value" id="tc-before">0</div>
+          <div class="stat-label">Characters in</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="tc-after">0</div>
+          <div class="stat-label">Characters out</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="tc-removed">0</div>
+          <div class="stat-label">Characters removed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="tc-words">0</div>
+          <div class="stat-label">Words in &rarr; out</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="container-narrow" style="padding-top:0;">
     <h2>About TextKit Pro</h2>
-    <p>TextKit Pro bundles twelve everyday text utilities into a single page. For writing there is a <strong>word counter</strong> with keyword density, <strong>text statistics</strong> with a Flesch readability score, and a <strong>Lorem Ipsum generator</strong> for mockups. For editing there is <strong>find and replace</strong> with full regular-expression support, <strong>sort and dedupe lines</strong>, and a <strong>diff checker</strong> that highlights line-by-line changes. For developers there is a <strong>case converter</strong> covering nine formats, <strong>Markdown ↔ HTML</strong> and <strong>CSV ↔ JSON</strong> conversion in both directions, and a <strong>slugify</strong> tool that turns a title into a URL-safe slug. For tidying up whatever you just pasted there is <strong>remove line breaks</strong>, which joins wrapped lines or unwraps a paragraph copied out of a PDF, and <strong>reverse text</strong>, which flips text by character, word or line.</p>
+    <p>TextKit Pro bundles thirteen everyday text utilities into a single page. For writing there is a <strong>word counter</strong> with keyword density, <strong>text statistics</strong> with a Flesch readability score, and a <strong>Lorem Ipsum generator</strong> for mockups. For editing there is <strong>find and replace</strong> with full regular-expression support, <strong>sort and dedupe lines</strong>, and a <strong>diff checker</strong> that highlights line-by-line changes. For developers there is a <strong>case converter</strong> covering nine formats, <strong>Markdown ↔ HTML</strong> and <strong>CSV ↔ JSON</strong> conversion in both directions, and a <strong>slugify</strong> tool that turns a title into a URL-safe slug. For tidying up whatever you just pasted there is <strong>remove line breaks</strong>, which joins wrapped lines or unwraps a paragraph copied out of a PDF, and <strong>reverse text</strong>, which flips text by character, word or line. The <strong>text cleaner</strong> runs seven of those cleanup passes over one paste at once &mdash; extra spaces, punctuation, special characters, numbers, emoji, HTML tags and accents &mdash; and each pass also has a page of its own.</p>
     <p>Everything runs client-side in your browser — nothing you type or paste is ever uploaded to a server, so there's no wait and nothing to worry about privacy-wise.</p>
   </section>
 

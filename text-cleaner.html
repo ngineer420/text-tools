@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text Cleaner: Remove Extra Spaces, Punctuation, Emoji and HTML | TextKit Pro</title>
+<meta name="description" content="Clean up pasted text in one pass: extra spaces, punctuation, special characters, numbers, emoji, HTML tags and accents, each on its own switch. Free, instant, nothing uploaded.">
+<link rel="canonical" href="https://textkitpro.com/text-cleaner">
+<meta name="theme-color" content="#14131d">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Text Cleaner — Clean Up Pasted Text Online">
+<meta property="og:description" content="Seven cleanup passes on one page: spaces, punctuation, special characters, numbers, emoji, HTML tags and accents. Runs entirely in your browser.">
+<meta property="og:url" content="https://textkitpro.com/text-cleaner">
+<meta property="og:image" content="https://textkitpro.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Text Cleaner — Clean Up Pasted Text Online">
+<meta name="twitter:description" content="Seven cleanup passes on one page: spaces, punctuation, special characters, numbers, emoji, HTML tags and accents. Runs entirely in your browser.">
+<meta name="twitter:image" content="https://textkitpro.com/assets/og-image.png">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Text Cleaner — TextKit Pro",
+  "url": "https://textkitpro.com/text-cleaner",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free browser-based text cleaner that removes extra spaces, punctuation, special characters, numbers, emoji, HTML tags and accents in one pass."
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "In what order do the cleaners run?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Always the same order, and it is not the order of the checkboxes: HTML tags, emoji, accents, numbers, punctuation, special characters, then extra spaces. The order changes the answer. Markup has to go before punctuation, or a stripped tag leaves a bare p behind for the punctuation pass to keep. Accents have to be folded before an ASCII-only pass, or the accented letters are simply deleted. And the whitespace tidy-up runs last so it can close up the gaps every earlier step opened."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why did my dates and prices disappear?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the numbers switch is on. Every switch on this page starts on, which is what makes it a one-click cleaner, but that also means it is a destructive default. Untick Numbers and the digits come back. The numbers setting starts on whole numbers only, so a digit welded into a word such as mp3 or H2O survives either way."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is any of this uploaded?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Every transform on this page is plain JavaScript running in your own browser, and the page makes no network request of any kind with what you paste. That matters here more than on most tools, because the text people clean is usually the text they cannot send anywhere: a contract, a transcript, a customer message or an export from an internal system."
+      }
+    }
+  ]
+}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7560786263587509" crossorigin="anonymous"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="TextKit Pro home">
+      <span class="brand-mark">
+        <img src="/assets/favicon.svg" alt="" width="24" height="24">
+        TextKit <span class="pro-badge">Pro</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<!-- nav:start -->
+<nav class="toolbar" aria-label="Tools">
+  <details class="tb-menu">
+    <summary class="tb-trigger" aria-label="All 13 tools">
+      <span class="tb-glyph" aria-hidden="true">&#9636;</span>
+      <span class="tb-label">All 13<span class="tb-label-long"> tools</span></span>
+    </summary>
+    <div class="tb-sheet">
+      <div class="tb-sheet-cols">
+        <p class="tb-grouplabel" id="tb-g1">Count &amp; compare</p>
+        <ul aria-labelledby="tb-g1">
+          <li><a href="/word-counter">Word Counter</a></li>
+          <li><a href="/diff-checker">Diff Checker</a></li>
+          <li><a href="/text-statistics">Text Statistics</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g2">Clean up text</p>
+        <ul aria-labelledby="tb-g2">
+          <li><a href="/case-converter">Case Converter</a></li>
+          <li><a href="/find-and-replace">Find and Replace</a></li>
+          <li><a href="/sort-and-dedupe-lines">Sort and Dedupe Lines</a></li>
+          <li><a href="/slugify">Slugify</a></li>
+          <li><a href="/remove-line-breaks">Remove Line Breaks</a></li>
+          <li><a href="/text-cleaner" aria-current="page">Text Cleaner</a></li>
+        </ul>
+        <p class="tb-grouplabel" id="tb-g3">Convert &amp; generate</p>
+        <ul aria-labelledby="tb-g3">
+          <li><a href="/lorem-ipsum-generator">Lorem Ipsum Generator</a></li>
+          <li><a href="/markdown-to-html">Markdown ↔ HTML Converter</a></li>
+          <li><a href="/csv-to-json">CSV ↔ JSON Converter</a></li>
+          <li><a href="/reverse-text">Reverse Text</a></li>
+        </ul>
+        <p class="tb-hub"><a href="/text-cleaner" aria-current="page">Remove spaces, punctuation, emoji, HTML →</a></p>
+      </div>
+    </div>
+  </details>
+  <div class="tb-scrim"></div>
+  <ul class="tb-rail">
+    <li><a href="/word-counter">Word Counter</a></li>
+    <li><a href="/case-converter">Case Converter</a></li>
+    <li><a href="/lorem-ipsum-generator">Lorem Ipsum</a></li>
+    <li><a href="/diff-checker">Diff Checker</a></li>
+    <li><a href="/find-and-replace">Find &amp; Replace</a></li>
+    <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a></li>
+    <li><a href="/markdown-to-html">Markdown ↔ HTML</a></li>
+    <li><a href="/csv-to-json">CSV ↔ JSON</a></li>
+  </ul>
+</nav>
+<!-- nav:end -->
+
+<main id="main">
+  <div class="hero">
+    <h1>Text Cleaner</h1>
+    <p>Seven cleanup passes over one paste — extra spaces, punctuation, special characters, numbers, emoji, HTML tags and accents — each on its own switch, all of them on to start.</p>
+    <p class="trust-line">Runs 100% in your browser<span class="dot">•</span>Nothing is uploaded to a server<span class="dot">•</span>Instant results</p>
+  </div>
+
+  <!-- ===================== TEXT CLEANER ===================== -->
+  <section aria-label="Text cleaner tool">
+    <div class="panel" id="tc-controls">
+      <h2>What to remove</h2>
+      <div class="check-grid clean-toggles">
+        <label class="check"><input type="checkbox" data-clean="extra-spaces" checked> Extra spaces</label>
+        <label class="check"><input type="checkbox" data-clean="punctuation" checked> Punctuation</label>
+        <label class="check"><input type="checkbox" data-clean="special-chars" checked> Special characters</label>
+        <label class="check"><input type="checkbox" data-clean="numbers" checked> Numbers</label>
+        <label class="check"><input type="checkbox" data-clean="emoji" checked> Emoji</label>
+        <label class="check"><input type="checkbox" data-clean="html-tags" checked> HTML tags</label>
+        <label class="check"><input type="checkbox" data-clean="accents" checked> Accents</label>
+      </div>
+
+      <h2 style="margin:22px 0 14px;">Fine tuning</h2>
+      <div class="tool-grid tool-grid--three">
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-punct-keep">Punctuation — keep</label>
+          <select id="tc-punct-keep" data-for="punctuation" data-opt="keep">
+            <option value="both" selected>Sentence endings, apostrophes and hyphens</option>
+            <option value="words">Apostrophes and hyphens only</option>
+            <option value="sentence">Sentence endings only</option>
+            <option value="none">Nothing — remove every mark</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-numbers-mode">Numbers</label>
+          <select id="tc-numbers-mode" data-for="numbers" data-opt="mode">
+            <option value="standalone" selected>Whole numbers only — keep mp3, H2O</option>
+            <option value="all">Every digit, wherever it appears</option>
+            <option value="listmarkers">Only the numbering at the start of a line</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-special-keep">Special characters — keep</label>
+          <select id="tc-special-keep" data-for="special-chars" data-opt="keep">
+            <option value="basic" selected>Letters, digits and basic punctuation</option>
+            <option value="alnum">Letters and digits only</option>
+            <option value="ascii">Plain ASCII only</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-accents-mode">Accents</label>
+          <select id="tc-accents-mode" data-for="accents" data-opt="mode">
+            <option value="fold" selected>Fold é ü ñ, leave other scripts alone</option>
+            <option value="marks">Drop the marks only, keep every script</option>
+            <option value="ascii">Fold, then drop anything outside ASCII</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-spaces-mode">Spaces inside a line</label>
+          <select id="tc-spaces-mode" data-for="extra-spaces" data-opt="mode">
+            <option value="collapse" selected>Collapse runs to one, trim both ends</option>
+            <option value="indent">Collapse runs, keep the indentation</option>
+            <option value="trim">Trim the ends only</option>
+            <option value="all">Delete every space and tab</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-blank-lines">Blank lines</label>
+          <select id="tc-blank-lines" data-for="extra-spaces" data-opt="blankLines">
+            <option value="collapse" selected>Collapse runs to one</option>
+            <option value="remove">Remove every blank line</option>
+            <option value="keep">Leave them alone</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="check-grid" style="margin-top:16px;">
+        <label class="check"><input type="checkbox" data-for="emoji" data-opt="keepTextSymbols" checked> Keep © ® ™</label>
+        <label class="check"><input type="checkbox" data-for="emoji" data-opt="symbols"> Also dingbats (✓ ➜ ⚑)</label>
+        <label class="check"><input type="checkbox" data-for="html-tags" data-opt="decodeEntities" checked> Decode HTML entities</label>
+        <label class="check"><input type="checkbox" data-for="html-tags" data-opt="blockBreaks" checked> Keep the page's line structure</label>
+        <label class="check"><input type="checkbox" data-for="numbers" data-opt="currency"> Currency symbols and %</label>
+      </div>
+    </div>
+
+    <div class="tool-grid tool-grid--split" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Input</h2>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-input" class="visually-hidden">Text to clean</label>
+          <textarea id="tc-input" rows="14" placeholder="Paste the messy text here...">&lt;div class="note"&gt;
+  &lt;h3&gt;Q3 update &amp;amp; next steps 🚀&lt;/h3&gt;
+  &lt;p&gt;Revenue rose &lt;strong&gt;12%&lt;/strong&gt; year&amp;nbsp;on&amp;nbsp;year — thanks   everyone 🙏🏽&lt;/p&gt;
+&lt;/div&gt;
+
+1. Café Müller  (Berlin)  ✓  invoice #4471, €1,240.00
+2. Björk Guðmundsdóttir — mp3 masters due 14 March
+3. Ship in 🇬🇧 and 🇯🇵 by Q4… “no excuses,” she said.</textarea>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="output-toolbar">
+          <h2 style="margin:0;">Result</h2>
+          <div class="btn-row" style="margin-top:0;">
+            <div class="copy-flash-wrap">
+              <button type="button" id="tc-copy" class="icon-btn">Copy</button>
+              <span class="copy-flash" id="tc-copy-flash">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="tc-output" class="visually-hidden">Cleaned text</label>
+          <textarea id="tc-output" rows="14" readonly></textarea>
+        </div>
+      </div>
+    </div>
+    <p class="hint" id="tc-summary" role="status"></p>
+
+    <div class="panel" style="margin-top:16px;">
+      <h2>Before and after</h2>
+      <div class="stat-grid" style="margin-bottom:0;">
+        <div class="stat-card">
+          <div class="stat-value" id="tc-before">0</div>
+          <div class="stat-label">Characters in</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="tc-after">0</div>
+          <div class="stat-label">Characters out</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="tc-removed">0</div>
+          <div class="stat-label">Characters removed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="tc-words">0</div>
+          <div class="stat-label">Words in → out</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-narrow" style="padding-bottom:0;">
+    <h2 style="margin-top:0;">One paste, seven passes</h2>
+    <p>Text that has been somewhere else always arrives carrying the shape of where it came from. A paragraph copied out of a web page brings non-breaking spaces and the indentation of the HTML source. An export from a CMS brings the tags themselves. A chat log brings emoji, a PDF brings its line numbering, a European name list brings accents a legacy field cannot store. Cleaning any one of those is a two-second job. Cleaning all six at once, by hand, in the right order, is not — which is what this page is for.</p>
+    <p>Every switch starts <strong>on</strong>. Paste something and the default pass strips the markup, drops the emoji, folds the accents, removes the whole numbers, cuts the punctuation back to sentence endings and apostrophes, removes the symbols outside basic punctuation, and evens out the whitespace. That is a deliberately aggressive default, and it is meant to be edited: the switches are the first thing on the page precisely because the right answer depends on what you are cleaning. Untick <strong>Numbers</strong> if the dates matter. Untick <strong>Punctuation</strong> if a human has to read the result.</p>
+    <p>The order the passes run in is fixed and is not the order of the checkboxes: <strong>HTML tags, emoji, accents, numbers, punctuation, special characters, extra spaces</strong>. That sequence is doing real work. Markup has to go before punctuation, or <code>&lt;p&gt;</code> loses its angle brackets and leaves a stray <code>p</code> in the middle of the sentence. Accents have to be folded before any ASCII-only pass, or every accented letter is deleted rather than simplified. Whitespace has to be last, because every earlier step leaves gaps where the characters it removed used to be.</p>
+    <p>The counters underneath show the character count in, the character count out, how many characters went, and the word count either side. Everything runs in your browser: nothing you paste is uploaded, which is the point when the thing you are cleaning is a contract, a transcript, a customer email or an export you are not allowed to put through a web service.</p>
+  </section>
+
+  <section class="container-narrow" style="padding-top:24px;padding-bottom:0;">
+    <h2 style="margin-top:0;">Each pass, on its own page</h2>
+    <p>Every switch above is the same code as the page below it, with more room for the settings that only matter for that one transform — and with the specifics of when it goes wrong.</p>
+    <ul>
+      <li><a href="/remove-extra-spaces">Remove Extra Spaces</a> — collapse double spaces, trim line ends, and clear out the non-breaking and zero-width spaces that find-and-replace cannot see.</li>
+      <li><a href="/remove-punctuation">Remove Punctuation</a> — commas, quotes, brackets and dashes, with a choice about the apostrophes and hyphens inside words.</li>
+      <li><a href="/remove-special-characters">Remove Special Characters</a> — symbols, currency signs and control characters, cut back to letters and digits, to basic punctuation, or to plain ASCII.</li>
+      <li><a href="/remove-numbers">Remove Numbers</a> — every digit, only whole numbers so mp3 and H2O survive, or only the “1.” at the start of each line.</li>
+      <li><a href="/remove-emojis">Remove Emojis</a> — whole clusters, so flags, keycaps, skin tones and family sequences come out in one piece rather than in fragments.</li>
+      <li><a href="/remove-html-tags">Remove HTML Tags</a> — strip the markup, keep the line structure, decode the entities and drop the script bodies.</li>
+      <li><a href="/remove-accents">Remove Accents</a> — é ü ñ to plain letters, including ß, ø and ł, which normalisation alone silently destroys.</li>
+    </ul>
+  </section>
+
+  <section class="container-narrow" style="padding-top:24px;padding-bottom:0;">
+    <h2 style="margin-top:0;">Text cleaner questions</h2>
+    <div class="faq-item">
+      <h3>In what order do the cleaners run?</h3>
+      <p>Always the same order, and it is not the order of the checkboxes: HTML tags, emoji, accents, numbers, punctuation, special characters, then extra spaces. The order changes the answer. Markup has to go before punctuation, or a stripped tag leaves a bare <code>p</code> behind for the punctuation pass to keep. Accents have to be folded before an ASCII-only pass, or the accented letters are simply deleted. And the whitespace tidy-up runs last so it can close up the gaps every earlier step opened.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why did my dates and prices disappear?</h3>
+      <p>Because the numbers switch is on. Every switch on this page starts on, which is what makes it a one-click cleaner, but that also means it is a destructive default. Untick <strong>Numbers</strong> and the digits come back. The numbers setting starts on “whole numbers only”, so a digit welded into a word such as mp3 or H2O survives either way — it is the standalone years, quantities and invoice numbers that go.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is any of this uploaded?</h3>
+      <p>No. Every transform on this page is plain JavaScript running in your own browser, and the page makes no network request of any kind with what you paste. That matters here more than on most tools, because the text people clean is usually the text they cannot send anywhere: a contract, a transcript, a customer message or an export from an internal system.</p>
+    </div>
+  </section>
+
+  <nav class="container-narrow" aria-label="Other text tools" style="padding-top:24px;">
+    <h2 style="margin-top:0;">More text tools</h2>
+    <ul>
+      <li><a href="/remove-line-breaks">Remove Line Breaks</a> — join wrapped lines or unwrap paragraphs copied out of a PDF.</li>
+      <li><a href="/sort-and-dedupe-lines">Sort &amp; Dedupe</a> — sort lines and strip duplicates once the text is even.</li>
+      <li><a href="/find-and-replace">Find &amp; Replace</a> — for the cleanup that needs a regular expression rather than a preset.</li>
+      <li><a href="/word-counter">Word Counter</a> — check what is left after the pass.</li>
+    </ul>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>© <span id="year"></span> textkitpro.com</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/app.js"></script>
+<a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>
+</body>
+</html>

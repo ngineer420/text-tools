@@ -66,6 +66,46 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://textkitpro.com/text-cleaner</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/remove-extra-spaces</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/remove-punctuation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/remove-special-characters</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/remove-numbers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/remove-emojis</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/remove-html-tags</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/remove-accents</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://textkitpro.com/articles/word-count-guide.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

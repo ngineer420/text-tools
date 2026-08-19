@@ -32,7 +32,9 @@ Then open `http://localhost:8000`.
 ## Structure
 
 ```
-index.html             Main app (all twelve tools, tabbed)
+index.html             Main app (all thirteen tools, tabbed)
+text-cleaner.html        The combined cleaner — hand-written hub for the generated remove-X family
+remove-*.html            Generated: one page per cleaner (see tools/build_cleaner_pages.py)
 articles/                Original written content (content-depth round)
 privacy.html            Privacy policy (required for ad networks)
 terms.html               Terms of use
@@ -44,8 +46,30 @@ assets/css/styles.css    Design system
 assets/js/app.js         All app logic — pure text/diff functions plus DOM wiring for tabs, copy buttons, etc.
 assets/js/markdown.js    Markdown renderer, shared verbatim with notepadly.app (see below)
 assets/js/app.test.js    node:test suite for the pure functions — run with `node assets/js/app.test.js`
+assets/js/cleaner-page.js  Shared renderer for the generated remove-X pages, driven by data-cleaner on <main>
+tools/nav_data.py        The toolbar's single source of truth (per-site)
+tools/sync_nav.py        Renders the toolbar into every page's nav marker pair
+tools/cleaner_pages.py   Data + page copy for the remove-X family
+tools/build_cleaner_pages.py  Writes the remove-X pages and rebuilds sitemap.xml
 CNAME                    GitHub Pages custom domain (textkitpro.com)
 ```
+
+### Generated pages
+
+The seven `remove-*.html` cleaner pages and `sitemap.xml` are written by
+`tools/build_cleaner_pages.py` from `tools/cleaner_pages.py`. Do not edit them by
+hand — the next build overwrites the change, and `--check` fails while one exists:
+
+```
+python3 tools/build_cleaner_pages.py          # regenerate
+python3 tools/build_cleaner_pages.py --check  # fail if anything is stale
+python3 tools/sync_nav.py                     # roll the toolbar into every page
+python3 tools/sync_nav.py --check
+```
+
+`text-cleaner.html` is deliberately hand-written: it is the head term and the
+full combined tool rather than an index, so it is not generated from the same
+template as its seven children.
 
 `assets/js/app.js` keeps every core function (word/char/sentence/paragraph counting, keyword density, each case-conversion function, Lorem Ipsum generation, the diff algorithm) pure and DOM-independent, exported via a `typeof module !== "undefined"` guard so they can be sanity-checked from Node without a browser. The DOM-wiring code below that guard is skipped when the file is `require()`'d outside a browser.
 

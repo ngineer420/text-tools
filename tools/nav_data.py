@@ -5,19 +5,22 @@ copies verbatim. Nothing here is computed at runtime by the browser: sync_nav
 renders it into the static HTML of every page.
 
 Tier rule (portfolio spec, ngineer420.github.io#13): a page is tier 1 only if it
-answers a *different question*. All ten do — there is no preset family on this
-site, so no tier 2, no hub row and no in-panel sibling chips.
+answers a *different question*. All twelve do — there is no preset family on
+this site, so no tier 2, no hub row and no in-panel sibling chips.
 
 Rail is the first eight in traffic order; the renderer's cap is eight and the
-spec's errata makes that cap win over any per-site request for more, so Slugify
-and Text Statistics are sheet-only. At ten destinations the sheet renders as
-named groups rather than one flat list — also the renderer's rule, at 9+.
+spec's errata makes that cap win over any per-site request for more, so Slugify,
+Text Statistics, Remove Line Breaks and Reverse Text are sheet-only. New tools
+join at the end of the list because the order is *measured* traffic, not
+expected traffic — a page with no impressions yet has not earned a rail slot.
+At twelve destinations the sheet renders as named groups rather than one flat
+list — also the renderer's rule, at 9+.
 
 hrefs are the clean extensionless paths the site already publishes in its
 canonicals, sitemap and in-body lists.
 """
 
-# Noun used in the menu trigger: "All 10 tools".
+# Noun used in the menu trigger: "All 12 tools".
 NOUN = "tools"
 
 # Tier-1 tools, in traffic order. The first eight are the rail.
@@ -37,6 +40,8 @@ TOOLS = [
     # --- sheet only ---
     {"href": "/slugify",               "label": "Slugify",         "long": "Slugify",                   "group": "cleanup",  "tier": 1},
     {"href": "/text-statistics",       "label": "Text Statistics", "long": "Text Statistics",           "group": "measure",  "tier": 1},
+    {"href": "/remove-line-breaks",     "label": "Remove Breaks",   "long": "Remove Line Breaks",        "group": "cleanup",  "tier": 1},
+    {"href": "/reverse-text",           "label": "Reverse Text",    "long": "Reverse Text",              "group": "convert",  "tier": 1},
 ]
 
 # Sheet groups, in order: (key, label). Named for what a visitor came to do,
@@ -50,7 +55,7 @@ GROUPS = [
 # No preset family on this site: every tool answers a different question.
 HUBS = []
 
-# The rail plus the sheet carry all ten tools on every page, and each tool page
+# The rail plus the sheet carry all twelve tools on every page, and each tool page
 # keeps a short "More text tools" block of three related siblings, so a footer
 # duplicate would be boilerplate rather than a new crawl surface.
 FOOTER = []

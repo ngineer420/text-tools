@@ -1050,6 +1050,157 @@
       .trim() + "\n";
   }
 
+  /* --------------------------- remove line breaks ------------------------ */
+
+  /* Text pasted out of a PDF, an email client or a Windows editor arrives with
+     \r\n, and a lone \r still turns up in text copied out of older Mac files.
+     Everything below assumes \n, so normalising first is what stops a "join
+     lines" pass from leaving invisible carriage returns behind. */
+  function normalizeNewlines(text) {
+    return (text || "").replace(/\r\n?/g, "\n");
+  }
+
+  const BREAK_JOINERS = { space: " ", comma: ", ", none: "" };
+
+  /* Join a run of wrapped lines back into one line.
+
+     The joiner is not blindly concatenated: a line that already ends in a
+     comma or semicolon does not get a second one, and whitespace either side
+     of the seam is dropped so a trailing space plus a space joiner cannot
+     produce a double space. Joining with nothing is left literal — someone
+     rejoining a wrapped hash or a base64 blob wants exactly the characters
+     they pasted, with the breaks gone and nothing added. */
+  function joinWrapped(lines, joiner) {
+    if (!lines.length) return "";
+    if (!joiner) return lines.join("");
+    let out = "";
+    for (let i = 0; i < lines.length; i++) {
+      const right = lines[i].replace(/^[ \t]+/, "");
+      if (i === 0) { out = right; continue; }
+      if (!right) continue;
+      const left = out.replace(/[ \t]+$/, "");
+      if (!left) { out = right; continue; }
+      const glue = /[,;]$/.test(left) && /^[,;]/.test(joiner) ? " " : joiner;
+      out = left + glue + right;
+    }
+    return out;
+  }
+
+  /* Strip line breaks out of pasted text.
+
+     mode:
+       "join"   — everything becomes one line
+       "unwrap" — join the lines inside each paragraph but keep the blank line
+                  between paragraphs (the shape you want after copying a PDF)
+       "blank"  — remove blank lines only, leave every other break alone
+
+     Returns the text plus the before/after counts the page shows live. */
+  function removeLineBreaks(text, options) {
+    const o = options || {};
+    const mode = o.mode || "join";
+    const joiner = Object.prototype.hasOwnProperty.call(BREAK_JOINERS, o.replaceWith)
+      ? BREAK_JOINERS[o.replaceWith]
+      : " ";
+    const source = normalizeNewlines(text);
+
+    let lines = source.split("\n");
+    if (o.tabsToSpaces) lines = lines.map((l) => l.replace(/\t/g, " "));
+    if (o.trimLines) lines = lines.map((l) => l.replace(/^[ \t]+|[ \t]+$/g, ""));
+    if (o.collapseSpaces) lines = lines.map((l) => l.replace(/[ \t]{2,}/g, " "));
+
+    const blank = (l) => !l.trim();
+    let out;
+    if (mode === "blank") {
+      out = lines.filter((l) => !blank(l)).join("\n");
+    } else if (mode === "unwrap") {
+      const paragraphs = [];
+      let current = [];
+      for (const line of lines) {
+        if (blank(line)) {
+          if (current.length) { paragraphs.push(current); current = []; }
+        } else {
+          current.push(line);
+        }
+      }
+      if (current.length) paragraphs.push(current);
+      out = paragraphs.map((p) => joinWrapped(p, joiner)).join("\n\n");
+    } else {
+      out = joinWrapped(lines.filter((l) => !blank(l)), joiner);
+    }
+
+    const countLines = (s) => (s === "" ? 0 : s.split("\n").length);
+    const linesBefore = countLines(source);
+    const linesAfter = countLines(out);
+    return {
+      text: out,
+      stats: {
+        charactersBefore: source.length,
+        charactersAfter: out.length,
+        delta: out.length - source.length,
+        linesBefore: linesBefore,
+        linesAfter: linesAfter,
+        breaksRemoved: Math.max(0, linesBefore - linesAfter),
+      },
+    };
+  }
+
+  /* ------------------------------ reverse text --------------------------- */
+
+  /* Reversing by "character" means reversing by grapheme, not by code unit.
+     "👍".split("").reverse() produces two lone surrogates and a
+     replacement glyph, and "é" reversed by code point moves the accent
+     onto whatever character now precedes it. */
+  function splitGraphemesFallback(text) {
+    // A base character plus its combining marks (which covers variation
+    // selectors and keycaps), a regional-indicator pair (one flag), and any
+    // run of those joined by ZWJ (one family, one profession emoji).
+    const cluster = "(?:\\p{RI}\\p{RI}|\\P{M}\\p{M}*)";
+    const re = new RegExp(cluster + "(?:\\u200D" + cluster + ")*", "gu");
+    return text.match(re) || [];
+  }
+
+  function splitGraphemes(text) {
+    const s = text || "";
+    if (!s) return [];
+    if (typeof Intl !== "undefined" && typeof Intl.Segmenter === "function") {
+      const out = [];
+      for (const part of new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(s)) {
+        out.push(part.segment);
+      }
+      return out;
+    }
+    return splitGraphemesFallback(s);
+  }
+
+  function reverseGraphemes(text) {
+    return splitGraphemes(text).reverse().join("");
+  }
+
+  /* Word order flipped, indentation left where it was: reversing the words of
+     an indented list should not move the indent to the end of the line. */
+  function reverseWordsInLine(line) {
+    const lead = (line.match(/^\s*/) || [""])[0];
+    const tail = line.length > lead.length ? (line.match(/\s*$/) || [""])[0] : "";
+    const body = line.slice(lead.length, line.length - tail.length);
+    if (!body) return line;
+    const parts = body.split(/(\s+)/);
+    const words = [];
+    for (let i = 0; i < parts.length; i += 2) words.push(parts[i]);
+    words.reverse();
+    let w = 0;
+    for (let i = 0; i < parts.length; i += 2) parts[i] = words[w++];
+    return lead + parts.join("") + tail;
+  }
+
+  /* mode: "characters" (per line, so a paragraph keeps its shape), "words"
+     (per line) or "lines" (the order of the lines themselves). */
+  function reverseText(text, mode) {
+    const source = normalizeNewlines(text);
+    if (mode === "lines") return source.split("\n").reverse().join("\n");
+    if (mode === "words") return source.split("\n").map(reverseWordsInLine).join("\n");
+    return source.split("\n").map(reverseGraphemes).join("\n");
+  }
+
   /* ============================================================
      Export pure functions for Node-based sanity checks (see README).
      In the browser this block is skipped and the IIFE below runs.
@@ -1085,6 +1236,14 @@
       formatDuration,
       decodeEntities,
       htmlToMarkdown,
+      normalizeNewlines,
+      joinWrapped,
+      removeLineBreaks,
+      splitGraphemes,
+      splitGraphemesFallback,
+      reverseGraphemes,
+      reverseWordsInLine,
+      reverseText,
       countWords,
       countCharsWithSpaces,
       countCharsWithoutSpaces,
@@ -1220,9 +1379,9 @@
     }
   }
 
-  /* ---- homepage: the toolbar's own links switch the ten tool panels ----
+  /* ---- homepage: the toolbar's own links switch the tool panels ----
    *
-   * The homepage carries all ten tools on one page. The toolbar is the only
+   * The homepage carries all twelve tools on one page. The toolbar is the only
    * nav layer, so its links do double duty here: a plain left click swaps the
    * panel in place and pushes that tool's real address, exactly as the old tab
    * strip did, while a modified click, a JS-disabled visitor and every crawler
@@ -1242,6 +1401,8 @@
       "/csv-to-json": "panel-csv",
       "/slugify": "panel-slug",
       "/text-statistics": "panel-stats",
+      "/remove-line-breaks": "panel-removebreaks",
+      "/reverse-text": "panel-reverse",
     };
     var keys = Object.keys(PANELS);
     var panels = {};
@@ -1830,5 +1991,81 @@
 
     input.addEventListener("input", debounce(render, 100));
     render();
+  })();
+
+  /* ------------------------- remove line breaks tool --------------------- */
+
+  (function removeLineBreaksTool() {
+    const input = document.getElementById("rb-input");
+    if (!input) return;
+    const mode = document.getElementById("rb-mode");
+    const replaceWith = document.getElementById("rb-replace");
+    const collapse = document.getElementById("rb-collapse");
+    const trim = document.getElementById("rb-trim");
+    const tabs = document.getElementById("rb-tabs");
+    const output = document.getElementById("rb-output");
+    const before = document.getElementById("rb-before");
+    const after = document.getElementById("rb-after");
+    const delta = document.getElementById("rb-delta");
+    const breaks = document.getElementById("rb-breaks");
+
+    function render() {
+      const result = removeLineBreaks(input.value, {
+        mode: mode.value,
+        replaceWith: replaceWith.value,
+        collapseSpaces: collapse.checked,
+        trimLines: trim.checked,
+        tabsToSpaces: tabs.checked,
+      });
+      output.value = result.text;
+      const s = result.stats;
+      before.textContent = s.charactersBefore.toLocaleString();
+      after.textContent = s.charactersAfter.toLocaleString();
+      delta.textContent = (s.delta > 0 ? "+" : s.delta < 0 ? "−" : "")
+        + Math.abs(s.delta).toLocaleString();
+      breaks.textContent = s.breaksRemoved.toLocaleString();
+    }
+
+    input.addEventListener("input", debounce(render, 100));
+    [mode, replaceWith, collapse, trim, tabs].forEach((el) =>
+      el.addEventListener("change", render)
+    );
+    wireCopy("rb-copy", "rb-copy-flash", () => output.value);
+    render();
+  })();
+
+  /* ---------------------------- reverse text tool ------------------------ */
+
+  (function reverseTextTool() {
+    const input = document.getElementById("rv-input");
+    if (!input) return;
+    const output = document.getElementById("rv-output");
+    const statsEl = document.getElementById("rv-stats");
+    const modeBtns = Array.from(document.querySelectorAll("[data-reverse]"));
+    let mode = "characters";
+
+    function render() {
+      output.value = reverseText(input.value, mode);
+      const graphemes = splitGraphemes(input.value.replace(/\n/g, "")).length;
+      statsEl.textContent = graphemes
+        ? graphemes.toLocaleString() + " character" + (graphemes === 1 ? "" : "s")
+          + " · reversed by " + mode
+        : "";
+    }
+
+    function setMode(next) {
+      mode = next;
+      modeBtns.forEach((b) => {
+        const active = b.dataset.reverse === mode;
+        b.classList.toggle("is-active", active);
+        b.setAttribute("aria-pressed", String(active));
+      });
+      render();
+    }
+
+    modeBtns.forEach((b) => b.addEventListener("click", () => setMode(b.dataset.reverse)));
+    input.addEventListener("input", debounce(render, 100));
+    wireCopy("rv-copy", "rv-copy-flash", () => output.value);
+    setMode(mode);
   })();
 })();

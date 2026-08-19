@@ -56,6 +56,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://textkitpro.com/remove-line-breaks</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://textkitpro.com/reverse-text</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://textkitpro.com/articles/word-count-guide.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

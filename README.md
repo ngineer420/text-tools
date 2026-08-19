@@ -1,6 +1,6 @@
 # textkitpro.com
 
-A free, ad-supported bundle of text utilities, ten tools in one page:
+A free, ad-supported bundle of text utilities, twelve tools in one page:
 
 - **Word Counter** (default tab): live word/character/sentence/paragraph counts, estimated reading time, and a top-10 keyword density table (common stopwords excluded).
 - **Case Converter**: UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case, and aLtErNaTiNg CaSe, with one-click copy.
@@ -11,6 +11,8 @@ A free, ad-supported bundle of text utilities, ten tools in one page:
 - **Markdown ↔ HTML**: both directions, with a live rendered preview. The Markdown→HTML renderer is shared verbatim with [notepadly.app](https://notepadly.app) (see below); HTML→Markdown is specific to this repo and emits GitHub-flavoured pipe tables.
 - **CSV ↔ JSON**: RFC 4180 parsing, delimiter detection by column-count consistency, a header-row toggle and optional type coercion.
 - **Slugify**: text to a URL-safe slug, with transliteration for accented characters, a configurable separator, a length limit and a bulk per-line mode.
+- **Remove Line Breaks**: join every line onto one, unwrap paragraphs copied out of a PDF while keeping the blank line between them, or strip blank lines only — with a space, a comma or nothing in place of each break, plus trim/collapse-spaces/tabs-to-spaces passes and a live before/after character delta.
+- **Reverse Text**: reverse by character, by word or by line, splitting on grapheme clusters so emoji, flags and combining accents survive the flip.
 - **Text Statistics**: reading and speaking time, sentence/paragraph/syllable/unique-word counts, the longest sentence, and Flesch Reading Ease plus Flesch–Kincaid Grade Level.
 
 Everything runs client-side — no backend, no build step, nothing uploaded. Deployed as static files on GitHub Pages.
@@ -30,7 +32,7 @@ Then open `http://localhost:8000`.
 ## Structure
 
 ```
-index.html             Main app (all ten tools, tabbed)
+index.html             Main app (all twelve tools, tabbed)
 articles/                Original written content (content-depth round)
 privacy.html            Privacy policy (required for ad networks)
 terms.html               Terms of use

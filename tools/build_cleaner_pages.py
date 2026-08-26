@@ -309,6 +309,7 @@ def tool_section(page):
               '              <button type="button" id="cl-copy" class="icon-btn">Copy</button>',
               '              <span class="copy-flash" id="cl-copy-flash">Copied!</span>',
               "            </div>",
+              '            <button type="button" id="cl-download" class="icon-btn">Download</button>',
               "          </div>",
               "        </div>",
               '        <div class="field" style="margin-bottom:0;">',

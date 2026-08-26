@@ -699,3 +699,35 @@ test("cleanText reports before/after stats and skips unselected cleaners", () =>
   assert.deepEqual(cleanText("a  b", {}).text, "a  b");
   assert.deepEqual(cleanText("a  b", {}).applied, []);
 });
+
+/* ---------- share links ---------- */
+
+const LZ = require("./lz-string.min.js");
+const { SHARE_CAP_BYTES, shareByteLength, encodeShareHash, decodeShareHash, diffToText } =
+  require("./app.js");
+
+test("share hash round-trips compressed text and plain options", () => {
+  const fields = { a: "line one\nline two ✓", b: "line one\nline 2", re: true, cs: false, sep: "_" };
+  const hash = encodeShareHash(fields, LZ, ["a", "b"]);
+  assert.match(hash, /^a=[A-Za-z0-9+$-]+&b=[A-Za-z0-9+$-]+&re=1&sep=_$/);
+  const back = decodeShareHash("#" + hash, LZ, ["a", "b"]);
+  assert.deepEqual(back, { a: fields.a, b: fields.b, re: "1", sep: "_" });
+});
+
+test("decodeShareHash drops broken pairs and keeps the rest", () => {
+  const good = LZ.compressToEncodedURIComponent("kept");
+  const back = decodeShareHash("#a=" + good + "&b=&junk&c=%E0%A4%A", LZ, ["a", "b"]);
+  assert.deepEqual(back, { a: "kept" });
+  assert.deepEqual(decodeShareHash("", LZ, ["a"]), {});
+});
+
+test("shareByteLength counts UTF-8 bytes against the 100 KB cap", () => {
+  assert.equal(SHARE_CAP_BYTES, 102400);
+  assert.equal(shareByteLength({ a: "abc", b: "é", re: true }), 5);
+  assert.ok(shareByteLength({ a: "x".repeat(SHARE_CAP_BYTES + 1) }) > SHARE_CAP_BYTES);
+});
+
+test("diffToText marks each row with +, - or a space", () => {
+  const rows = diffLines("a\nb", "a\nc");
+  assert.equal(diffToText(rows), "  a\n- b\n+ c");
+});

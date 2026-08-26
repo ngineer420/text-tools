@@ -48,6 +48,7 @@ assets/favicon.svg       Site icon (original mark)
 assets/css/styles.css    Design system
 assets/js/app.js         All app logic — pure text/diff functions plus DOM wiring for tabs, copy buttons, etc.
 assets/js/markdown.js    Markdown renderer, shared verbatim with notepadly.app (see below)
+assets/js/lz-string.min.js  Vendored lz-string 1.5.0 (MIT) — compresses the share-link hash on /diff-checker, /case-converter, /slugify and /find-and-replace
 assets/js/app.test.js    node:test suite for the pure functions — run with `node assets/js/app.test.js`
 assets/js/cleaner-page.js  Shared renderer for the generated remove-X pages, driven by data-cleaner on <main>
 assets/js/codecs.js      Pure codec engine — Morse (ITU table + WPM timing), binary/hex, Caesar/ROT13, NATO

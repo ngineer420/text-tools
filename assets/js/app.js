@@ -1545,6 +1545,77 @@
     return { text: out, stats: cleanStats(source, out), applied };
   }
 
+  /* ----------------------------- share links ------------------------------ */
+
+  /* A share link keeps the tool inputs in location.hash. The text fields are
+     compressed with lz-string (assets/js/lz-string.min.js), so a whole config
+     file fits in one URL. The browser never sends the hash to the server, so a
+     shared diff stays on the two machines that hold the link. */
+  const SHARE_CAP_BYTES = 100 * 1024;
+
+  /** Count the UTF-8 bytes of every string field, for the share cap. */
+  function shareByteLength(fields) {
+    let total = 0;
+    for (const key of Object.keys(fields)) {
+      const value = fields[key];
+      if (typeof value === "string") total += new TextEncoder().encode(value).length;
+    }
+    return total;
+  }
+
+  /** Build the hash body. The fields named in `textKeys` are compressed, the
+      rest stay plain. Empty strings, false and null are left out. */
+  function encodeShareHash(fields, lz, textKeys) {
+    const parts = [];
+    for (const key of Object.keys(fields)) {
+      const value = fields[key];
+      if (value === "" || value == null || value === false) continue;
+      if (textKeys.indexOf(key) !== -1) {
+        parts.push(key + "=" + lz.compressToEncodedURIComponent(String(value)));
+      } else {
+        parts.push(key + "=" + encodeURIComponent(String(value === true ? 1 : value)));
+      }
+    }
+    return parts.join("&");
+  }
+
+  /** Read a hash back. `textKeys` names the compressed fields. A field that
+      does not decompress is dropped, so a damaged link fills what it can. */
+  function decodeShareHash(hash, lz, textKeys) {
+    const out = {};
+    const body = String(hash || "").replace(/^#/, "");
+    if (!body) return out;
+    for (const pair of body.split("&")) {
+      const i = pair.indexOf("=");
+      if (i < 1) continue;
+      const key = pair.slice(0, i);
+      const raw = pair.slice(i + 1);
+      if (textKeys.indexOf(key) !== -1) {
+        let text = null;
+        try {
+          text = lz.decompressFromEncodedURIComponent(raw);
+        } catch (err) {
+          text = null;
+        }
+        if (typeof text === "string" && text) out[key] = text;
+      } else {
+        try {
+          out[key] = decodeURIComponent(raw);
+        } catch (err) {
+          /* a broken pair is dropped */
+        }
+      }
+    }
+    return out;
+  }
+
+  /** Render diff rows as plain text with a +, - or space marker per line. */
+  function diffToText(rows) {
+    return rows
+      .map((row) => (row.type === "added" ? "+ " : row.type === "removed" ? "- " : "  ") + row.line)
+      .join("\n");
+  }
+
   /* ============================================================
      Export pure functions for Node-based sanity checks (see README).
      In the browser this block is skipped and the IIFE below runs.
@@ -1597,6 +1668,11 @@
       removeAccents,
       cleanText,
       CLEANER_ORDER,
+      SHARE_CAP_BYTES,
+      shareByteLength,
+      encodeShareHash,
+      decodeShareHash,
+      diffToText,
       countWords,
       countCharsWithSpaces,
       countCharsWithoutSpaces,
@@ -1920,6 +1996,18 @@
     copyBtn.addEventListener("click", () => {
       if (output.value) copyText(output.value, copyFlash);
     });
+    wireDownload("case-download", "case-converter.txt", () => output.value);
+    wireCopyLink("case-link", "case-link-flash", "case-converter", ["t"], () => {
+      const active = buttons.find((b) => b.classList.contains("is-active"));
+      return { t: input.value, c: active ? active.dataset.case : "" };
+    });
+
+    const shared = readShareHash("case-converter", ["t"]);
+    if (shared) {
+      input.value = shared.t || "";
+      const btn = buttons.find((b) => b.dataset.case === shared.c);
+      if (btn) btn.click();
+    }
   })();
 
   /* ------------------------- lorem ipsum generator tool -------------------- */
@@ -1942,6 +2030,7 @@
     copyBtn.addEventListener("click", () => {
       if (output.value) copyText(output.value, copyFlash);
     });
+    wireDownload("lorem-download", "lorem-ipsum-generator.txt", () => output.value);
 
     generate();
   })();
@@ -1982,6 +2071,19 @@
     }
 
     compareBtn.addEventListener("click", render);
+    wireCopyLink("diff-link", "diff-link-flash", "diff-checker", ["a", "b"], () => ({
+      a: originalInput.value,
+      b: changedInput.value,
+    }));
+    wireDownload("diff-download", "diff-checker.txt", () =>
+      diffToText(diffLines(originalInput.value, changedInput.value))
+    );
+
+    const shared = readShareHash("diff-checker", ["a", "b"]);
+    if (shared) {
+      originalInput.value = shared.a || "";
+      changedInput.value = shared.b || "";
+    }
     render();
   })();
 
@@ -2002,6 +2104,80 @@
       const text = getText();
       if (text) copyText(text, flashEl);
     });
+  }
+
+  /** Save text as a file through a temporary object URL. */
+  function downloadText(filename, text, mime) {
+    const blob = new Blob([text], { type: (mime || "text/plain") + ";charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  /** Wire a Download button. `filename` is a string or a function, so a
+      two-direction tool can pick .html or .md at click time. */
+  function wireDownload(btnId, filename, getText, mime) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      const text = getText();
+      if (!text) return;
+      const name = typeof filename === "function" ? filename() : filename;
+      const type = typeof mime === "function" ? mime() : mime;
+      downloadText(name, text, type);
+    });
+  }
+
+  /** The page slug from the path, for a download name on a generated page. */
+  function pageSlug(fallback) {
+    const path = location.pathname.replace(/\.html$/, "").replace(/\/$/, "");
+    return path.replace(/^\//, "") || fallback;
+  }
+
+  /* The diff tool wires up before this section runs, so this is a function
+     and not a const: a function declaration hoists, a const does not. */
+  function lz() {
+    return typeof LZString !== "undefined" ? LZString : null;
+  }
+
+  /** Wire a "Copy link" button. The link points at the standalone tool page
+      with the inputs in the hash. Over the cap, a banner replaces the copy. */
+  function wireCopyLink(btnId, flashId, slug, textKeys, getFields) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    if (!lz()) {
+      btn.hidden = true;
+      return;
+    }
+    const flashEl = document.getElementById(flashId);
+    const banner = document.createElement("div");
+    banner.className = "error-banner";
+    banner.setAttribute("role", "alert");
+    const host = btn.closest(".output-toolbar, .btn-row") || btn;
+    host.insertAdjacentElement("afterend", banner);
+    btn.addEventListener("click", () => {
+      const fields = getFields();
+      if (shareByteLength(fields) > SHARE_CAP_BYTES) {
+        setError(banner, "The text is over 100 KB. Shorten it to share a link.");
+        return;
+      }
+      setError(banner, "");
+      copyText(location.origin + "/" + slug + "#" + encodeShareHash(fields, lz(), textKeys), flashEl);
+    });
+  }
+
+  /** Read the share hash on the standalone page for `slug`. The home page
+      holds every panel under one URL, so a hash there names no tool. */
+  function readShareHash(slug, textKeys) {
+    if (!lz() || !location.hash) return null;
+    if (pageSlug("") !== slug) return null;
+    const fields = decodeShareHash(location.hash, lz(), textKeys);
+    return Object.keys(fields).length ? fields : null;
   }
 
   function setError(el, message) {
@@ -2076,7 +2252,26 @@
     [useRegex, caseSensitive].forEach((el) => el.addEventListener("change", render));
     applyBtn.addEventListener("click", applyAll);
     wireCopy("fr-copy", "fr-copy-flash", () => output.value);
-    render();
+    wireDownload("fr-download", "find-and-replace.txt", () => output.value);
+    wireCopyLink("fr-link", "fr-link-flash", "find-and-replace", ["t", "f", "r"], () => ({
+      t: input.value,
+      f: findInput.value,
+      r: replaceInput.value,
+      re: useRegex.checked,
+      cs: caseSensitive.checked,
+    }));
+
+    const shared = readShareHash("find-and-replace", ["t", "f", "r"]);
+    if (shared) {
+      input.value = shared.t || "";
+      findInput.value = shared.f || "";
+      replaceInput.value = shared.r || "";
+      useRegex.checked = shared.re === "1";
+      caseSensitive.checked = shared.cs === "1";
+      applyAll();
+    } else {
+      render();
+    }
   })();
 
   /* --------------------------- sort and dedupe tool ----------------------- */
@@ -2115,6 +2310,7 @@
       el.addEventListener("change", render)
     );
     wireCopy("sd-copy", "sd-copy-flash", () => output.value);
+    wireDownload("sd-download", "sort-and-dedupe-lines.txt", () => output.value);
     render();
   })();
 
@@ -2176,6 +2372,12 @@
 
     input.addEventListener("input", debounce(render, 150));
     wireCopy("md-copy", "md-copy-flash", () => output.value);
+    wireDownload(
+      "md-download",
+      () => (direction === "md2html" ? "markdown-to-html.html" : "markdown-to-html.md"),
+      () => output.value,
+      () => (direction === "md2html" ? "text/html" : "text/markdown")
+    );
     setDirection("md2html");
   })();
 
@@ -2255,6 +2457,12 @@
     input.addEventListener("input", debounce(render, 150));
     [delimiter, hasHeader, coerce].forEach((el) => el.addEventListener("change", render));
     wireCopy("cj-copy", "cj-copy-flash", () => output.value);
+    wireDownload(
+      "cj-download",
+      () => (direction === "csv2json" ? "csv-to-json.json" : "csv-to-json.csv"),
+      () => output.value,
+      () => (direction === "csv2json" ? "application/json" : "text/csv")
+    );
     setDirection("csv2json");
   })();
 
@@ -2297,6 +2505,27 @@
     );
     maxLength.addEventListener("input", debounce(render, 150));
     wireCopy("sl-copy", "sl-copy-flash", () => output.value);
+    wireDownload("sl-download", "slugify.txt", () => output.value);
+    wireCopyLink("sl-link", "sl-link-flash", "slugify", ["t"], () => ({
+      t: input.value,
+      sep: separator.value,
+      lc: lowercase.checked,
+      tr: translit.checked,
+      u: keepUnicode.checked,
+      max: maxLength.value,
+      pl: perLine.checked,
+    }));
+
+    const shared = readShareHash("slugify", ["t"]);
+    if (shared) {
+      input.value = shared.t || "";
+      if (shared.sep) separator.value = shared.sep;
+      lowercase.checked = shared.lc === "1";
+      translit.checked = shared.tr === "1";
+      keepUnicode.checked = shared.u === "1";
+      maxLength.value = shared.max || "0";
+      perLine.checked = shared.pl === "1";
+    }
     render();
   })();
 
@@ -2385,6 +2614,7 @@
       el.addEventListener("change", render)
     );
     wireCopy("rb-copy", "rb-copy-flash", () => output.value);
+    wireDownload("rb-download", "remove-line-breaks.txt", () => output.value);
     render();
   })();
 
@@ -2401,6 +2631,8 @@
     readOptions: readCleanerOptions,
     renderStats: renderCleanerStats,
     wireCopy,
+    wireDownload,
+    pageSlug,
     debounce,
   };
 
@@ -2467,6 +2699,7 @@
     input.addEventListener("input", debounce(render, 100));
     panel.addEventListener("change", render);
     wireCopy("tc-copy", "tc-copy-flash", () => output.value);
+    wireDownload("tc-download", "text-cleaner.txt", () => output.value);
     render();
   })();
 
@@ -2502,6 +2735,7 @@
     modeBtns.forEach((b) => b.addEventListener("click", () => setMode(b.dataset.reverse)));
     input.addEventListener("input", debounce(render, 100));
     wireCopy("rv-copy", "rv-copy-flash", () => output.value);
+    wireDownload("rv-download", "reverse-text.txt", () => output.value);
     setMode(mode);
   })();
 })();

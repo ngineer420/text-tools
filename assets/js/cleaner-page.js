@@ -68,5 +68,6 @@
   if (primary) primary.addEventListener("change", render);
   if (also) also.addEventListener("change", render);
   api.wireCopy("cl-copy", "cl-copy-flash", function () { return output.value; });
+  api.wireDownload("cl-download", api.pageSlug("text-cleaner") + ".txt", function () { return output.value; });
   render();
 })();

@@ -390,6 +390,7 @@
   });
 
   api.wireCopy("co-copy", "co-copy-flash", function () { return output.value; });
+  api.wireDownload("co-download", api.pageSlug("morse-code-translator") + ".txt", function () { return output.value; });
 
   if (E.init) E.init();
   setDir(dir, true);

@@ -73,6 +73,27 @@ def esc(text):
     )
 
 
+def entity_encode(text):
+    """Every character as a decimal numeric character reference.
+
+    The browser decodes these while it parses, so the href is a real mailto
+    and the link needs no JavaScript. A scraper that reads the raw HTML and
+    looks for an at sign finds nothing.
+    """
+    return "".join("&#%d;" % ord(c) for c in text)
+
+
+def mailto(address):
+    """One contact anchor, with the href and the visible text both encoded.
+
+    This never goes through `esc`: the output is already character references,
+    and a second escape pass would turn each `&` into `&amp;` and show the
+    reader the raw codes.
+    """
+    return '<a href="%s">%s</a>' % (entity_encode("mailto:" + address),
+                                    entity_encode(address))
+
+
 def anchor(href, text, current, extra="", owns=()):
     """One anchor, with the page's only per-page difference stamped on it.
 
@@ -240,7 +261,7 @@ def render_header(url):
 
 
 def render_footer(url):
-    """The site footer: the copyright line, the policy links, the peer sites.
+    """The site footer: the copyright line, the policy and contact links, the peers.
 
     The peer block is the site's only sideways link. It is deliberately short:
     a visitor follows a neighbour they can use, and a list of every domain in
@@ -252,10 +273,16 @@ def render_footer(url):
     out = ['<footer class="site-footer">', '  <div class="footer-inner">',
            '    <div>&copy; <span id="year"></span> %s</div>' % esc(owner)]
     links = getattr(D, "FOOTER_LINKS", ())
-    if links:
+    contact = getattr(D, "CONTACT", None)
+    if links or contact:
         out.append('    <div class="footer-links">')
         for href, text in links:
             out.append("      " + anchor(href, text, url))
+        # Last in the row, and the only link here that leaves the site. The
+        # address is its own label: "Contact" hides what the reader gets, and
+        # a screen reader announces the address itself.
+        if contact:
+            out.append("      " + mailto(contact))
         out.append("    </div>")
     out.append("  </div>")
     peers = getattr(D, "PEERS", ())

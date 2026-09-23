@@ -75,8 +75,30 @@ GROUPS = [
 # the tool, because the tool already has its own line in the "Clean up text"
 # group above and a second identical label would be a duplicate rather than a
 # second way in.
+# The seven generated tier-2 pages, listed here so the tool count and the
+# homepage directory both come off one list. build_cleaner_pages.py asserts
+# that this matches tools/cleaner_pages.py, so a new family member cannot
+# ship without appearing here.
+FAMILY_LABEL = "Remove one thing"
+FAMILY = [
+    {"href": "/remove-extra-spaces",       "long": "Remove Extra Spaces"},
+    {"href": "/remove-punctuation",        "long": "Remove Punctuation"},
+    {"href": "/remove-special-characters", "long": "Remove Special Characters"},
+    {"href": "/remove-numbers",            "long": "Remove Numbers"},
+    {"href": "/remove-emojis",             "long": "Remove Emojis"},
+    {"href": "/remove-html-tags",          "long": "Remove HTML Tags"},
+    {"href": "/remove-accents",            "long": "Remove Accents"},
+]
+
+# The public tool count: every tool page the site publishes, tier 1 and tier 2
+# together. It is computed, never typed, because index.html once claimed 12,
+# thirteen and 19 on one page while the site shipped 26. Anything that states
+# the number reads it from here.
+TOOL_COUNT = len([t for t in TOOLS if t["tier"] == 1]) + len(FAMILY)
+
 HUBS = [
-    ("/text-cleaner", "Remove spaces, punctuation, emoji, HTML"),
+    ("/text-cleaner",
+     "Remove spaces, punctuation, emoji, HTML \u2014 %d more" % len(FAMILY)),
 ]
 
 # The rail plus the sheet carry all nineteen tools on every page, and each tool page
@@ -158,3 +180,80 @@ PEERS = [
     ("https://qrmint.net", "QR Mint",
      "QR codes for a link, a Wi-Fi network or a contact card."),
 ]
+
+
+# --------------------------------------------------------------------------
+# Homepage copy that states the tool count.
+#
+# index.html is hand-written, so before this it claimed 12 in the title,
+# thirteen in the social description and 19 in the menu trigger, against 26
+# shipped. Every sentence that carries the number now lives here, is built
+# from TOOL_COUNT, and is written into the page by sync_nav between markers.
+#
+# The homepage sells the category. /word-counter owns the word-counter query,
+# so the title, the h1 and the meta description of / never name that tool.
+# --------------------------------------------------------------------------
+
+_N = str(TOOL_COUNT)
+_SITE = "https://textkitpro.com/"
+_OG_IMAGE = "https://textkitpro.com/assets/og-image.png"
+_TITLE = "Free Online Text Tools — " + _N + " Tools in Your Browser | TextKit Pro"
+_OG_TITLE = "TextKit Pro — " + _N + " Free Online Text Tools"
+_DESC = ("A collection of " + _N + " free online text tools. Clean up a paste, convert a "
+         "format, compare two drafts or encode a message. Everything runs in your browser.")
+
+TEXT_REGIONS = {
+    # Title, description and the social cards, as one block.
+    "homehead": "\n".join([
+        "<title>" + _TITLE + "</title>",
+        '<meta name="description" content="' + _DESC + '">',
+        '<link rel="canonical" href="' + _SITE + '">',
+        '<meta name="theme-color" content="#14131d">',
+        "",
+        '<meta property="og:type" content="website">',
+        '<meta property="og:title" content="' + _OG_TITLE + '">',
+        '<meta property="og:description" content="' + _DESC + '">',
+        '<meta property="og:url" content="' + _SITE + '">',
+        '<meta property="og:image" content="' + _OG_IMAGE + '">',
+        '<meta property="og:image:width" content="1200">',
+        '<meta property="og:image:height" content="630">',
+        '<meta name="twitter:card" content="summary_large_image">',
+        '<meta name="twitter:title" content="' + _OG_TITLE + '">',
+        '<meta name="twitter:description" content="' + _DESC + '">',
+        '<meta name="twitter:image" content="' + _OG_IMAGE + '">',
+    ]),
+
+    # The hero. The h1 is the category head term and nothing else.
+    "homehero": "\n".join([
+        "<h1>Free Online Text Tools</h1>",
+        "<p>TextKit Pro collects " + _N + " text tools on one site. Clean up a paste, "
+        "convert a format, compare two drafts, or encode a message. Pick a tool and "
+        "start typing.</p>",
+        '<p class="trust-line">Runs 100% in your browser<span class="dot">•</span>'
+        "Nothing is uploaded to a server<span class=\"dot\">•</span>" + _N + " tools</p>",
+    ]),
+
+    # The body copy, which positions the site as a collection rather than as
+    # one tool with extras.
+    "homeabout": "\n".join([
+        "<h2>About TextKit Pro</h2>",
+        "<p>TextKit Pro is a collection of " + _N + " free text tools. Each tool answers "
+        "one question, and each tool has its own page. Nothing here needs an account. "
+        "Nothing you paste leaves your device.</p>",
+        "<p><strong>Count and compare</strong> measures a draft. Count words and keyword "
+        "density, read a Flesch readability score, or mark every changed line between "
+        "two versions.</p>",
+        "<p><strong>Clean up text</strong> fixes a paste. Convert the case, replace a "
+        "pattern with a regular expression, sort and dedupe lines, or build a URL slug. "
+        "The <a href=\"/text-cleaner\">text cleaner</a> strips extra spaces, punctuation, "
+        "special characters, numbers, emoji, HTML tags and accents in one pass. Each of "
+        "those seven strippers also has a page of its own.</p>",
+        "<p><strong>Convert and generate</strong> changes a format. Move between Markdown "
+        "and HTML, move between CSV and JSON, generate Lorem Ipsum, or reverse text by "
+        "character, word or line.</p>",
+        "<p><strong>Encode and translate</strong> rewrites a message. Use Morse code, "
+        "binary, a Caesar cipher, ROT13 or the NATO phonetic alphabet.</p>",
+        "<p>Every tool runs in your browser with JavaScript. The site sends nothing to a "
+        "server. There is no wait, and there is nothing to upload.</p>",
+    ]),
+}

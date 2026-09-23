@@ -1,6 +1,10 @@
 # textkitpro.com
 
-A free, ad-supported bundle of text utilities, twelve tools in one page:
+A free collection of 26 browser-based text tools. Nineteen are tier-1 tools with a
+page of their own, and seven are generated `remove-*` pages off the text cleaner.
+The public count comes from `TOOL_COUNT` in `tools/nav_data.py`, so it cannot drift.
+
+The thirteen tools on the homepage:
 
 - **Word Counter** (default tab): live word/character/sentence/paragraph counts, estimated reading time, and a top-10 keyword density table (common stopwords excluded).
 - **Case Converter**: UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case, and aLtErNaTiNg CaSe, with one-click copy.
@@ -32,7 +36,7 @@ Then open `http://localhost:8000`.
 ## Structure
 
 ```
-index.html             Main app (the original thirteen tools, tabbed)
+index.html             Category landing page: the tool directory plus the thirteen panelled tools
 text-cleaner.html        The combined cleaner — hand-written hub for the generated remove-X family
 remove-*.html            Generated: one page per cleaner (see tools/build_cleaner_pages.py)
 morse-code-translator.html, text-to-binary.html, binary-to-text.html,

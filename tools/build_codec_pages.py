@@ -160,37 +160,21 @@ def header(slug):
     return """<body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<header class="site-header">
-  <div class="header-inner">
-    <a class="brand" href="/" aria-label="TextKit Pro home">
-      <span class="brand-mark">
-        <img src="/assets/favicon.svg" alt="" width="24" height="24">
-        TextKit <span class="pro-badge">Pro</span>
-      </span>
-    </a>
-    <div class="header-actions">
-      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">&#9680;</button>
-    </div>
-  </div>
-</header>
+<!-- header:start -->
+{header}
+<!-- header:end -->
 
 <!-- nav:start -->
 {nav}
 <!-- nav:end -->
-""".format(nav=sync_nav.render_nav("/" + slug))
+""".format(header=sync_nav.render_header("/" + slug), nav=sync_nav.render_nav("/" + slug))
 
 
-FOOTER = """
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div>&copy; <span id="year"></span> textkitpro.com</div>
-    <div class="footer-links">
-      <a href="/">Home</a>
-      <a href="/privacy.html">Privacy</a>
-      <a href="/terms.html">Terms</a>
-    </div>
-  </div>
-</footer>
+def footer(slug):
+    return """
+<!-- footer:start -->
+{footer}
+<!-- footer:end -->
 
 <script src="/assets/js/codecs.js"></script>
 <script src="/assets/js/app.js"></script>
@@ -198,7 +182,7 @@ FOOTER = """
 {erabbit}
 </body>
 </html>
-""".format(erabbit=ERABBIT)
+""".format(footer=sync_nav.render_footer("/" + slug), erabbit=ERABBIT)
 
 
 # --------------------------------------------------------------------------
@@ -554,7 +538,7 @@ def render(page, data):
     body += reference_section(page, data)
     body += faq_section(page)
     body += related_section(page)
-    return head(page) + header(page["slug"]) + body + FOOTER
+    return head(page) + header(page["slug"]) + body + footer(page["slug"])
 
 
 def write(path, text, check, stale):

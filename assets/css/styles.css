@@ -677,6 +677,34 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 64px; }
 .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
 .footer-links a { color: var(--text-dim); }
 
+/* Sibling sites. One row on a wide screen, a stack on a phone. The note after
+   each link is the reason to follow it, so it stays visible at every width and
+   wraps instead of truncating. */
+.footer-peers {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 20px 40px;
+  color: var(--text-faint);
+  font-size: 12.5px;
+}
+.footer-peers-label {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+}
+.footer-peers ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px 24px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+.footer-peers li { margin: 0; }
+.footer-peers a { color: var(--text-dim); }
+.footer-peers span { display: block; }
+
 /* ---------- misc ---------- */
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

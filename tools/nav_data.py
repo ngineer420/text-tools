@@ -159,7 +159,12 @@ HEADER_ACTIONS = [
     ' aria-label="Toggle dark/light theme" title="Toggle theme">&#9680;</button>',
 ]
 
-# Footer line one: the copyright owner and the policy links.
+# The public contact address. privacy.html promises a contact route, so the
+# footer must carry a real one. sync_nav renders it as numeric character
+# references, so the raw HTML holds no literal address for a scraper to find.
+CONTACT = "hello@goodbotbad.bot"
+
+# Footer line one: the copyright owner, the policy links and the contact link.
 FOOTER_OWNER = "textkitpro.com"
 FOOTER_LINKS = [
     ("/", "Home"),

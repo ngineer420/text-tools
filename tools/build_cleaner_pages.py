@@ -363,6 +363,20 @@ def related_section(page):
              'with every box ticked to start.</li>']
     for href, text, note in page["related"]:
         parts.append('      <li><a href="%s">%s</a> &mdash; %s</li>' % (href, text, note))
+    parts += ["    </ul>"]
+
+    # The rest of the family, as links rather than as checkboxes.
+    #
+    # The "Also clean up" panel above offers the same six pages, but it offers
+    # them as checkboxes on this page: a crawler sees no link and a visitor who
+    # wants the dedicated page cannot get there. That is why each generated
+    # page held 1 to 4 inbound links against 33 for a tier-1 tool. This block
+    # makes every sibling a real link, so the seven are a mesh.
+    siblings = [p for p in C.PAGES if p["id"] != page["id"]]
+    parts += ['    <h3 class="related-family">The rest of the family</h3>',
+              '    <ul class="related-family-list">']
+    for other in siblings:
+        parts.append('      <li><a href="/%s">%s</a></li>' % (other["slug"], esc(other["h1"])))
     parts += ["    </ul>", "  </nav>"]
     return "\n".join(parts)
 
@@ -430,6 +444,17 @@ def main():
     hub = "/" + C.HUB["slug"]
     if not any(sync_nav.canon(t["href"]) == hub for t in NAV.TOOLS):
         raise SystemExit("tools/nav_data.py has no entry for %s" % hub)
+
+    # nav_data.FAMILY feeds the public tool count and the homepage directory,
+    # so a page added here and forgotten there would make the site understate
+    # itself and leave the new page with no link from the homepage.
+    listed = {sync_nav.canon(f["href"]) for f in getattr(NAV, "FAMILY", [])}
+    built = {"/" + p["slug"] for p in C.PAGES}
+    if listed != built:
+        raise SystemExit(
+            "tools/nav_data.py FAMILY does not match tools/cleaner_pages.py PAGES\n"
+            "  only in nav_data: %s\n  only in cleaner_pages: %s"
+            % (sorted(listed - built), sorted(built - listed)))
 
     stale = []
     for page in C.PAGES:

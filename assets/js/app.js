@@ -1810,8 +1810,8 @@
 
   /* ---- homepage: the toolbar's own links switch the tool panels ----
    *
-   * The homepage carries all twelve tools on one page. The toolbar is the only
-   * nav layer, so its links do double duty here: a plain left click swaps the
+   * The homepage carries the thirteen tier-1 tools on one page. The toolbar
+   * is the only nav layer, so its links do double duty here: a plain left click swaps the
    * panel in place and pushes that tool's real address, exactly as the old tab
    * strip did, while a modified click, a JS-disabled visitor and every crawler
    * get ordinary navigation to the standalone page, which is the same tool.

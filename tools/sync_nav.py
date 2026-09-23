@@ -106,7 +106,11 @@ def owned_urls(tool_href):
 def render_nav(url):
     tier1 = [t for t in D.TOOLS if t["tier"] == 1]
     rail = tier1[:8]
-    count = len(tier1)
+    # The trigger states the site's public tool count, not the length of this
+    # list: a site whose sheet reaches a family of variants behind one hub line
+    # still offers all of them. TOOL_COUNT is the site's own arithmetic, and a
+    # site that does not define it falls back to what the sheet lists.
+    count = getattr(D, "TOOL_COUNT", None) or len(tier1)
 
     out = []
     add = out.append
@@ -120,7 +124,7 @@ def render_nav(url):
         % (count, esc(D.NOUN)))
     add("    </summary>")
 
-    flat = count <= 8
+    flat = len(tier1) <= 8
     add('    <div class="tb-sheet%s">' % (" is-flat" if flat else ""))
     # The columns live on this inner wrapper, never on .tb-sheet itself. A CSS
     # multi-column box with a capped block-size does not scroll — it fragments
@@ -268,13 +272,59 @@ def render_footer(url):
     return "\n".join(out)
 
 
+def render_toolindex(url):
+    """The full directory of destinations, for a category landing page.
+
+    The toolbar sheet is chrome and caps what it shows. This is the page's own
+    content: every tool the site publishes, tier 1 and tier 2 alike, grouped by
+    the job a visitor came to do. It is what gives a generated variant family
+    an in-body link from the strongest URL on the domain.
+    """
+    tier1 = [t for t in D.TOOLS if t["tier"] == 1]
+    if not tier1:
+        return ""
+    count = getattr(D, "TOOL_COUNT", None) or len(tier1)
+    out = ['<section class="container-narrow tool-index" aria-labelledby="tool-index-h">',
+           '  <h2 id="tool-index-h">All %d %s</h2>' % (count, esc(D.NOUN)),
+           '  <div class="tool-index-cols">']
+    sections = [(group[0], group[1], [t for t in tier1 if t["group"] == group[0]])
+                for group in D.GROUPS]
+    family = getattr(D, "FAMILY", ())
+    if family:
+        sections.append(("family", getattr(D, "FAMILY_LABEL", "More"), list(family)))
+    for i, (key, title, members) in enumerate(sections, start=1):
+        if not members:
+            continue
+        gid = "ti-g%d" % i
+        # Label and list share one grid item. As siblings they flow as two
+        # independent items and the columns tear apart: every label lands in
+        # column one and every link in column two.
+        out.append('    <div class="tool-index-col">')
+        out.append('      <p class="tool-index-group" id="%s">%s</p>' % (gid, esc(title)))
+        out.append('      <ul aria-labelledby="%s">' % gid)
+        for t in members:
+            out.append("        <li>%s</li>"
+                       % anchor(t["href"], t["long"], url, owns=owned_urls(t["href"])))
+        out += ["      </ul>", "    </div>"]
+    out += ["  </div>", "</section>"]
+    return "\n".join(out)
+
+
 RENDERERS = {
     "header": render_header,
     "nav": render_nav,
     "sizechips": render_sizechips,
+    "toolindex": render_toolindex,
     "footernav": render_footernav,
     "footer": render_footer,
 }
+
+# Plain blocks of site copy, keyed by region name. A site puts the sentences
+# that state a number here — a tool count, a price, a release year — so the
+# number is computed once in nav_data rather than retyped into every page that
+# mentions it. This file never learns what any of them say.
+for _name, _html in getattr(D, "TEXT_REGIONS", {}).items():
+    RENDERERS[_name] = (lambda body: (lambda url: body))(_html)
 
 
 # --------------------------------------------------------------------------

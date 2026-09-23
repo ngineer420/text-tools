@@ -658,6 +658,33 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 64px; }
   text-align: center;
 }
 
+/* ---------- homepage tool directory ---------- */
+/* Content, not chrome: the one place on the site that lists every tool page,
+   including the seven generated remove-X pages the toolbar reaches through a
+   single hub line. Columns collapse to one at phone width. */
+.tool-index { padding-top: 0; }
+.tool-index-cols {
+  display: grid;
+  gap: 18px 28px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  align-items: start;
+}
+.tool-index-col { min-width: 0; }
+.tool-index-group {
+  margin: 0 0 6px;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+.tool-index ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+.tool-index li { margin: 0 0 4px; }
+
 /* ---------- footer ---------- */
 .site-footer {
   border-top: 1px solid var(--border-soft);
@@ -941,3 +968,16 @@ input[type="range"]:focus-visible { outline: 2px solid var(--focus); outline-off
 .shift-table td.shift-text { font-family: var(--mono); font-size: 12.5px; word-break: break-word; }
 .shift-table tr.is-current { background: color-mix(in srgb, var(--accent) 12%, transparent); }
 .shift-table tr.is-current th, .shift-table tr.is-current td { color: var(--text); }
+
+/* ---------- cleaner family cross-links ---------- */
+.related-family { margin: 18px 0 6px; font-size: 15px; }
+.related-family-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-size: 14px;
+}
+.related-family-list li { margin: 0; }

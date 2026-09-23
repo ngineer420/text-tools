@@ -150,10 +150,15 @@ def head(page):
 
 {ld}
 
+<!-- pagemeta:start -->
+{pagemeta}
+<!-- pagemeta:end -->
+
 {ads}
 </head>
 """.format(warning=GENERATED_WARNING, title=esc(title), desc=esc(plain(desc)),
-           url=url, site=SITE, ogtitle=esc(page["title"]), ld=blocks, ads=ADSENSE)
+           url=url, site=SITE, ogtitle=esc(page["title"]), ld=blocks, ads=ADSENSE,
+           pagemeta=sync_nav.render_pagemeta("/" + page["slug"]))
 
 
 def header(slug):
@@ -177,6 +182,7 @@ def footer(slug):
 <!-- footer:end -->
 
 <script src="/assets/js/codecs.js"></script>
+<script src="/assets/js/announce.js"></script>
 <script src="/assets/js/app.js"></script>
 <script src="/assets/js/codec-page.js"></script>
 {erabbit}

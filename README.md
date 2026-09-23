@@ -58,6 +58,8 @@ assets/js/cleaner-page.js  Shared renderer for the generated remove-X pages, dri
 assets/js/codecs.js      Pure codec engine — Morse (ITU table + WPM timing), binary/hex, Caesar/ROT13, NATO
 assets/js/codecs.test.js node:test suite for codecs.js — run with `node assets/js/codecs.test.js`
 assets/js/codec-page.js  Runtime for the six translator pages, driven by data-codec-engine on <main>
+assets/js/announce.js    Shared live-region announcer — one throttled role="status" write per tool
+assets/js/announce.test.js  node:test suite for announce.js — run with `node assets/js/announce.test.js`
 tools/nav_data.py        The toolbar's single source of truth (per-site)
 tools/sync_nav.py        Renders the toolbar into every page's nav marker pair
 tools/cleaner_pages.py   Data + page copy for the remove-X family

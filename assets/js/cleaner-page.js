@@ -34,6 +34,14 @@
   var also = document.getElementById("cl-also");
   var summary = document.getElementById("cl-summary");
 
+  /* Announce one headline sentence. assets/js/announce.js holds the throttle
+     and the diff-against-last guard, so identical text is never re-announced. */
+  function say(node, text) {
+    if (!node) return;
+    if (window.TKAnnounce) window.TKAnnounce.say(node, text);
+    else if (node.textContent !== text) node.textContent = text;
+  }
+
   function extras(selection) {
     if (!also) return [];
     var picked = [];
@@ -56,11 +64,11 @@
     api.renderStats("cl", result.stats);
 
     if (summary) {
-      summary.textContent = picked.length
+      say(summary, picked.length
         ? "Also removing " + (picked.length === 1
             ? picked[0]
             : picked.slice(0, -1).join(", ") + " and " + picked[picked.length - 1]) + "."
-        : "";
+        : "");
     }
   }
 

@@ -123,6 +123,8 @@ MIGRATE = [
      "pattern": r'<header class="site-header">.*?</header>'},
     {"op": "replace", "region": "footer",
      "pattern": r'<footer class="site-footer">.*?</footer>'},
+    # Structured data, at the end of the head.
+    {"op": "insert_before", "region": "pagemeta", "pattern": r"</head>"},
 ]
 
 # --------------------------------------------------------------------------
@@ -256,4 +258,67 @@ TEXT_REGIONS = {
         "<p>Every tool runs in your browser with JavaScript. The site sends nothing to a "
         "server. There is no wait, and there is nothing to upload.</p>",
     ]),
+}
+
+
+# --------------------------------------------------------------------------
+# Structured data.
+#
+# Portfolio issue ngineer420/ngineer420.github.io#31: zero BreadcrumbList on
+# any page, and four articles with no Article schema and no full OG tags.
+# sync_nav renders both from the data below into a `pagemeta` region, so the
+# generated pages and the hand-written pages get the same blocks.
+# --------------------------------------------------------------------------
+
+SITE = "https://textkitpro.com"
+OG_IMAGE = SITE + "/assets/og-image.png"
+PUBLISHER = "TextKit Pro"
+
+# Pages that are not tools. Each maps the canonical URL sync_nav computes from
+# the file path to a display name and the real path the canonical uses, which
+# keeps the `.html` these two pages publish.
+PAGE_NAMES = {
+    "/privacy": ("Privacy Policy", "/privacy.html"),
+    "/terms": ("Terms of Use", "/terms.html"),
+}
+
+# The four written guides. The dates describe the text, not the file: a sweep
+# that only touches the header or the footer does not republish an article.
+ARTICLES = {
+    "/articles/word-count-guide": {
+        "path": "/articles/word-count-guide.html",
+        "name": "Word Count Standards: How Long Should Your Writing Be?",
+        "description": "Real word-count conventions for essays, novels, blog posts and "
+                       "SEO articles, plus why character count and reading-time "
+                       "estimates matter for writers.",
+        "published": "2026-07-16",
+        "modified": "2026-07-16",
+    },
+    "/articles/text-case-styles-explained": {
+        "path": "/articles/text-case-styles-explained.html",
+        "name": "Text Case Styles Explained: camelCase, snake_case, and More",
+        "description": "Where camelCase, PascalCase, snake_case, kebab-case, Title Case "
+                       "and Sentence case are each used, and why consistent casing "
+                       "matters in code and in writing.",
+        "published": "2026-07-16",
+        "modified": "2026-07-16",
+    },
+    "/articles/reading-time-and-readability": {
+        "path": "/articles/reading-time-and-readability.html",
+        "name": "Reading Time and Readability: How Fast Do People Actually Read?",
+        "description": "Average adult reading speed in words per minute, how "
+                       "reading-time estimates are calculated, and why readability "
+                       "matters for web content and accessibility.",
+        "published": "2026-07-16",
+        "modified": "2026-07-16",
+    },
+    "/articles/how-this-tool-works": {
+        "path": "/articles/how-this-tool-works.html",
+        "name": "How TextKit Pro's Tools Work Under the Hood",
+        "description": "The counting logic, the keyword-density calculation and the "
+                       "LCS-based diff algorithm behind this site, with no external "
+                       "dependencies.",
+        "published": "2026-07-16",
+        "modified": "2026-07-16",
+    },
 }

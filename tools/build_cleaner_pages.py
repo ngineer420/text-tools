@@ -33,10 +33,12 @@ Standard library only, no build step, Python 3.8+.
 """
 
 import argparse
+import datetime
 import html
 import json
 import os
 import re
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -179,10 +181,15 @@ def head(page):
 
 {ld}
 
+<!-- pagemeta:start -->
+{pagemeta}
+<!-- pagemeta:end -->
+
 {ads}
 </head>
 """.format(warning=GENERATED_WARNING, title=esc(title), desc=esc(plain(desc)),
-           url=url, site=SITE, h1=esc(page["h1"]), ld=blocks, ads=ADSENSE)
+           url=url, site=SITE, h1=esc(page["h1"]), ld=blocks, ads=ADSENSE,
+           pagemeta=sync_nav.render_pagemeta("/" + page["slug"]))
 
 
 def header(slug):
@@ -205,6 +212,7 @@ def footer(slug):
 {footer}
 <!-- footer:end -->
 
+<script src="/assets/js/announce.js"></script>
 <script src="/assets/js/app.js"></script>
 <script src="/assets/js/cleaner-page.js"></script>
 {erabbit}
@@ -403,6 +411,43 @@ def render(page):
 
 # --------------------------------------------------------------------------
 
+def source_file(loc):
+    """The file on disk that a sitemap URL serves."""
+    if loc == "/":
+        return os.path.join(ROOT, "index.html")
+    rel = loc.lstrip("/")
+    if not rel.endswith(".html"):
+        rel += ".html"
+    return os.path.join(ROOT, rel)
+
+
+def lastmod(path):
+    """The date the page last changed, as YYYY-MM-DD.
+
+    Not the file's mtime. Writing a generated page rewrites it byte for byte on
+    every build, so an mtime would give every page today's date on every run and
+    `--check` would never agree with the file it just wrote.
+
+    The commit date is the date the *content* changed. A file with an
+    uncommitted edit is being changed right now, so it takes today, and the
+    commit that lands it carries that date.
+    """
+    rel = os.path.relpath(path, ROOT)
+    try:
+        dirty = subprocess.run(["git", "-C", ROOT, "status", "--porcelain", "--", rel],
+                               capture_output=True, text=True, timeout=20)
+        if dirty.returncode == 0 and dirty.stdout.strip():
+            return datetime.date.today().isoformat()
+        log = subprocess.run(["git", "-C", ROOT, "log", "-1", "--format=%cs", "--", rel],
+                             capture_output=True, text=True, timeout=20)
+        if log.returncode == 0 and log.stdout.strip():
+            return log.stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        pass
+    # No git, or a file git has never seen: fall back to the mtime.
+    return datetime.date.fromtimestamp(os.path.getmtime(path)).isoformat()
+
+
 def sitemap():
     rows = list(STATIC_URLS)
     rows += [("/" + p["slug"], "monthly", "0.7") for p in C.PAGES]
@@ -413,6 +458,7 @@ def sitemap():
     for loc, freq, prio in rows:
         out += ["  <url>",
                 "    <loc>%s%s</loc>" % (SITE, loc.rstrip("/") or "/"),
+                "    <lastmod>%s</lastmod>" % lastmod(source_file(loc)),
                 "    <changefreq>%s</changefreq>" % freq,
                 "    <priority>%s</priority>" % prio,
                 "  </url>"]

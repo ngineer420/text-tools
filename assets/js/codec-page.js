@@ -45,6 +45,14 @@
   var dir = main.dataset.codecInitDir || "encode";
   var touched = false;   // has the visitor typed yet?
 
+  /* Announce one headline sentence. assets/js/announce.js holds the throttle
+     and the diff-against-last guard, so identical text is never re-announced. */
+  function say(node, text) {
+    if (!node) return;
+    if (window.TKAnnounce) window.TKAnnounce.say(node, text);
+    else if (node.textContent !== text) node.textContent = text;
+  }
+
   function setError(msg) {
     if (!errorEl) return;
     errorEl.textContent = msg || "";
@@ -260,7 +268,7 @@
     if (guessBtn) guessBtn.addEventListener("click", function () {
       var g = C.caesarGuess(input.value);
       setShift(g);
-      if (statsEl) statsEl.textContent = "Letter frequencies point at shift " + g + ".";
+      say(statsEl, "Letter frequencies point at shift " + g + ".");
     });
 
     function renderTable() {
@@ -364,7 +372,7 @@
   function render() {
     setError("");
     var note = E.run();
-    if (statsEl && note !== undefined) statsEl.textContent = input.value.trim() ? note : "";
+    if (note !== undefined) say(statsEl, input.value.trim() ? note : "");
   }
 
   input.addEventListener("input", function () { touched = true; });
@@ -383,8 +391,8 @@
       setTimeout(function () {
         setDir(want, true);
         render();
-        if (statsEl) statsEl.textContent = "That looked like something to decode, so the direction flipped. "
-          + (swapBtn ? "Use Swap to change it back." : "");
+        say(statsEl, "That looked like something to decode, so the direction flipped. "
+          + (swapBtn ? "Use Swap to change it back." : ""));
       }, 0);
     }
   });

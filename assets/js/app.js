@@ -1727,6 +1727,15 @@
     }
   }
 
+  /* Announce one headline sentence into a role="status" node.
+   * assets/js/announce.js holds the throttle and the diff-against-last guard.
+   * It falls back to a plain write if that file did not load. */
+  function say(node, text) {
+    if (!node) return;
+    if (window.TKAnnounce) window.TKAnnounce.say(node, text);
+    else if (node.textContent !== text) node.textContent = text;
+  }
+
   function debounce(fn, ms) {
     let t;
     return (...args) => {
@@ -1926,6 +1935,7 @@
     const elReadTime = document.getElementById("wc-readtime");
     const densityBody = document.getElementById("wc-density-body");
     const densityEmpty = document.getElementById("wc-density-empty");
+    const statusEl = document.getElementById("wc-status");
 
     function render() {
       const text = input.value;
@@ -1937,6 +1947,10 @@
       elParagraphs.textContent = countParagraphs(text).toLocaleString();
       const mins = estimateReadingTime(words);
       elReadTime.textContent = mins ? `${mins} min` : "—";
+      // The headline only. Six stat cards and a ten-row density table read out
+      // on every keystroke would bury the one number the visitor asked for.
+      say(statusEl, `${words.toLocaleString()} word${words === 1 ? "" : "s"}, ` +
+        `${countCharsWithSpaces(text).toLocaleString()} characters`);
 
       const density = keywordDensity(text, 10);
       densityBody.innerHTML = "";
@@ -1971,6 +1985,7 @@
     const copyBtn = document.getElementById("case-copy");
     const copyFlash = document.getElementById("case-copy-flash");
     const buttons = Array.from(document.querySelectorAll(".case-btn"));
+    const statusEl = document.getElementById("case-status");
 
     const CONVERTERS = {
       upper: toUpperCase,
@@ -1990,6 +2005,8 @@
         if (!fn) return;
         output.value = fn(input.value);
         buttons.forEach((b) => b.classList.toggle("is-active", b === btn));
+        say(statusEl, `Converted to ${btn.textContent.trim()}. ` +
+          `${output.value.length.toLocaleString()} characters.`);
       });
     });
 
@@ -2020,10 +2037,13 @@
     const output = document.getElementById("lorem-output");
     const copyBtn = document.getElementById("lorem-copy");
     const copyFlash = document.getElementById("lorem-copy-flash");
+    const statusEl = document.getElementById("lorem-status");
 
     function generate() {
       const count = parseInt(countInput.value, 10) || 1;
       output.value = generateLoremIpsum(count, unitSelect.value);
+      const unit = unitSelect.value.replace(/s$/, "");
+      say(statusEl, `Generated ${count} ${unit}${count === 1 ? "" : "s"}.`);
     }
 
     generateBtn.addEventListener("click", generate);
@@ -2044,6 +2064,7 @@
     const compareBtn = document.getElementById("diff-compare");
     const resultEl = document.getElementById("diff-result");
     const emptyMsg = document.getElementById("diff-empty");
+    const statusEl = document.getElementById("diff-status");
 
     function escapeHtml(s) {
       return s.replace(/[&<>"']/g, (c) => ({
@@ -2057,8 +2078,17 @@
       if (!originalInput.value && !changedInput.value) {
         emptyMsg.style.display = "";
         resultEl.style.display = "none";
+        say(statusEl, "");
         return;
       }
+      // The count of changed lines, never the diff itself. The result is one
+      // row per line of both texts, and a live region cannot read that.
+      const added = rows.filter((r) => r.type === "added").length;
+      const removed = rows.filter((r) => r.type === "removed").length;
+      say(statusEl, added || removed
+        ? `${added} line${added === 1 ? "" : "s"} added, ` +
+          `${removed} line${removed === 1 ? "" : "s"} removed.`
+        : "The two texts are identical.");
       emptyMsg.style.display = "none";
       resultEl.style.display = "";
       rows.forEach((row) => {
@@ -2212,7 +2242,7 @@
       setError(errorEl, "");
       groupsEl.innerHTML = "";
       if (!findInput.value) {
-        countEl.textContent = "0 matches";
+        say(countEl, "0 matches");
         return null;
       }
       let re;
@@ -2221,12 +2251,13 @@
       } catch (err) {
         // Show the engine's own complaint — it is more useful than "invalid".
         setError(errorEl, "Invalid regular expression: " + err.message);
-        countEl.textContent = "—";
+        say(countEl, "—");
         return null;
       }
       const result = findMatches(input.value, re);
-      countEl.textContent =
-        result.total === 1 ? "1 match" : result.total.toLocaleString() + " matches";
+      say(countEl, result.total === 1
+        ? "1 match"
+        : result.total.toLocaleString() + " matches");
 
       // Preview the first few matches and what their capture groups caught.
       result.matches.slice(0, 5).forEach((m) => {
@@ -2299,10 +2330,10 @@
       });
       output.value = result.text;
       const s = result.stats;
-      statsEl.textContent =
+      say(statsEl,
         s.input.toLocaleString() + " in → " + s.output.toLocaleString() + " out" +
         (s.duplicates ? " · " + s.duplicates.toLocaleString() + " duplicate" + (s.duplicates === 1 ? "" : "s") + " removed" : "") +
-        (s.blanks ? " · " + s.blanks.toLocaleString() + " blank" + (s.blanks === 1 ? "" : "s") + " removed" : "");
+        (s.blanks ? " · " + s.blanks.toLocaleString() + " blank" + (s.blanks === 1 ? "" : "s") + " removed" : ""));
     }
 
     input.addEventListener("input", debounce(render, 120));
@@ -2324,6 +2355,7 @@
     const previewWrap = document.getElementById("md-preview-wrap");
     const outputLabel = document.getElementById("md-output-label");
     const inputLabel = document.getElementById("md-input-label");
+    const statusEl = document.getElementById("md-status");
     const swapBtn = document.getElementById("md-swap");
     const dirBtns = Array.from(document.querySelectorAll("[data-md-dir]"));
     let direction = "md2html";
@@ -2341,6 +2373,10 @@
         preview.innerHTML = "";
         previewWrap.hidden = true;
       }
+      const to = direction === "md2html" ? "HTML" : "Markdown";
+      say(statusEl, input.value
+        ? `Converted to ${to}. ${output.value.length.toLocaleString()} characters.`
+        : "");
     }
 
     function setDirection(next) {
@@ -2408,7 +2444,7 @@
 
     function render() {
       setError(errorEl, "");
-      detectedEl.textContent = "";
+      say(detectedEl, "");
       if (!input.value.trim()) {
         output.value = "";
         return;
@@ -2418,7 +2454,7 @@
           let delim = chosenDelimiter();
           if (!delim) {
             delim = detectDelimiter(input.value);
-            detectedEl.textContent = "Detected delimiter: " + (DELIM_LABELS[delim] || delim);
+            say(detectedEl, "Detected delimiter: " + (DELIM_LABELS[delim] || delim));
           }
           const data = csvToJson(input.value, {
             delimiter: delim,
@@ -2478,6 +2514,7 @@
     const keepUnicode = document.getElementById("sl-unicode");
     const maxLength = document.getElementById("sl-maxlength");
     const perLine = document.getElementById("sl-perline");
+    const statusEl = document.getElementById("sl-status");
 
     function options() {
       const max = parseInt(maxLength.value, 10);
@@ -2497,6 +2534,13 @@
       output.value = perLine.checked
         ? splitLines(input.value).map((l) => slugify(l, opts)).join("\n")
         : slugify(input.value, opts);
+      if (!input.value) say(statusEl, "");
+      else if (perLine.checked) {
+        const lines = splitLines(output.value).length;
+        say(statusEl, `${lines} slug${lines === 1 ? "" : "s"}.`);
+      } else {
+        say(statusEl, "Slug: " + output.value);
+      }
     }
 
     input.addEventListener("input", debounce(render, 100));
@@ -2561,7 +2605,7 @@
       fields.syllables.textContent = s.syllables.toLocaleString();
       fields.ease.textContent = s.readingEase === null ? "—" : num(s.readingEase, 1);
       fields.grade.textContent = s.gradeLevel === null ? "—" : num(Math.max(0, s.gradeLevel), 1);
-      easeLabel.textContent = s.readingEaseLabel;
+      say(easeLabel, s.readingEaseLabel);
 
       if (s.longestSentence) {
         longestWrap.hidden = false;
@@ -2591,6 +2635,7 @@
     const after = document.getElementById("rb-after");
     const delta = document.getElementById("rb-delta");
     const breaks = document.getElementById("rb-breaks");
+    const statusEl = document.getElementById("rb-status");
 
     function render() {
       const result = removeLineBreaks(input.value, {
@@ -2607,6 +2652,11 @@
       delta.textContent = (s.delta > 0 ? "+" : s.delta < 0 ? "−" : "")
         + Math.abs(s.delta).toLocaleString();
       breaks.textContent = s.breaksRemoved.toLocaleString();
+      say(statusEl, input.value
+        ? `${s.breaksRemoved.toLocaleString()} line break` +
+          `${s.breaksRemoved === 1 ? "" : "s"} removed, ` +
+          `${s.charactersAfter.toLocaleString()} characters out.`
+        : "");
     }
 
     input.addEventListener("input", debounce(render, 100));
@@ -2688,11 +2738,11 @@
 
       if (summary) {
         const names = result.applied.map((id) => CLEANERS[id].label.toLowerCase());
-        summary.textContent = names.length
+        say(summary, names.length
           ? "Removing " + (names.length === 1
               ? names[0]
               : names.slice(0, -1).join(", ") + " and " + names[names.length - 1]) + "."
-          : "Nothing is switched on, so the text comes back exactly as pasted.";
+          : "Nothing is switched on, so the text comes back exactly as pasted.");
       }
     }
 
@@ -2716,10 +2766,10 @@
     function render() {
       output.value = reverseText(input.value, mode);
       const graphemes = splitGraphemes(input.value.replace(/\n/g, "")).length;
-      statsEl.textContent = graphemes
+      say(statsEl, graphemes
         ? graphemes.toLocaleString() + " character" + (graphemes === 1 ? "" : "s")
           + " · reversed by " + mode
-        : "";
+        : "");
     }
 
     function setMode(next) {

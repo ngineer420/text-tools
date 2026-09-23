@@ -28,6 +28,7 @@ between sweeps is how these repos drift.
 """
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
@@ -310,8 +311,91 @@ def render_toolindex(url):
     return "\n".join(out)
 
 
+def page_name(url):
+    """The display name and the canonical path of one page, or None.
+
+    Tools carry their own name in TOOLS or FAMILY. Everything else that needs a
+    breadcrumb names itself in PAGE_NAMES or ARTICLES, because a policy page and
+    an article are not destinations the toolbar lists.
+    """
+    for item in list(D.TOOLS) + list(getattr(D, "FAMILY", [])):
+        if canon(item["href"]) == url:
+            return item["long"], item["href"]
+    names = getattr(D, "PAGE_NAMES", {})
+    if url in names:
+        return names[url]
+    art = getattr(D, "ARTICLES", {}).get(url)
+    if art:
+        return art["name"], art["path"]
+    return None
+
+
+def ld_block(data):
+    return ('<script type="application/ld+json">\n%s\n</script>'
+            % json.dumps(data, indent=2, ensure_ascii=False))
+
+
+def render_pagemeta(url):
+    """Structured data that every page below the root needs.
+
+    Two blocks, in this order:
+
+      1. The article's own OG tags and Article schema, on an article only.
+      2. BreadcrumbList, on every page except the root. The root is the first
+         crumb, so a breadcrumb on the root would point at itself.
+
+    The root renders nothing and the region collapses to its marker pair.
+    """
+    site = getattr(D, "SITE", None)
+    if not site or url == "/":
+        return ""
+    found = page_name(url)
+    if not found:
+        return ""
+    name, path = found
+    out = []
+
+    art = getattr(D, "ARTICLES", {}).get(url)
+    if art:
+        page_url_abs = site + art["path"]
+        out += ['<meta property="og:type" content="article">',
+                '<meta property="og:title" content="%s">' % esc(art["name"]),
+                '<meta property="og:description" content="%s">' % esc(art["description"]),
+                '<meta property="og:url" content="%s">' % esc(page_url_abs),
+                '<meta name="twitter:title" content="%s">' % esc(art["name"]),
+                '<meta name="twitter:description" content="%s">' % esc(art["description"]),
+                ""]
+        out.append(ld_block({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": art["name"],
+            "description": art["description"],
+            "mainEntityOfPage": {"@type": "WebPage", "@id": page_url_abs},
+            "url": page_url_abs,
+            "datePublished": art["published"],
+            "dateModified": art["modified"],
+            "image": getattr(D, "OG_IMAGE", site + "/assets/og-image.png"),
+            "author": {"@type": "Organization", "name": getattr(D, "PUBLISHER", name),
+                       "url": site + "/"},
+            "publisher": {"@type": "Organization", "name": getattr(D, "PUBLISHER", name),
+                          "url": site + "/"},
+        }))
+        out.append("")
+
+    out.append(ld_block({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": site + "/"},
+            {"@type": "ListItem", "position": 2, "name": name, "item": site + path},
+        ],
+    }))
+    return "\n".join(out)
+
+
 RENDERERS = {
     "header": render_header,
+    "pagemeta": render_pagemeta,
     "nav": render_nav,
     "sizechips": render_sizechips,
     "toolindex": render_toolindex,

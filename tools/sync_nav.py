@@ -205,10 +205,75 @@ def render_footernav(url):
     return "\n".join(out)
 
 
+def block(fragment, indent):
+    """Re-indent a multi-line raw fragment from nav_data to a given column."""
+    return [indent + ln if ln else ln for ln in fragment.split("\n")]
+
+
+def render_header(url):
+    """The site header: the brand lock-up, plus whatever controls sit beside it.
+
+    A site with no BRAND renders nothing, so this file stays copyable to a
+    portfolio member that has not adopted the region yet.
+    """
+    brand = getattr(D, "BRAND", None)
+    if not brand:
+        return ""
+    out = ['<header class="site-header">', '  <div class="header-inner">']
+    out.append('    <a class="brand" href="%s" aria-label="%s">'
+               % (esc(brand["href"]), esc(brand["aria"])))
+    out += block(brand["inner"], "      ")
+    out.append("    </a>")
+    actions = getattr(D, "HEADER_ACTIONS", ())
+    if actions:
+        out.append('    <div class="header-actions">')
+        for control in actions:
+            out += block(control, "      ")
+        out.append("    </div>")
+    out += ["  </div>", "</header>"]
+    return "\n".join(out)
+
+
+def render_footer(url):
+    """The site footer: the copyright line, the policy links, the peer sites.
+
+    The peer block is the site's only sideways link. It is deliberately short:
+    a visitor follows a neighbour they can use, and a list of every domain in
+    the portfolio reads as a link farm instead.
+    """
+    owner = getattr(D, "FOOTER_OWNER", None)
+    if not owner:
+        return ""
+    out = ['<footer class="site-footer">', '  <div class="footer-inner">',
+           '    <div>&copy; <span id="year"></span> %s</div>' % esc(owner)]
+    links = getattr(D, "FOOTER_LINKS", ())
+    if links:
+        out.append('    <div class="footer-links">')
+        for href, text in links:
+            out.append("      " + anchor(href, text, url))
+        out.append("    </div>")
+    out.append("  </div>")
+    peers = getattr(D, "PEERS", ())
+    if peers:
+        label_id = "footer-peers-label"
+        out += ['  <nav class="footer-peers" aria-labelledby="%s">' % label_id,
+                '    <p class="footer-peers-label" id="%s">%s</p>'
+                % (label_id, esc(getattr(D, "PEERS_LABEL", "Related sites"))),
+                '    <ul aria-labelledby="%s">' % label_id]
+        for href, name, note in peers:
+            out.append('      <li><a href="%s">%s</a> <span>%s</span></li>'
+                       % (esc(href), esc(name), esc(note)))
+        out += ["    </ul>", "  </nav>"]
+    out.append("</footer>")
+    return "\n".join(out)
+
+
 RENDERERS = {
+    "header": render_header,
     "nav": render_nav,
     "sizechips": render_sizechips,
     "footernav": render_footernav,
+    "footer": render_footer,
 }
 
 

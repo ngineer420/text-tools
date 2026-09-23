@@ -95,4 +95,66 @@ MIGRATE = [
     # The toolbar is a direct child of <body>, immediately after </header>, so
     # it lands above the hero card rather than below it.
     {"op": "insert_after", "region": "nav", "pattern": r"</header>", "indent": ""},
+    # The header and the footer, last: the nav op above anchors on </header>,
+    # so the header must still be markup when that op runs.
+    {"op": "replace", "region": "header",
+     "pattern": r'<header class="site-header">.*?</header>'},
+    {"op": "replace", "region": "footer",
+     "pattern": r'<footer class="site-footer">.*?</footer>'},
+]
+
+# --------------------------------------------------------------------------
+# Site chrome: the header and the footer.
+#
+# Both were hand-copied into every page. The header drifted into three
+# variants and the footer into five, and privacy.html lost the theme toggle
+# that way. sync_nav now renders both from the data below, between
+# `<!-- header:start -->` and `<!-- footer:start -->` marker pairs, so there is
+# one definition of each in the repo.
+# --------------------------------------------------------------------------
+
+# The brand lock-up. `inner` is raw markup because a wordmark is a shape, not a
+# string: the site decides what goes inside the link and sync_nav only places
+# it. Lines are re-indented to match the marker.
+BRAND = {
+    "href": "/",
+    "aria": "TextKit Pro home",
+    "inner": (
+        '<span class="brand-mark">\n'
+        '  <img src="/assets/favicon.svg" alt="" width="24" height="24">\n'
+        '  TextKit <span class="pro-badge">Pro</span>\n'
+        "</span>"
+    ),
+}
+
+# Controls on the right of the header. The theme toggle is the reconciled
+# variant: every page gets it, which is what privacy.html and terms.html and
+# the four articles were missing.
+HEADER_ACTIONS = [
+    '<button id="theme-toggle" class="icon-btn" type="button"'
+    ' aria-label="Toggle dark/light theme" title="Toggle theme">&#9680;</button>',
+]
+
+# Footer line one: the copyright owner and the policy links.
+FOOTER_OWNER = "textkitpro.com"
+FOOTER_LINKS = [
+    ("/", "Home"),
+    ("/privacy.html", "Privacy"),
+    ("/terms.html", "Terms"),
+]
+
+# Footer line two: sibling sites, for visitors who want a neighbouring tool.
+# Four, not nineteen. A block of nineteen links reads as a link farm, and a
+# visitor who came for a word count wants a notepad or a developer tool, not a
+# controller test. The erabb.it mark keeps its own place below the footer.
+PEERS_LABEL = "More tools from the same workshop"
+PEERS = [
+    ("https://devboxkit.com", "DevBox Kit",
+     "JSON, Base64, hashes, UUIDs and WCAG contrast, for developers."),
+    ("https://blanknotepad.com", "Blank Notepad",
+     "A distraction-free notepad that saves in the browser as you type."),
+    ("https://inascii.com", "InASCII",
+     "Turn text or a picture into ASCII art."),
+    ("https://qrmint.net", "QR Mint",
+     "QR codes for a link, a Wi-Fi network or a contact card."),
 ]

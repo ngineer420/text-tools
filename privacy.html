@@ -16,6 +16,7 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
+<!-- header:start -->
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="/" aria-label="TextKit Pro home">
@@ -24,8 +25,12 @@
         TextKit <span class="pro-badge">Pro</span>
       </span>
     </a>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">&#9680;</button>
+    </div>
   </div>
 </header>
+<!-- header:end -->
 
 <!-- nav:start -->
 <nav class="toolbar" aria-label="Tools">
@@ -88,30 +93,43 @@
   <h1>Privacy Policy</h1>
   <p>Last updated: July 2026</p>
 
-  <p>textkitpro.com ("we", "the site") provides free browser-based text tools: a word counter, case converter, Lorem Ipsum generator, and text diff checker. This page explains what data is and isn't collected when you use the site.</p>
+  <p>textkitpro.com ("we", "the site") publishes free browser-based text tools. This page tells you what the site collects, and what it does not.</p>
 
   <h2>How the tools work</h2>
-  <p>All four tools run entirely in your browser using JavaScript. Text you type or paste is processed locally on your device and is never transmitted to, or stored on, any server operated by this site. Closing the tab discards everything.</p>
+  <p>Every tool runs in your browser with JavaScript. The site processes the text you type or paste on your own device. It never sends that text to a server, and it never stores it. When you close the tab, the text goes with it.</p>
 
   <h2>Cookies and advertising</h2>
   <p>This site may display advertisements served by third-party ad networks, such as Google AdSense. These networks may use cookies or similar technologies to serve ads based on your prior visits to this or other websites. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to this site and/or other sites on the internet.</p>
   <p>You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>, or generally at <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info</a>.</p>
 
   <h2>Analytics</h2>
-  <p>We may use privacy-respecting analytics to understand aggregate traffic (e.g. page views, approximate location by country, device type). This data is not linked to the content you process on the site.</p>
+  <p>The site runs no analytics. There are no analytics beacons, no page-view pixels and no visitor tracking scripts of any kind.</p>
+  <p>The site also has no server-side application and no account system. Every page is a static file. You cannot sign up, sign in or leave a record, because there is nothing to sign in to.</p>
 
   <h2>Contact</h2>
   <p>Questions about this policy can be sent to the site owner via the contact link in the footer.</p>
 </main>
+<!-- footer:start -->
 <footer class="site-footer">
   <div class="footer-inner">
-    <div>© <span id="year"></span> textkitpro.com</div>
+    <div>&copy; <span id="year"></span> textkitpro.com</div>
     <div class="footer-links">
       <a href="/">Home</a>
+      <a href="/privacy.html" aria-current="page">Privacy</a>
       <a href="/terms.html">Terms</a>
     </div>
   </div>
+  <nav class="footer-peers" aria-labelledby="footer-peers-label">
+    <p class="footer-peers-label" id="footer-peers-label">More tools from the same workshop</p>
+    <ul aria-labelledby="footer-peers-label">
+      <li><a href="https://devboxkit.com">DevBox Kit</a> <span>JSON, Base64, hashes, UUIDs and WCAG contrast, for developers.</span></li>
+      <li><a href="https://blanknotepad.com">Blank Notepad</a> <span>A distraction-free notepad that saves in the browser as you type.</span></li>
+      <li><a href="https://inascii.com">InASCII</a> <span>Turn text or a picture into ASCII art.</span></li>
+      <li><a href="https://qrmint.net">QR Mint</a> <span>QR codes for a link, a Wi-Fi network or a contact card.</span></li>
+    </ul>
+  </nav>
 </footer>
+<!-- footer:end -->
 <script src="/assets/js/app.js"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 <a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>

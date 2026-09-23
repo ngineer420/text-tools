@@ -41,6 +41,7 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
+<!-- header:start -->
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="/" aria-label="TextKit Pro home">
@@ -50,10 +51,11 @@
       </span>
     </a>
     <div class="header-actions">
-      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">◐</button>
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark/light theme" title="Toggle theme">&#9680;</button>
     </div>
   </div>
 </header>
+<!-- header:end -->
 
 <!-- nav:start -->
 <nav class="toolbar" aria-label="Tools">
@@ -186,16 +188,27 @@
   </nav>
 </main>
 
+<!-- footer:start -->
 <footer class="site-footer">
   <div class="footer-inner">
-    <div>© <span id="year"></span> textkitpro.com</div>
+    <div>&copy; <span id="year"></span> textkitpro.com</div>
     <div class="footer-links">
       <a href="/">Home</a>
       <a href="/privacy.html">Privacy</a>
       <a href="/terms.html">Terms</a>
     </div>
   </div>
+  <nav class="footer-peers" aria-labelledby="footer-peers-label">
+    <p class="footer-peers-label" id="footer-peers-label">More tools from the same workshop</p>
+    <ul aria-labelledby="footer-peers-label">
+      <li><a href="https://devboxkit.com">DevBox Kit</a> <span>JSON, Base64, hashes, UUIDs and WCAG contrast, for developers.</span></li>
+      <li><a href="https://blanknotepad.com">Blank Notepad</a> <span>A distraction-free notepad that saves in the browser as you type.</span></li>
+      <li><a href="https://inascii.com">InASCII</a> <span>Turn text or a picture into ASCII art.</span></li>
+      <li><a href="https://qrmint.net">QR Mint</a> <span>QR codes for a link, a Wi-Fi network or a contact card.</span></li>
+    </ul>
+  </nav>
 </footer>
+<!-- footer:end -->
 
 <script src="/assets/js/app.js"></script>
 <a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>" width="10" height="10" alt=""></a>

@@ -184,8 +184,8 @@ PEERS = [
      "A distraction-free notepad that saves in the browser as you type."),
     ("https://inascii.com", "InASCII",
      "Turn text or a picture into ASCII art."),
-    ("https://qrmint.net", "QR Mint",
-     "QR codes for a link, a Wi-Fi network or a contact card."),
+    ("https://fontloom.com", "Fontloom",
+     "Turn plain text into bold, italic, script and other Unicode fonts."),
 ]
 
 
